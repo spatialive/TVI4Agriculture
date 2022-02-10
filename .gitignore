@@ -1,7 +1,6 @@
 **/.DS_Store
 *.log
 /*.js
-*cache
 *.bin
 
 !/*.config.js
@@ -9,6 +8,7 @@
 !/benchmark.js
 
 .idea
+client/.angular
 client/node_modules
 server/node_modules
 server/.env
