@@ -13,12 +13,14 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "pretty": true,
+        "sourceMap": true,
         "declaration": false,
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "module": "commonjs",
+        "esModuleInterop": true,
+        "module": "CommonJS",
         "target": "es6",
         "baseUrl": "./",
         "typeRoots": [
@@ -31,14 +33,9 @@
             ]
         },
         "lib": [
-            "es2015",
-            "esnext.asynciterable",
-        ],
-        /* Module Resolution Options */
-        "esModuleInterop": true,
-
-        /* Source Map Options */
-        "inlineSourceMap": true,
-        "inlineSources": true
+            "es2018",
+            "dom",
+            "esnext.asynciterable"
+        ]
     }
 }

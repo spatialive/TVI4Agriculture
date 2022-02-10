@@ -1,10 +1,12 @@
 import * as path from "path"
-import "reflect-metadata"
 import fastifyStatic, { FastifyStaticOptions } from "fastify-static"
 import fastifyCors, { FastifyCorsOptions } from "fastify-cors"
-import { bootstrap, BootstrapConfig } from "fastify-decorators"
+// import { bootstrap } from "fastify-decorators"
 import { Application } from "./application"
 import prismaPlugin from "./plugins/prisma"
+import { setupRoutes } from "./application.routes"
+// import { dirname } from "node:path"
+// import { fileURLToPath } from "node:url"
 
 /** Define a factory function that will create an instance of `Application` */
 export type ApplicationFactory = (worker: number) => Promise<void>
@@ -19,7 +21,7 @@ export async function applicationFactory (worker: number) {
 
         const optionsStatic: FastifyStaticOptions = {
             cacheControl: false,
-            root: path.resolve("../client/dist/verona-ng"),
+            root: path.resolve("../client/dist/TVI4Agriculture"),
             prefix: "/"
         }
         const optionsCors: FastifyCorsOptions = {
@@ -34,15 +36,16 @@ export async function applicationFactory (worker: number) {
             preflight: false,
             strictPreflight: false
         }
-        const configBootstrap: BootstrapConfig = {
-            directory: path.resolve("./controllers"), // Controllers directory path
-            mask: /\.controller\./gi // Mask to determine controllers
-        }
-
         app.$server.register(fastifyCors, optionsCors)
         app.$server.register(fastifyStatic, optionsStatic)
         app.$server.register(prismaPlugin)
-        app.$server.register(bootstrap, configBootstrap)
+        // console.log(dirname(fileURLToPath(import.meta.url)))
+        // app.$server.register(bootstrap, {
+        //     directory: dirname(fileURLToPath(import.meta.url))
+        // })
+        // Router definitions
+        setupRoutes(app.$server)
+
         const url = await app.listen()
 
         console.log("🚀" + process.env.APP_NAME + " ready at %s on worker %o", url, worker)

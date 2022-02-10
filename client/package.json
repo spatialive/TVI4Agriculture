@@ -1,11 +1,12 @@
 {
-    "name": "verona",
-    "version": "13.0.0",
-    "license": "PrimeNG Commercial",
+    "name": "tvi-4-agriculture-client",
+    "version": "1.0.0",
+    "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
-        "build": "ng build",
+        "start": "npx ng serve",
+        "build": "npx ng build",
+        "prod": "npx ng build --aot --output-hashing=all",
         "test": "ng test",
         "lint": "ng lint"
     },
