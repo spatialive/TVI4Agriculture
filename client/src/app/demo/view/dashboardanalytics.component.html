@@ -1,0 +1,511 @@
+<div class="layout-analytics-dashboard">
+    <div class="grid">
+        <div class="col-12">
+            <div class="widget-header flex flex-wrap align-items-center justify-content-between pt-3 pb-5">
+                <div class="header-left-section flex align-items-center justify-content-start mb-3 md:mb-0">
+                    <div class="profile relative">
+                        <img src="assets/demo/images/avatar/profile.jpg" width="64" alt="profile"
+                             class="border-circle border-3 border-solid"/>
+                        <span class="profile-badge absolute"><span class="dot block"></span></span>
+                    </div>
+                    <div class="ml-3 mb-2 md:mb-0">
+                    <span class="text-4xl line-height-3 font-light block">Bonjour, <span
+                        class="font-normal">Hermione</span> </span>
+                        <span class="block subtext">26 January 2023, Thu</span>
+                    </div>
+                </div>
+                <div class="header-right-section flex align-items-center">
+                    <p-dropdown [options]="analytics" [(ngModel)]="selectedDrop" placeholder="Store X Analytics"
+                                [showClear]="true" styleClass="mb-2 md:mb-0"></p-dropdown>
+
+                    <p-calendar [showIcon]="true" inputId="icon" styleClass="ml-2 md:ml-4 mb-2 md:mb-0"></p-calendar>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 lg:col-6">
+            <div class="card widget-tabbedchart">
+                <div class="card-header font-bold">Store Overview</div>
+                <div class="tab-content flex flex-column md:flex-row">
+                    <ul class="w-full list-none p-0 mb-5">
+                        <li *ngFor="let item of listItems; let i = index" (click)="activeListItemIndex = i; activeListItem = item"
+                            class="py-3 pr-2 pl-4 h-7rem flex cursor-pointer" [ngClass]="{'active-tab-listitem': activeListItemIndex === i}">
+                            <img [src]="item.image" width="64" class="mr-3">
+                            <div class="flex align-items-center justify-content-between w-full">
+                                <div>
+                                    <span class="font-bold block">{{item.text}}</span>
+                                    <span class="subtext block mb-1">{{item.subtext}}</span>
+                                    <span class="tab-badge font-bold px-1">{{item.ratio}}</span>
+                                </div>
+                                <i class="pi pi-chevron-right subtext"></i>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="w-full flex flex-column align-items-center justify-content-center">
+                        <div class="bars flex align-items-end mb-4">
+                            <div class="w-1rem h-2rem mr-2" [ngClass]="{'h-3rem active-bar': activeListItemIndex === 2 && activeTab === 0}"></div>
+                            <div class="w-1rem h-3rem mr-2" [ngClass]="{'h-5rem active-bar': activeListItemIndex === 1 && activeTab !== 2}"></div>
+                            <div class="w-1rem h-4rem mr-2"></div>
+                            <div class="w-1rem h-6rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 2 && activeTab !== 0}"></div>
+                            <div class="w-1rem h-2rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 1 && activeTab === 2}"></div>
+                            <div class="w-1rem h-5rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 0 && activeTab === 1}"></div>
+                            <div class="w-1rem h-3rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 0 && activeTab !== 1}"></div>
+                            <div class="w-1rem h-1rem mr-2"></div>
+                        </div>
+                        <span class="font-bold">{{activeListItem.text}}</span>
+                        <span class="subtext">{{activeListItem.subtext}}</span>
+                    </div>
+                </div>
+                <div class="tabs flex align-items-center">
+                    <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 0}" (click)="onTabClick($event, 0)">
+                        <i class="pi pi-sort-amount-down text-2xl mb-2"></i>
+                        <span class="font-bold">Latest</span>
+                    </div>
+                    <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 1}" (click)="onTabClick($event, 1)">
+                        <i class="pi pi-chart-line text-2xl mb-2"></i>
+                        <span class="font-bold">Trending</span>
+                    </div>
+                    <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 2}" (click)="onTabClick($event, 2)">
+                        <i class="pi pi-star text-2xl mb-2"></i>
+                        <span class="font-bold">Starred</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6">
+            <div class="card">
+                <div class="card-header mb-4">
+                    <span class="font-bold">Recent Sales</span>
+                    <p-dropdown [options]="orderWeek" [(ngModel)]="selectedOrderWeek" optionLabel="name" (onChange)="recentSales($event)"
+                                styleClass="dashbard-demo-dropdown" [ngStyle]="{'min-width': '8rem'}"></p-dropdown>
+                </div>
+
+                <p-table [value]="products" [rows]="5" styleClass="p-datatable-customers">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th pSortableColumn="name">Name
+                                <p-sortIcon field="name"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="category">Category
+                                <p-sortIcon field="category"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="price">Price
+                                <p-sortIcon field="price"></p-sortIcon>
+                            </th>
+                            <th>View</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>
+                                <span class="p-column-title">Image</span>
+                                <img src="assets/demo/images/product/{{product.image}}" width="50px" [alt]="product.image"
+                                     class="product-image"/></td>
+                            <td>
+                                <span class="p-column-title">Name</span>
+                                {{product.name}}</td>
+                            <td>
+                                <span class="p-column-title">Category</span>
+                                {{product.category}}</td>
+                            <td>
+                                <span class="p-column-title">Price</span>
+                                {{product.price | currency:'USD'}}</td>
+                            <td style="text-align: center">
+                                <button pButton type="button" icon="pi pi-search" class="p-button-text p-button-plain" style="margin-right: .5rem"></button>
+                                <button pButton type="button" icon="pi pi-times" class="p-button-text p-button-plain"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card widget-boxes p-0 grid grid-nogutter">
+                <div class="col-12 md:col-6 lg:col-3 py-3 px-6 border-none md:border-right-1 border-solid">
+                    <div class="mb-3">
+                        <p-avatar icon="pi pi-shopping-cart" size="large" shape="circle" styleClass="text-base font-bold"
+                                  [style]="{'background-color':'rgba(94, 208, 250, 0.1)', 'color': '#1992D4', 'border': '1px solid #5ED0FA'}"></p-avatar>
+                        <span class="text-xl ml-2">Orders</span>
+                    </div>
+                    <span class="block font-bold text-6xl mb-3">1420</span>
+                    <p-progressBar [value]="50" [showValue]="false" styleClass="mb-3"></p-progressBar>
+                </div>
+                <div class="col-12 md:col-6 lg:col-3 py-3 px-6 border-none md:border-right-1 border-solid">
+                    <div class="mb-3">
+                        <p-avatar icon="pi pi-money-bill" size="large" shape="circle" styleClass="text-base font-bold"
+                                  [style]="{'background-color':'rgba(94, 208, 250, 0.1)', 'color': '#1992D4', 'border': '1px solid #5ED0FA'}"></p-avatar>
+                        <span class="text-xl ml-2">Revenue</span>
+                    </div>
+                    <span class="block font-bold text-6xl mb-3">2.7k</span>
+                    <p-progressBar [value]="60" [showValue]="false" styleClass="mb-3"></p-progressBar>
+                </div>
+                <div class="col-12 md:col-6 lg:col-3 py-3 px-6 border-none md:border-right-1 border-solid">
+                    <div class="mb-3">
+                        <p-avatar icon="pi pi-users" size="large" shape="circle" styleClass="text-base font-bold"
+                                  [style]="{'background-color':'rgba(94, 208, 250, 0.1)', 'color': '#1992D4', 'border': '1px solid #5ED0FA'}"></p-avatar>
+                        <span class="text-xl ml-2">Customers</span>
+                    </div>
+                    <span class="block font-bold text-6xl mb-3">25402</span>
+                    <p-progressBar [value]="80" [showValue]="false" styleClass="mb-3"></p-progressBar>
+                </div>
+                <div class="col-12 md:col-6 lg:col-3 py-3 px-6">
+                    <div class="mb-3">
+                        <p-avatar icon="pi pi-comments" size="large" shape="circle" styleClass="text-base font-bold"
+                                  [style]="{'background-color':'rgba(94, 208, 250, 0.1)', 'color': '#1992D4', 'border': '1px solid #5ED0FA'}"></p-avatar>
+                        <span class="text-xl ml-2">Comments</span>
+                    </div>
+                    <span class="block font-bold text-6xl mb-3">85</span>
+                    <p-progressBar [value]="30" [showValue]="false" styleClass="mb-3"></p-progressBar>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 xl:col-6">
+            <div class="card height-100">
+                <div class="card-header widget-chat font-bold">Team Chat</div>
+                <div class="widget-chat">
+                    <ul #chatcontainer class="list-none p-0 px-3 mt-4 mb-6 h-21rem overflow-y-auto">
+                        <li *ngFor="let chartMessage of chatMessages; let last = last;" class="flex align-items-start mb-3" [ngClass]="{'justify-content-start': chartMessage.nth, 'justify-content-end': !chartMessage.nth}">
+                            <img *ngIf="chartMessage.nth" [src]="chartMessage.url" width="36" height="36" class="border-circle">
+                            <div class="ml-2" *ngIf="chartMessage.nth">
+                                <span class="font-bold mr-3">{{chartMessage.from}}</span><span class="subtext">2m ago</span>
+                                <div class="message-nth px-5 py-3 mt-3" *ngFor="let message of chartMessage.messages; let first = first">{{message}}</div>
+                            </div>
+                            <div class="mr-3" *ngIf="!chartMessage.nth">
+                                <span class="subtext">2m ago</span><span class="font-bold ml-3">{{chartMessage.from}}</span>
+                                <div class="message-2nth px-5 py-3 mt-3" *ngFor="let message of chartMessage.messages; let first = first">{{message}}</div>
+                            </div>
+                            <img *ngIf="!chartMessage.nth" [src]="chartMessage.url" width="36" height="36" class="border-circle">
+                        </li>
+                    </ul>
+                    <div class="p-inputgroup write-message mt-3">
+                        <span class="p-inputgroup-addon">
+                            <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-plain"></button>
+                        </span>
+                        <input type="text" pInputText placeholder="Write your message (Hint: 'PrimeNG')" (keydown)="onChatKeydown($event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 xl:col-3">
+            <div class="card widget-pies">
+                <div class="card-header flex align-items-center justify-content-between">
+                    <span class="font-bold">Revenue Stream</span>
+                    <div class="header-right-section flex align-items-center">
+                        <button pButton type="button" icon="pi pi-angle-left" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2"></button>
+                        <button pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-3 p-2"></button>
+                        <span class="font-bold">1</span><span>/5</span>
+                    </div>
+                </div>
+                <div class="flex flex-column align-items-center justify-content-center mt-4">
+                    <p-chart type="doughnut" [data]="revenueChart" [options]="revenueOptions" [responsive]="true" width="180px" height="180px" class="m-auto mb-5"></p-chart>
+                    <span class="font-bold mb-2">Total Revenue This Week</span>
+                    <span class="font-bold text-6xl mb-2">88k</span>
+                    <span class="mb-4" style="color: #27AB83">+21%<span class="subtext"> higher than last week</span></span>
+                    <div class="flex align-items-center justify-content-center">
+                        <div>
+                            <i class="pi pi-circle-on" style="color:#1992D4"></i>
+                            <span class="subtext ml-2">Online</span>
+                        </div>
+                        <div class="ml-3">
+                            <i class="pi pi-circle-on" style="color:#3E4C59"></i>
+                            <span class="subtext ml-2">Retail</span>
+                        </div>
+                        <div class="ml-3">
+                            <i class="pi pi-circle-on" style="color:#E4E7EB"></i>
+                            <span class="subtext ml-2">N/A</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 xl:col-3">
+            <div class="card widget-list-type1">
+                <div class="card-header font-bold mb-5">Company Overview</div>
+                <div class="flex align-items-center justify-content-between pb-2 border-none border-bottom-1 border-solid">
+                    <span class="font-bold subtext">Department</span>
+                    <span class="font-bold subtext">Team</span>
+                </div>
+                <ul class="list-none p-0 mt-0">
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Finance</span>
+                        <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Management</span>
+                        <p-avatarGroup styleClass="w-6rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/annafali.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/bernardodominic.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/elwinsharvill.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Human Resources</span>
+                        <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/ivanmagalhaes.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Development</span>
+                        <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Design</span>
+                        <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">R&D</span>
+                        <p-avatarGroup styleClass="w-6rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                        <span class="font-bold">Reliability</span>
+                        <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                    <li class="flex flex-wrap align-items-center justify-content-between pt-3 pb-3">
+                        <span class="font-bold">Social Media</span>
+                        <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                            <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                            <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                        </p-avatarGroup>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 xl:col-3">
+            <div class="card widget-blog p-0">
+                <div class="card-header relative">
+                    <img src="assets/layout/images/dashboard/bg-product.png" alt="blog-bg" class="w-full h-full">
+                    <div class="header-right-section flex align-items-center absolute right-0 top-0 p-3">
+                        <button pButton type="button" icon="pi pi-angle-left" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold text-white border-white mr-2 p-2"></button>
+                        <button pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold text-white border-white mr-3 p-2"></button>
+                        <span class="font-bold text-white">1</span><span class="text-white">/5</span>
+                    </div>
+                </div>
+                <div class="card-content p-4">
+                    <div class="flex align-items-center justify-content-between mb-3">
+                        <span class="font-bold">New: Clubhouse <i class="pi pi-check-circle ml-3 text-xl" style="color: #27AB83"></i></span>
+                        <i class="pi pi-bookmark text-xl subtext"></i>
+                    </div>
+                    <p class="mb-5">With Clubhouse itself now reportedly valued at $1B, and Twitter audio spaces gaining momentum, the social audio space is increasingly interesting to watch. Many products dropped in this space last year, we covered a number of them in this newsletter. </p>
+                    <div class="flex align-items-center justify-content-between">
+                        <img src="assets/demo/images/avatar/amyelsner.png" alt="avatar" width="36" height="36" class="border-circle">
+                        <div class="subtext">
+                            <i class="pi pi-heart mr-1"></i>
+                            <span>888</span>
+                            <i class="pi pi-eye ml-4 mr-1"></i>
+                            <span>8888</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 xl:col-3">
+            <div class="card widget-list-type2">
+                <div class="card-header font-bold">Best Sellers</div>
+                <ul class="list-none p-0">
+                    <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                        <div class="flex align-items-center justify-content-start">
+                            <img src="assets/demo/images/product/bamboo-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                            <div class="ml-2">
+                                <span class="font-bold block">Bamboo Watch</span>
+                                <span class="subtext text-sm block">Accessories</span>
+                            </div>
+                        </div>
+
+                        <div class="pie-wrapper progress-75">
+                            <span class="label font-bold text-sm absolute">75%</span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                        <div class="flex align-items-center justify-content-start">
+                            <img src="assets/demo/images/product/black-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                            <div class="ml-2">
+                                <span class="font-bold block">Black Watch</span>
+                                <span class="subtext text-sm block">Accessories</span>
+                            </div>
+                        </div>
+
+                        <div class="pie-wrapper progress-68">
+                            <span class="label font-bold text-sm absolute">68%</span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                        <div class="flex align-items-center justify-content-start">
+                            <img src="assets/demo/images/product/blue-band.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                            <div class="ml-2">
+                                <span class="font-bold block">Blue Band</span>
+                                <span class="subtext text-sm block">Fitness</span>
+                            </div>
+                        </div>
+
+                        <div class="pie-wrapper progress-42">
+                            <span class="label font-bold text-sm absolute">42%</span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                        <div class="flex align-items-center justify-content-start">
+                            <img src="assets/demo/images/product/blue-t-shirt.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                            <div class="ml-2">
+                                <span class="font-bold block">Blue T-Shirt</span>
+                                <span class="subtext text-sm block">Clothing</span>
+                            </div>
+                        </div>
+
+                        <div class="pie-wrapper progress-26">
+                            <span class="label font-bold text-sm absolute">26%</span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                        <div class="flex align-items-center justify-content-start">
+                            <img src="assets/demo/images/product/black-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                            <div class="ml-2">
+                                <span class="font-bold block">Black Watch</span>
+                                <span class="subtext text-sm block">Accessories</span>
+                            </div>
+                        </div>
+
+                        <div class="pie-wrapper progress-10">
+                            <span class="label font-bold text-sm absolute">10%</span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+            <div class="card widget-teamstatus">
+                <div class="card-header font-bold pl-2">Latest Stories of Segment X</div>
+                <div class="flex flex-wrap align-items-start justify-content-around pt-5">
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <a href="#" class="new-button border-circle flex align-items-center justify-content-center mb-2">
+                            <i class="pi pi-plus"></i>
+                        </a>
+                        <span class="font-bold text-sm">Add New</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/amyelsner.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Darlene Robertson</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/annafali.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Albert Flores</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/asiyajavayant.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Annette Black</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/bernardodominic.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Ralph Edwards</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card widget-teamstatus">
+                <div class="card-header font-bold pl-2">Latest Stories of Segment Y</div>
+                <div class="flex flex-wrap align-items-start justify-content-around pt-5">
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <a href="#" class="new-button border-circle flex align-items-center justify-content-center mb-2">
+                            <i class="pi pi-plus"></i>
+                        </a>
+                        <span class="font-bold text-sm">Add New</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/ionibowcher.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Darrell Steward</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/onyamalimba.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Jane Cooper</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/elwinsharvill.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Kathryn Murphy</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center mb-2">
+                        <div class="member border-solid border-circle flex align-items-center justify-content-center relative">
+                            <img src="assets/demo/images/avatar/stephenshaw.png" width="44" height="44" class="border-circle">
+                            <span class="member-badge absolute"><i class="pi pi-globe text-sm"></i></span>
+                        </div>
+                        <span class="font-bold">Jenny Wilson</span>
+                        <span class="subtext text-sm">2m ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

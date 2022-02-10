@@ -1,0 +1,15 @@
+**/.DS_Store
+*.log
+/*.js
+*cache
+*.bin
+
+!/*.config.js
+!/*.conf.js
+!/benchmark.js
+
+.idea
+client/node_modules
+server/node_modules
+server/.env
+

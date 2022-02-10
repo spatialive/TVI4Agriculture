@@ -1,0 +1,13 @@
+@import '_common';
+
+$contentBg: #162a41;
+$textColor:#DBE2EB !default;
+$textSecondaryColor:#A3B3C6 !default;
+$dividerColor:#4E657F !default;
+$linkColor: #90CAF9 !default;
+$overlayBg: rgba(228, 231, 235, 0.3) !default;
+
+//card
+$cardBg: #293B51 !default;
+$cardBorder: 0 none !default;
+$cardShadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);

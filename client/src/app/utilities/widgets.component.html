@@ -1,0 +1,562 @@
+<h4>Reusable CSS widgets for your applications.</h4>
+<div class="grid">
+    <div class="col-12 lg:col-6 xl:col-4">
+        <div class="card widget-info-positive px-4">
+            <div class="card-header mb-5">
+                <div class="flex align-items-center justify-content-start">
+                    <p-avatar icon="pi pi-shopping-cart" size="medium" shape="circle" styleClass="text-base font-bold"
+                              [style]="{'background-color':'rgba(101, 214, 173, 0.1)', 'color': '#27AB83', 'border': '1px solid #65D6AD'}"></p-avatar>
+                    <div class="ml-2">
+                        <span class="subtext block">Store X Weekly</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content mb-3 flex flex-column">
+                <div class="flex align-items-center justify-content-center">
+                    <div class="flex flex-1 flex-column align-items-center justify-content-center border-none border-right-1 border-solid p-4">
+                        <span class="block subtext line-height-3">Orders</span>
+                        <span class="block font-bold my-2 text-2xl">640</span>
+                        <span class="block subtext line-height-3">Pending</span>
+                    </div>
+                    <div class="flex flex-1 flex-column align-items-center justify-content-center p-4">
+                        <span class="block subtext line-height-3">Orders</span>
+                        <span class="block font-bold my-2 text-2xl">1440</span>
+                        <span class="block subtext line-height-3">Completed</span>
+                    </div>
+                </div>
+
+                <span class="subtext line-height-4" style="min-height: 4rem">We achieved the best sales score in <span class="font-bold">Brazil</span> 🇧🇷 this week.</span>
+            </div>
+            <button type="button" pButton label="See More Detail" class="p-button-outlined w-full"></button>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-6 xl:col-4">
+        <div class="card widget-info-neutral px-4">
+            <div class="card-header mb-5">
+                <div class="flex align-items-center justify-content-start">
+                    <p-avatar icon="pi pi-money-bill" size="medium" shape="circle" styleClass="text-base font-bold"
+                              [style]="{'background-color':'rgba(250, 219, 95, 0.1)', 'color': '#DE911D', 'border': '1px solid #FADB5F'}"></p-avatar>
+                    <div class="ml-2">
+                        <span class="subtext block">Store X Weekly</span>
+                        <span class="font-bold block">Total Revenue</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content mb-3 flex flex-column">
+                <div class="flex align-items-center justify-content-center">
+                    <div class="flex flex-1 flex-column align-items-center justify-content-center border-none border-right-1 border-solid p-4">
+                        <span class="block subtext line-height-3">Total of</span>
+                        <span class="block font-bold my-2 text-2xl">$2.100</span>
+                        <span class="block subtext line-height-3">Expenses</span>
+                    </div>
+                    <div class="flex flex-1 flex-column align-items-center justify-content-center p-4">
+                        <span class="block subtext line-height-3">Total of</span>
+                        <span class="block font-bold my-2 text-2xl">$9.940</span>
+                        <span class="block subtext line-height-3">Income</span>
+                    </div>
+                </div>
+                <span class="subtext text-center line-height-4">There is a <span class="font-bold">4% increase</span> 🔥 in our total income<br/>compared to last week.</span>
+            </div>
+            <button type="button" pButton label="See More Detail" class="p-button-outlined w-full"></button>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-4">
+        <div class="card widget-grid">
+            <div class="card-header font-bold mb-5">Grid Widget</div>
+            <div>
+                <table class="w-full">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Apollo</span>
+                                <p-menu #menu1 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu1.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+2</span>
+                                <span class="block font-bold text-center">5.3</span>
+                            </div>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+6</span>
+                                <span class="block font-bold text-center">5.9</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Ultima</span>
+                                <p-menu #menu2 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu2.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="text-center warning-data">
+                            <span class="font-bold">2.1</span>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+3</span>
+                                <span class="block font-bold text-center">5.1</span>
+                            </div>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+0.3</span>
+                                <span class="block font-bold text-center">5.4</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Poseidon</span>
+                                <p-menu #menu3 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu3.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="text-center warning-data">
+                            <span class="font-bold">4.4</span>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="p-0 pb-3 danger-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">-0.5</span>
+                                <span class="block font-bold text-center">3.9</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Rain</span>
+                                <p-menu #menu4 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu4.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="p-0 pb-3 danger-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">-4</span>
+                                <span class="block font-bold text-center">9.7</span>
+                            </div>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+4</span>
+                                <span class="block font-bold text-center">13.7</span>
+                            </div>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+1.1</span>
+                                <span class="block font-bold text-center">14.8</span>
+                            </div>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+8</span>
+                                <span class="block font-bold text-center">22.8</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Mirage</span>
+                                <p-menu #menu5 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu5.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="p-0 pb-3 success-data">
+                            <div class="p-1">
+                                <span class="block font-bold flex justify-content-end text-xs">+0.1</span>
+                                <span class="block font-bold text-center">9.1</span>
+                            </div>
+                        </td>
+                        <td class="text-center warning-data">
+                            <span class="font-bold">9.2</span>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center justify-content-between">
+                                <span>Diamond</span>
+                                <p-menu #menu6 [popup]="true" appendTo="body" [model]="items"></p-menu>
+                                <button type="button" pButton icon="pi pi-chevron-down" class="p-button-text p-button-plain p-2" (click)="menu6.toggle($event)"></button>
+                            </div>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">N/A</span>
+                        </td>
+                        <td class="text-center warning-data">
+                            <span class="font-bold">7.5</span>
+                        </td>
+                        <td class="text-center warning-data">
+                            <span class="font-bold">7.5</span>
+                        </td>
+                        <td class="text-center none-data">
+                            <span class="font-bold">5.1</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-6">
+        <div class="card widget-tabbedchart">
+            <div class="card-header font-bold">Store Overview</div>
+            <div class="tab-content flex flex-column md:flex-row">
+                <ul class="w-full list-none p-0 mb-5">
+                    <li *ngFor="let item of listItems; let i = index" (click)="activeListItemIndex = i; activeListItem = item"
+                        class="py-3 pr-2 pl-4 h-7rem flex cursor-pointer" [ngClass]="{'active-tab-listitem': activeListItemIndex === i}">
+                        <img [src]="item.image" width="64" class="mr-3">
+                        <div class="flex align-items-center justify-content-between w-full">
+                            <div>
+                                <span class="font-bold block">{{item.text}}</span>
+                                <span class="subtext block mb-1">{{item.subtext}}</span>
+                                <span class="tab-badge font-bold px-1">{{item.ratio}}</span>
+                            </div>
+                            <i class="pi pi-chevron-right subtext"></i>
+                        </div>
+                    </li>
+                </ul>
+                <div class="w-full flex flex-column align-items-center justify-content-center">
+                    <div class="bars flex align-items-end mb-4">
+                        <div class="w-1rem h-2rem mr-2" [ngClass]="{'h-3rem active-bar': activeListItemIndex === 2 && activeTab === 0}"></div>
+                        <div class="w-1rem h-3rem mr-2" [ngClass]="{'h-5rem active-bar': activeListItemIndex === 1 && activeTab !== 2}"></div>
+                        <div class="w-1rem h-4rem mr-2"></div>
+                        <div class="w-1rem h-6rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 2 && activeTab !== 0}"></div>
+                        <div class="w-1rem h-2rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 1 && activeTab === 2}"></div>
+                        <div class="w-1rem h-5rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 0 && activeTab === 1}"></div>
+                        <div class="w-1rem h-3rem mr-2" [ngClass]="{'h-4rem active-bar': activeListItemIndex === 0 && activeTab !== 1}"></div>
+                        <div class="w-1rem h-1rem mr-2"></div>
+                    </div>
+                    <span class="font-bold">{{activeListItem.text}}</span>
+                    <span class="subtext">{{activeListItem.subtext}}</span>
+                </div>
+            </div>
+            <div class="tabs flex align-items-center">
+                <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 0}" (click)="onTabClick($event, 0)">
+                    <i class="pi pi-sort-amount-down text-2xl mb-2"></i>
+                    <span class="font-bold">Latest</span>
+                </div>
+                <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 1}" (click)="onTabClick($event, 1)">
+                    <i class="pi pi-chart-line text-2xl mb-2"></i>
+                    <span class="font-bold">Trending</span>
+                </div>
+                <div class="flex flex-column align-items-center w-full py-2 cursor-pointer" [ngClass]="{'active-tab': activeTab === 2}" (click)="onTabClick($event, 2)">
+                    <i class="pi pi-star text-2xl mb-2"></i>
+                    <span class="font-bold">Starred</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-6">
+        <div class="card height-100">
+            <div class="card-header widget-chat font-bold">Team Chat</div>
+            <div class="widget-chat">
+                <ul #chatcontainer class="list-none p-0 px-3 mt-4 mb-6 h-21rem overflow-y-auto">
+                    <li *ngFor="let chartMessage of chatMessages; let last = last;" class="flex align-items-start mb-3" [ngClass]="{'justify-content-start': chartMessage.nth, 'justify-content-end': !chartMessage.nth}">
+                        <img *ngIf="chartMessage.nth" [src]="chartMessage.url" width="36" height="36" class="border-circle">
+                        <div class="ml-2" *ngIf="chartMessage.nth">
+                            <span class="font-bold mr-3">{{chartMessage.from}}</span><span class="subtext">2m ago</span>
+                            <div class="message-nth px-5 py-3 mt-3" *ngFor="let message of chartMessage.messages; let first = first">{{message}}</div>
+                        </div>
+                        <div class="mr-3" *ngIf="!chartMessage.nth">
+                            <span class="subtext">2m ago</span><span class="font-bold ml-3">{{chartMessage.from}}</span>
+                            <div class="message-2nth px-5 py-3 mt-3" *ngFor="let message of chartMessage.messages; let first = first">{{message}}</div>
+                        </div>
+                        <img *ngIf="!chartMessage.nth" [src]="chartMessage.url" width="36" height="36" class="border-circle">
+                    </li>
+                </ul>
+                <div class="p-inputgroup write-message mt-3">
+                        <span class="p-inputgroup-addon">
+                            <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-plain"></button>
+                        </span>
+                    <input type="text" pInputText placeholder="Write your message (Hint: 'PrimeNG')" (keydown)="onChatKeydown($event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6 xl:col-3">
+        <div class="card p-0 widget-people">
+            <div class="header font-bold py-4 px-3">People</div>
+            <div class="mb-4 px-3 flex align-items-center justify-content-start">
+                <p-avatar label="BS" size="large" shape="circle" styleClass="text-base font-bold"
+                          [style]="{'background-color':'rgba(101, 214, 173, 0.1)', 'color': '#27AB83', 'border': '1px solid #65D6AD'}"></p-avatar>
+                <div class="ml-3">
+                    <span class="name block">Brooklyn Simmons</span>
+                    <span class="position block">Manager at Mitsubishi</span>
+                </div>
+            </div>
+            <div class="mb-4 px-3 flex align-items-center justify-content-start">
+                <p-avatar label="LA" size="large" shape="circle" styleClass="text-base font-bold"
+                          [style]="{'background-color':'rgba(250, 219, 95, 0.1)', 'color': '#DE911D', 'border': '1px solid #FADB5F'}"></p-avatar>
+                <div class="ml-3">
+                    <span class="name block">Leslie Alexander</span>
+                    <span class="position block">Customer Success at General Electric</span>
+                </div>
+            </div>
+            <div class="mb-4 px-3 flex align-items-center justify-content-start">
+                <p-avatar label="JB" size="large" shape="circle" styleClass="text-base font-bold"
+                          [style]="{'background-color':'rgba(94, 208, 250, 0.1)', 'color': '#1992D4', 'border': '1px solid #5ED0FA'}"></p-avatar>
+                <div class="ml-3">
+                    <span class="name block">Jerome Bell</span>
+                    <span class="position block">Mario Carrier at Nintendo</span>
+                </div>
+            </div>
+            <div class="mb-4 px-3 flex align-items-center justify-content-start">
+                <p-avatar label="WW" size="large" shape="circle" styleClass="text-base font-bold"
+                          [style]="{'background-color':'rgba(43, 176, 237, 0.1)', 'color': '#127FBF', 'border': '1px solid #2BB0ED'}"></p-avatar>
+                <div class="ml-3">
+                    <span class="name block">Wade Warren</span>
+                    <span class="position block">Reliability Engineer at eBay</span>
+                </div>
+            </div>
+            <div class="mb-4 px-3 flex align-items-center justify-content-start">
+                <p-avatar label="AB" size="large" shape="circle" styleClass="text-base font-bold"
+                          [style]="{'background-color':'rgba(255, 155, 155, 0.1)', 'color': '#CF1124', 'border': '1px solid #FF9B9B'}"></p-avatar>
+                <div class="ml-3">
+                    <span class="name block">Annette Black</span>
+                    <span class="position block">Delivery Woman at Pizza Hut</span>
+                </div>
+            </div>
+            <div class="footer flex align-items-center justify-content-center p-3">
+                <span class="font-bold mr-2">SEE ALL</span>
+                <i class="pi pi-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6 xl:col-3">
+        <div class="card widget-list-type1">
+            <div class="card-header font-bold mb-5">Company Overview</div>
+            <div class="flex align-items-center justify-content-between pb-2 border-none border-bottom-1 border-solid">
+                <span class="font-bold subtext">Department</span>
+                <span class="font-bold subtext">Team</span>
+            </div>
+            <ul class="list-none p-0 mt-0">
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Finance</span>
+                    <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Management</span>
+                    <p-avatarGroup styleClass="w-6rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/annafali.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/bernardodominic.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/elwinsharvill.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Human Resources</span>
+                    <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/ivanmagalhaes.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Development</span>
+                    <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Design</span>
+                    <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">R&D</span>
+                    <p-avatarGroup styleClass="w-6rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3">
+                    <span class="font-bold">Reliability</span>
+                    <p-avatarGroup styleClass="w-4rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+                <li class="flex flex-wrap align-items-center justify-content-between pt-3 pb-3">
+                    <span class="font-bold">Social Media</span>
+                    <p-avatarGroup styleClass="w-8rem justify-content-evenly">
+                        <p-avatar image="assets/demo/images/avatar/amyelsner.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/asiyajavayant.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/onyamalimba.png" shape="circle"></p-avatar>
+                        <p-avatar image="assets/demo/images/avatar/ionibowcher.png" shape="circle"></p-avatar>
+                    </p-avatarGroup>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6 xl:col-3">
+        <div class="card widget-list-type2">
+            <div class="card-header font-bold">Best Sellers</div>
+            <ul class="list-none p-0">
+                <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                    <div class="flex align-items-center justify-content-start">
+                        <img src="assets/demo/images/product/bamboo-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                        <div class="ml-2">
+                            <span class="font-bold block">Bamboo Watch</span>
+                            <span class="subtext text-sm block">Accessories</span>
+                        </div>
+                    </div>
+
+                    <div class="pie-wrapper progress-75">
+                        <span class="label font-bold text-sm absolute">75%</span>
+                        <div class="pie">
+                            <div class="left-side half-circle"></div>
+                            <div class="right-side half-circle"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                    <div class="flex align-items-center justify-content-start">
+                        <img src="assets/demo/images/product/black-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                        <div class="ml-2">
+                            <span class="font-bold block">Black Watch</span>
+                            <span class="subtext text-sm block">Accessories</span>
+                        </div>
+                    </div>
+
+                    <div class="pie-wrapper progress-68">
+                        <span class="label font-bold text-sm absolute">68%</span>
+                        <div class="pie">
+                            <div class="left-side half-circle"></div>
+                            <div class="right-side half-circle"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                    <div class="flex align-items-center justify-content-start">
+                        <img src="assets/demo/images/product/blue-band.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                        <div class="ml-2">
+                            <span class="font-bold block">Blue Band</span>
+                            <span class="subtext text-sm block">Fitness</span>
+                        </div>
+                    </div>
+
+                    <div class="pie-wrapper progress-42">
+                        <span class="label font-bold text-sm absolute">42%</span>
+                        <div class="pie">
+                            <div class="left-side half-circle"></div>
+                            <div class="right-side half-circle"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                    <div class="flex align-items-center justify-content-start">
+                        <img src="assets/demo/images/product/blue-t-shirt.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                        <div class="ml-2">
+                            <span class="font-bold block">Blue T-Shirt</span>
+                            <span class="subtext text-sm block">Clothing</span>
+                        </div>
+                    </div>
+
+                    <div class="pie-wrapper progress-26">
+                        <span class="label font-bold text-sm absolute">26%</span>
+                        <div class="pie">
+                            <div class="left-side half-circle"></div>
+                            <div class="right-side half-circle"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="flex align-items-center justify-content-between pt-2 pb-3">
+                    <div class="flex align-items-center justify-content-start">
+                        <img src="assets/demo/images/product/black-watch.png" alt="verona-layout" width="42" height="42" class="border-round"/>
+                        <div class="ml-2">
+                            <span class="font-bold block">Black Watch</span>
+                            <span class="subtext text-sm block">Accessories</span>
+                        </div>
+                    </div>
+
+                    <div class="pie-wrapper progress-10">
+                        <span class="label font-bold text-sm absolute">10%</span>
+                        <div class="pie">
+                            <div class="left-side half-circle"></div>
+                            <div class="right-side half-circle"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6 xl:col-3">
+        <div class="card widget-pies">
+            <div class="card-header flex align-items-center justify-content-between">
+                <span class="font-bold">Revenue Stream</span>
+                <div class="header-right-section flex align-items-center">
+                    <button pButton type="button" icon="pi pi-angle-left" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2"></button>
+                    <button pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-3 p-2"></button>
+                    <span class="font-bold">1</span><span>/5</span>
+                </div>
+            </div>
+            <div class="flex flex-column align-items-center justify-content-center mt-4">
+                <p-chart type="doughnut" [data]="revenueChart" [options]="revenueOptions" [responsive]="true" width="180px" height="180px" class="m-auto mb-5"></p-chart>
+                <span class="font-bold mb-2">Total Revenue This Week</span>
+                <span class="font-bold text-6xl mb-2">88k</span>
+                <span class="mb-4" style="color: #27AB83">+21%<span class="subtext"> higher than last week</span></span>
+                <div class="flex align-items-center justify-content-center">
+                    <div>
+                        <i class="pi pi-circle-on" style="color:#1992D4"></i>
+                        <span class="subtext ml-2">Online</span>
+                    </div>
+                    <div class="ml-3">
+                        <i class="pi pi-circle-on" style="color:#3E4C59"></i>
+                        <span class="subtext ml-2">Retail</span>
+                    </div>
+                    <div class="ml-3">
+                        <i class="pi pi-circle-on" style="color:#E4E7EB"></i>
+                        <span class="subtext ml-2">N/A</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+$bodyBg: linear-gradient(147.38deg, #455B94 0%, #90B967 100%);
+
+//menu
+$menuButtonMobileBg: linear-gradient(147.38deg, #455B94 0%, #90B967 100%);
+
+$menuitemRootTextColor: rgba(255,255,255,0.7);
+$menuitemTextColor: rgba(255,255,255,0.84);
+$menuitemHoverBg: rgba(255,255,255,0.1);
+$menuitemSubmenuBg: rgba(255,255,255,0.1);
+$menuitemActiveBg: #ffffff;
+$menuitemTextActiveColor:#495057;
+$menuitemFocusShadow: 0 0 0 0.2rem rgba(255,255,255,0.1);
+
+$slimSubMenuBg: linear-gradient(0deg, rgba(62, 76, 89, 0.75), rgba(62, 76, 89, 0.75)), linear-gradient(147.38deg, #455B94 0%, #90B967 100%);
+
+//topbar
+$topbarTextColor: rgba(255, 255, 255, 1);
+$topbarSecondaryTextColor: rgba(255, 255, 255, 0.72);
+$topbarMenuTextColor: rgba(245, 247, 250, 0.7);
+$topbarMenuTextActiveColor: rgba(245, 247, 250, 1);
+$topbarItemsBg: rgba(245, 247, 250, .1);
+$topbarItemsBorder: 2px solid rgba(0, 0, 0, .2);
+$topbarAvatarBg: rgba(255, 255, 255, 1);
+$topbarAvatarTextColor: #455B94;
+$topbarIconHoverBg: #e9ecef;
+
+//footer
+$footerTextColor: rgba(255, 255, 255, 1) !default;
+
+@import '../../sass/layout/_layout_light';

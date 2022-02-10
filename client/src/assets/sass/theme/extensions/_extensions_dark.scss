@@ -1,0 +1,39 @@
+.p-carousel {
+    .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+        background-color: $primaryColor;
+    }
+}
+
+.p-galleria {
+    .p-galleria-indicators .p-galleria-indicator.p-highlight button {
+        background-color: $primaryColor;
+    }
+
+    &.p-galleria-indicator-onitem {
+        .p-galleria-indicators {
+            .p-galleria-indicator {
+                &.p-highlight {
+                    button {
+                        background: $primaryColor;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.p-tabmenu {
+    .p-tabmenu-nav {
+        .p-tabmenuitem {
+            .p-menuitem-link {
+                background: transparent;
+            }
+
+            &:not(.p-highlight):not(.p-disabled):hover {
+                .p-menuitem-link {
+                    background: transparent;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+.exception-body {
+    height: 100vh;
+
+    .exception-panel {
+        min-width: 30rem;
+        background-color: $cardBg;
+        border-radius: 14px;
+        box-shadow:  0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+
+        > span {
+            color: $textSecondaryColor;
+
+            span {
+                color: $textColor;
+            }
+        }
+
+        .p-button {
+            color: #FFFFFF;
+            background: #4C63B6;
+            border: 1px solid #4C63B6;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .direction-button {
+            border-radius: 7px;
+            border-color: transparent;
+
+            &.direction-button-1 {
+                &:hover {
+                    background: rgba(250, 219, 95, 0.1);
+                    border-color: #FADB5F;
+                }
+            }
+
+            &.direction-button-2 {
+                &:hover {
+                    background: rgba(101, 214, 173, 0.1);
+                    border-color: #65D6AD;
+                }
+            }
+
+        }
+
+    }
+
+    .subtext {
+        color: $textSecondaryColor;
+    }
+}
+
+@media (max-width: $tabletBreakpoint) {
+    .exception-body {
+        .exception-panel {
+            min-width: auto;
+        }
+    }
+}

@@ -1,0 +1,97 @@
+@media screen and (min-width: $tabletBreakpoint + 1) {
+    .layout-wrapper {
+        &.layout-slim {
+            .layout-topbar-left {
+                .menu-button {
+                    display: none;
+                }
+            }
+
+            .layout-sidebar {
+                width: $slimSidebarWidth;
+                overflow: visible;
+                z-index: 999;
+
+                .layout-menu-container {
+                    overflow: visible;
+                    display: flex;
+                    justify-content: center;
+                    padding: 0;
+
+                    .layout-menu {
+                        ul {
+                            display: none;
+
+                            li {
+                                border-radius: 7px;
+
+                                a {
+                                    .layout-menuitem-icon {
+                                        font-size: 1rem;
+                                    }
+                                }
+                            }
+                        }
+
+                        li.active-menuitem {
+                            > ul {
+                                display: block;
+                            }
+                        }
+
+                        .layout-root-menuitem {
+                            position: relative;
+                            border-radius: 14px;
+
+                            > .layout-menuitem-root-text {
+                                display: none;
+                            }
+
+                            > a {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 4.286rem;
+                                height: 4.286rem;
+                                margin-bottom: 1rem;
+                                border-radius: 14px;
+                                cursor: pointer;
+                                outline: none;
+                                transition: background-color $transitionDuration;
+
+                                .layout-submenu-toggler {
+                                    display: none;
+                                }
+
+                                .layout-menuitem-icon {
+                                    font-size: 2rem;
+                                }
+
+                                .layout-menuitem-text {
+                                    display: none;
+                                }
+                            }
+
+                            > ul {
+                                position: absolute;
+                                min-width: 15rem;
+                                left: 6rem;
+                                top: 0;
+                                padding: .5rem;
+                                border-radius: 7px;
+                                animation-duration: $animationDuration;
+                                animation-timing-function: $animationTimingFunction;
+                                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .layout-content-wrapper {
+                margin-left: $slimSidebarWidth;
+                width: calc(100% - 7rem);
+            }
+        }
+    }
+}

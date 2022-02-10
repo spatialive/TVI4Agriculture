@@ -1,0 +1,32 @@
+<div class="exception-body flex align-items-center justify-content-center">
+    <div class="exception-panel p-5 flex flex-column justify-content-center">
+        <h4 class="font-bold">NOT FOUND</h4>
+        <span class="mb-4 line-height-3">Looks like you are lost. You may try these<br/> or go back to <span class="font-bold">dashboard.</span></span>
+
+        <div class="flex align-items-center justify-content-between direction-button direction-button-1 mb-3 py-2 cursor-pointer border-solid border-1 p-2" [routerLink]="['/utilities/widgets']">
+            <div class="flex align-items-center justify-content-start">
+                <img src="assets/layout/images/pages/icon-widgets.svg" alt="verona-layout" width="42" height="42" class="border-round"/>
+                <div class="ml-3">
+                    <span class="font-bold block line-height-3">Widgets</span>
+                    <span class="subtext block line-height-3">Create your own Verona</span>
+                </div>
+            </div>
+
+            <i class="pi pi-chevron-right subtext"></i>
+        </div>
+
+        <div class="flex align-items-center justify-content-between direction-button direction-button-2 mb-6 py-2 cursor-pointer border-solid border-1 p-2" [routerLink]="['/pages/crud']">
+            <div class="flex align-items-center justify-content-start">
+                <img src="assets/layout/images/pages/icon-crud.svg" alt="verona-layout" width="42" height="42" class="border-round"/>
+                <div class="ml-3">
+                    <span class="font-bold block line-height-3">Crud</span>
+                    <span class="subtext block line-height-3">Data heavy operations</span>
+                </div>
+            </div>
+
+            <i class="pi pi-chevron-right subtext"></i>
+        </div>
+
+        <button type="button" pButton label="Go to Dashboard" [routerLink]="['/']"></button>
+    </div>
+</div>

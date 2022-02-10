@@ -1,0 +1,304 @@
+.landing-body {
+    background: #FFFFFF;
+
+    .landing-wrapper {
+        #header {
+            width: 100%;
+            min-height: 900px;
+            background-image: url("../../layout/images/landing/header-effect-1.svg"), linear-gradient(147.38deg, #EDF5F8 0%, #E8EDF0 100%);
+            background-position: top right;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-left: 5rem;
+            padding-right: 5rem;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+
+            .header-top {
+                color: #495057;
+
+                #menu-button {
+                    background-color: #495057;
+                    width: 3rem;
+                    height: 3rem;
+                    display: none;
+                    color: #FFFFFF;
+                    border-radius: 14px;
+
+                    i {
+                        color: #FFFFFF;
+                        font-size: 1.5rem;
+                    }
+
+                }
+
+                .landing-menu {
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+
+                    li {
+
+                        #landing-menu-close {
+                            display: none;
+                        }
+
+                        a {
+                            font-weight: 700;
+                            color: #7B8794;
+                            display: block;
+                            padding: 8px;
+                            border-bottom: 2px solid transparent;
+                            @include transition(border-bottom-color .3s);
+
+                            &:hover {
+                                color: #3E4C59;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .header-content {
+                .header-content-left {
+                    .header-text {
+                        font-size: 70px;
+                        max-width: 320px;
+                    }
+
+                    .p-button {
+                        background: #3E4C59;
+                        border: 1px solid #4C63B6;
+                        border-radius: 6px;
+
+                        .p-button-text {
+                            font-weight: 700;
+                        }
+                    }
+                }
+
+                .header-content-right {
+                    img {
+                        height: 360px;
+                    }
+                }
+            }
+        }
+
+        #features {
+            .responsive {
+                min-width: 420px;
+                background: #FFFAEB;
+                border-radius: 74px 14px 14px 14px;
+            }
+
+            .design {
+                min-width: 420px;
+                background: #F3FFD9;
+                border-radius: 14px;
+            }
+
+            .clean {
+                min-width: 420px;
+                background: #FFEEEE;
+                border-radius: 14px 14px 74px 14px;
+            }
+        }
+
+        #statistics {
+            background-color: #E9EEF2;
+            padding: 64px 74px;
+
+            .p-button {
+                background: #3E4C59;
+                border: 1px solid #4C63B6;
+                border-radius: 6px;
+                font-size: 24px;
+
+                .p-button-text {
+                    font-weight: 700;
+                }
+            }
+        }
+
+        #pricing {
+            .grid {
+                > div {
+                    padding: 1rem;
+                }
+            }
+
+            .price-box {
+                background: #FFFFFF;
+                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+                border-radius: 14px;
+            }
+
+            .p-button {
+                background: #FFFFFF;
+                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+                border-radius: 14px;
+                border: 0 none;
+                width: 100%;
+
+                .p-button-text {
+                    font-weight: 700;
+                    color: #3E4C59;
+                    width: 100%;
+                }
+            }
+
+            ul {
+                li {
+                    color: #3E4C59;
+
+                    .price-icon {
+                        background: rgba(101, 214, 173, 0.1);
+                        border-color: #65D6AD;
+
+                        i {
+                            color: #27AB83;
+                        }
+                    }
+                }
+            }
+        }
+
+        #footer {
+            background: linear-gradient(147.38deg, #4C96B6 0%, #19496C 100%);
+            border-radius: 30px 30px 0px 0px;
+
+            .footer-left-section {
+                h5 {
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    opacity: 0.7;
+                }
+
+                ul {
+                    li {
+                        a {
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+            }
+
+            .footer-right-section {
+                i {
+                    font-size: 36px;
+                    color: #FFFFFF;
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+
+    .subtext {
+        color: #7B8794;
+    }
+}
+
+@media (max-width: $tabletBreakpoint) {
+    .landing-body {
+        .landing-wrapper {
+            &.landing-menu-active {
+                #header {
+                    .header-top {
+                        .landing-menu {
+                            transform: translate3d(0px, 0px, 0px);
+                        }
+                    }
+                }
+            }
+
+            #header {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+
+                .header-top {
+                    width: 100%;
+
+                    #menu-button {
+                        display: flex;
+                    }
+
+                    .landing-menu {
+                        flex-direction: column;
+                        background-color: #dce2e7;
+                        width: 200px;
+                        height: 100%;
+                        position: fixed;
+                        right: 0;
+                        top: 0;
+                        text-align: center;
+                        padding: 0;
+                        z-index: 1000;
+                        transform: translate3d(200px, 0px, 0px);
+                        transition: transform $transitionDuration;
+
+                        li {
+                            float: none;
+                            padding: 6px 0;
+
+                            #landing-menu-close {
+                                display: block;
+                                font-size: 20px;
+                                cursor: pointer;
+                            }
+
+                            a {
+                                cursor: pointer;
+                                color: #525c65;
+
+                                &:hover {
+                                    border-bottom-color: transparent;
+                                    background-color: #a8b4be;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .header-content {
+                    flex-wrap: wrap;
+
+                    .header-content-left {
+                        .header-text {
+                            font-size: 35px;
+                        }
+                    }
+
+                    .header-content-right {
+                        img {
+                            max-height: 250px;
+                        }
+                    }
+                }
+            }
+
+            #features {
+                .responsive, .design, .clean {
+                    min-width: 315px;
+                }
+            }
+
+            #statistics {
+                padding: 32px 38px;
+
+                .p-button {
+                    font-size: 1rem;
+                }
+            }
+
+            #pricing {
+
+                .p-button {
+                    min-width: auto;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./app.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Campaign {
+  id        Int     @id @default(autoincrement())
+  name     String
+  description   String?
+  published Boolean @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+}

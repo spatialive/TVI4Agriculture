@@ -1,0 +1,124 @@
+@import './_sidebar_vertical';
+@import './_sidebar_slim';
+
+.layout-sidebar {
+    background: transparent;
+
+    .layout-menu {
+        li {
+            a {
+                color: $menuitemTextColor;
+
+                &:hover {
+                    background: $menuitemHoverBg;
+                }
+
+                &:focus {
+                    box-shadow: $menuitemFocusShadow;
+                }
+            }
+        }
+
+        .layout-root-menuitem {
+            .layout-menuitem-root-text {
+                color: $menuitemRootTextColor;
+            }
+
+            &.active-menuitem {
+                background: $menuitemSubmenuBg;
+                color: $menuitemTextColor;
+                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+            }
+
+            .active-menuitem-routerlink {
+                background: $menuitemActiveBg;
+                color: $menuitemTextActiveColor;
+                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+            }
+
+            > ul {
+                > li.active-menuitem {
+                    background: $menuitemSubmenuBg;
+                    color: $menuitemTextColor;
+                    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+                }
+
+                > li .active-menuitem-routerlink {
+                    background: $menuitemActiveBg;
+                    color: $menuitemTextActiveColor;
+                    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+                }
+            }
+        }
+    }
+}
+
+.layout-tooltip {
+    &.p-tooltip {
+        .p-tooltip-text {
+            background: $slimSubMenuBg;
+            color: $menuitemTextColor;
+        }
+
+        &.p-tooltip-right {
+            .p-tooltip-arrow {
+                display: none;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $tabletBreakpoint + 1) {
+    .layout-sidebar {
+        background: $bodyBg;
+
+        .layout-menu {
+            .layout-root-menuitem {
+                &.active-menuitem {
+                    background: transparent;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: $tabletBreakpoint + 1) {
+    .layout-wrapper {
+        &.layout-slim {
+            .layout-menu {
+                .layout-root-menuitem {
+                    &.active-menuitem {
+                        > a {
+                            background: $menuitemActiveBg;
+                            color: $menuitemTextActiveColor;
+                        }
+
+                        > ul {
+                            background: $slimSubMenuBg;
+
+                            li.active-menuitem {
+                                > a {
+                                    font-weight: 700;
+                                }
+                            }
+
+                            li .active-menuitem-routerlink {
+                                background: transparent;
+                                color: $menuitemTextColor;
+                                font-weight: 700;
+
+                                &:hover {
+                                    background: $menuitemHoverBg;
+                                }
+
+                                &:focus {
+                                    box-shadow: $menuitemFocusShadow;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

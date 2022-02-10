@@ -1,0 +1,124 @@
+.layout-topbar {
+    .layout-topbar-left {
+        .layout-topbar-main-menu {
+            .layout-topbar-menu {
+                align-items: normal;
+
+                a {
+                    cursor: pointer;
+
+                    .layout-topbar-submenu-toggler {
+                        margin-left: .5rem;
+                        transition: transform $transitionDuration;
+                    }
+                }
+
+                ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    outline: 0;
+                    overflow: hidden;
+
+                    li {
+                        border-radius: 7px;
+
+                        a {
+                            @include flex();
+                            @include flex-align-center();
+                            position: relative;
+                            padding: .5rem;
+                            margin-bottom: .25rem;
+                            font-size: 1rem;
+                            font-weight: normal;
+                            border-radius: 7px;
+                            outline: 0 none;
+                            cursor: pointer;
+                            transition: background-color $transitionDuration, box-shadow $transitionDuration;
+
+                            .layout-topbar-menuitem-icon {
+                                font-size: 1rem;
+                                margin-right: .5rem;
+                            }
+
+                            .layout-topbar-submenu-toggler {
+                                font-size: 75%;
+                                margin-left: auto;
+                                transition: transform $transitionDuration;
+                            }
+                        }
+                    }
+
+                    ul {
+                        li {
+                            a {
+                                padding-left: 1.5rem;
+                            }
+
+                            li {
+                                a {
+                                    padding-left: 2.5rem;
+                                }
+
+                                li {
+                                    a {
+                                        padding-left: 3.5rem;
+                                    }
+
+                                    li {
+                                        a {
+                                            padding-left: 4.5rem;
+                                        }
+
+                                        li {
+                                            a {
+                                                padding-left: 5.5rem;
+                                            }
+
+                                            li {
+                                                a {
+                                                    padding-left: 6.5rem;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                > ul {
+                    position: absolute;
+                    top: 5rem;
+                    padding: .5rem;
+                    min-width: 12rem;
+                    border-radius: 7px;
+                    overflow: auto;
+                    max-height: 500px;
+                }
+
+                &.topbar-active-menuitem {
+                    > a {
+                        .layout-topbar-submenu-toggler {
+                            transform: rotate(-180deg);
+                        }
+                    }
+                }
+
+                li {
+                    &.topbar-active-menuitem {
+                        > a {
+                            font-weight: 700;
+
+                            .layout-topbar-submenu-toggler {
+                                transform: rotate(-180deg);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
