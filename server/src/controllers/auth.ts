@@ -41,9 +41,11 @@ export const login: RouteHandlerMethod = async (req, res) => {
         }
 
         const { password: pass, ...data } = user
+        const token = req.server.jwt.sign(data, { expiresIn: tokenExpiration + "m" })
         await req.server.prisma.token.create({
             data: {
                 emailToken: email,
+                token: token,
                 type: TokenType.EMAIL,
                 expiration: new Date(Date.now() + (tokenExpiration * 60000)),
                 user: {
@@ -53,7 +55,7 @@ export const login: RouteHandlerMethod = async (req, res) => {
         })
 
         return res.send({
-            data: { user: data, accessToken: req.server.jwt.sign(data, { expiresIn: tokenExpiration + "m" }) }
+            data: { accessToken: token }
         })
     } catch (error: any) {
         res.status(500).send({ error: "Server error!" })

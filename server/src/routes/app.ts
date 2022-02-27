@@ -4,8 +4,9 @@ const routes: RouteConfig = {
     healthCheck: {
         method: "GET",
         url: routePrefix + "health",
-        handler: (_, res) => {
-            res.status(200).send()
+        handler: async (_req, res) => {
+            const result = await _req.server.prisma.$queryRaw`SELECT * FROM "Token"`
+            res.status(200).send(result)
         }
     }
 }

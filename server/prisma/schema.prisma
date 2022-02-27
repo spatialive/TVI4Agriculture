@@ -22,8 +22,8 @@ model User {
 model Token {
   id         Int       @id @default(autoincrement())
   type       TokenType @default(EMAIL)
-  emailToken String?   @unique
-  valid      Boolean   @default(true)
+  token      String    @default("token init")
+  emailToken String?
   expiration DateTime
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
