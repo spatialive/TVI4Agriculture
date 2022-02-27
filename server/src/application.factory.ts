@@ -1,12 +1,13 @@
 import * as path from "path"
 import fastifyStatic, { FastifyStaticOptions } from "fastify-static"
 import fastifyCors, { FastifyCorsOptions } from "fastify-cors"
-// import { bootstrap } from "fastify-decorators"
+import fastifyJwt, { FastifyJWTOptions } from "fastify-jwt"
+import fastifySwagger, { SwaggerOptions } from "fastify-swagger"
+import fastifyPostgres, { PostgresPluginOptions } from "fastify-postgres"
+
 import { Application } from "./application"
 import prismaPlugin from "./plugins/prisma"
-import { setupRoutes } from "./application.routes"
-// import { dirname } from "node:path"
-// import { fileURLToPath } from "node:url"
+import { router } from "./routes"
 
 /** Define a factory function that will create an instance of `Application` */
 export type ApplicationFactory = (worker: number) => Promise<void>
@@ -15,16 +16,18 @@ export type ApplicationFactory = (worker: number) => Promise<void>
 export async function applicationFactory (worker: number) {
     try {
         // Application instance
-        const port = process.env.PORT ? parseInt(process.env.PORT) : 3000
-        const host = process.env.HOST ? process.env.HOST : "localhost"
-        const app = new Application({ host: host, port: port })
+        const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
+        const host: string = process.env.HOST ? process.env.HOST : "localhost"
+        const psqlConnection: string = process.env.PG_CONNECTION ? process.env.PG_CONNECTION : ""
+        const app: Application = new Application({ host: host, port: port })
+        const secretJWT: string = process.env.ACCESS_TOKEN_SECRET ? process.env.ACCESS_TOKEN_SECRET : "super-secret"
 
-        const optionsStatic: FastifyStaticOptions = {
+        const staticOptions: FastifyStaticOptions = {
             cacheControl: false,
             root: path.resolve("../client/dist/TVI4Agriculture"),
             prefix: "/"
         }
-        const optionsCors: FastifyCorsOptions = {
+        const corsOptions: FastifyCorsOptions = {
             origin: "*",
             allowedHeaders: [ "authorization", "content-type" ],
             methods: [ "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS" ],
@@ -36,19 +39,69 @@ export async function applicationFactory (worker: number) {
             preflight: false,
             strictPreflight: false
         }
-        app.$server.register(fastifyCors, optionsCors)
-        app.$server.register(fastifyStatic, optionsStatic)
+        const JWTOptions: FastifyJWTOptions = {
+            secret: secretJWT
+        }
+        const postgresOptions: PostgresPluginOptions = {
+            connectionString: psqlConnection
+        }
+        const fastifyDynamicSwaggerOptions: SwaggerOptions = {
+            swagger: {
+                info: {
+                    title: "TVI4Agriculture",
+                    description: "TVI4Agriculture API Documentation",
+                    version: "1.0.0"
+                },
+                externalDocs: {
+                    url: "https://swagger.io",
+                    description: "Find more info here"
+                },
+                host: "localhost",
+                schemes: [ "http" ],
+                consumes: [ "application/json" ],
+                produces: [ "application/json" ],
+                tags: [
+                    { name: "Auth", description: "Auth related end-points" }
+                ],
+                definitions: {
+                    User: {
+                        type: "object",
+                        required: [ "id", "email" ],
+                        properties: {
+                            id: { type: "string", format: "uuid" },
+                            name: { type: "string" },
+                            email: { type: "string", format: "email" },
+                            password: { type: "string" }
+                        }
+                    }
+                },
+                securityDefinitions: {
+                    apiKey: {
+                        type: "apiKey",
+                        name: "apiKey",
+                        in: "header"
+                    }
+                }
+            },
+            mode: "dynamic",
+            routePrefix: "/doc",
+            exposeRoute: true,
+            hiddenTag: "X-HIDDEN",
+            hideUntagged: true,
+            stripBasePath: true
+        }
+
+        app.$server.register(fastifyCors, corsOptions)
+        app.$server.register(fastifyStatic, staticOptions)
+        app.$server.register(fastifySwagger, fastifyDynamicSwaggerOptions)
         app.$server.register(prismaPlugin)
-        // console.log(dirname(fileURLToPath(import.meta.url)))
-        // app.$server.register(bootstrap, {
-        //     directory: dirname(fileURLToPath(import.meta.url))
-        // })
-        // Router definitions
-        setupRoutes(app.$server)
+        app.$server.register(fastifyPostgres, postgresOptions)
+        app.$server.register(fastifyJwt, JWTOptions)
+        app.$server.register(router)
 
         const url = await app.listen()
 
-        console.log("🚀" + process.env.APP_NAME + " ready at %s on worker %o", url, worker)
+        console.log(process.env.APP_NAME + " ready at %s on worker %o", url, worker)
     } catch (e) {
         console.error(e)
     }
