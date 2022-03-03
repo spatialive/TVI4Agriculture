@@ -25,7 +25,7 @@ export async function applicationFactory (worker: number) {
         const staticOptions: FastifyStaticOptions = {
             cacheControl: false,
             root: path.resolve("../client/dist/TVI4Agriculture"),
-            prefix: "/"
+            prefix: ""
         }
         const corsOptions: FastifyCorsOptions = {
             origin: "*",

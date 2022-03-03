@@ -55,7 +55,7 @@ export const login: RouteHandlerMethod = async (req, res) => {
         })
 
         return res.send({
-            data: { accessToken: token }
+            data: { token: token }
         })
     } catch (error: any) {
         res.status(500).send({ error: "Server error!" })

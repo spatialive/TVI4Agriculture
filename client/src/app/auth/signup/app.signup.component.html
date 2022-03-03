@@ -1,0 +1,30 @@
+<div class="login-body flex flex-column align-items-center justify-content-center">
+    <div class="login-panel p-5 pt-6 p-fluid flex flex-column justify-content-center">
+        <h4 class="font-bold">TVI4Agriculture</h4>
+        <span class="mb-4 line-height-3"> Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> digite seus dados para criar sua conta</span>
+
+        <span class="p-input-icon-left mb-3">
+            <i class="pi pi-user"></i>
+            <input type="text" pInputText placeholder="Nome" />
+        </span>
+
+        <span class="p-input-icon-left mb-3">
+            <i class="pi pi-at"></i>
+            <input type="email" pInputText placeholder="E-mail" />
+        </span>
+
+        <span class="p-input-icon-left mb-3">
+            <i class="pi pi-key"></i>
+            <input type="password" pInputText placeholder="Senha" />
+        </span>
+
+        <span class="p-input-icon-left mb-3">
+            <i class="pi pi-key"></i>
+            <input type="password" pInputText placeholder="Digite a senha novamente" />
+        </span>
+
+        <button type="button" pButton label="Criar Conta" ></button>
+    </div>
+
+    <span class="mt-4"><span class="font-bold cursor-pointer" [routerLink]="['/login']">Login</span></span>
+</div>

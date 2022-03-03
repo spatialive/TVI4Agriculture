@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
-import { MenuService } from './app.menu.service';
-import { TopbarMenuService } from './app.topbarmenu.service';
-import { PrimeNGConfig } from 'primeng/api';
-import { AppComponent } from './app.component';
+import {Component, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import { MenuService } from './menu/app.menu.service';
+import { TopbarMenuService } from './topbar/topbarmenu/app.topbarmenu.service';
+import {MessageService, PrimeNGConfig} from 'primeng/api';
+import { AppComponent } from '../app.component';
+import jwtDecode from 'jwt-decode';
+import {User} from '../interfaces/user.interface';
+import {LocalStorageService} from 'ngx-webstorage';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-main',
     templateUrl: './app.main.component.html'
 })
-export class AppMainComponent {
+export class AppMainComponent implements AfterViewInit{
 
     staticMenuDesktopInactive: boolean;
 
@@ -34,8 +38,25 @@ export class AppMainComponent {
 
     topbarMenuClick = false;
 
-    constructor(private menuService: MenuService, private topbarmenuService: TopbarMenuService,
-                private primengConfig: PrimeNGConfig, public app: AppComponent) { }
+    user: User;
+
+    constructor(
+        private menuService: MenuService,
+        private topbarmenuService: TopbarMenuService,
+        private primengConfig: PrimeNGConfig,
+        public app: AppComponent,
+        private router: Router,
+        private storage: LocalStorageService,
+        private service: MessageService,
+        private cdref: ChangeDetectorRef
+    ) { }
+    ngAfterViewInit(): void {
+        const token = this.storage.retrieve('token');
+        if (token){
+            this.user = jwtDecode(token);
+            this.cdref.detectChanges();
+        }
+    }
 
     onLayoutClick() {
         if (!this.topbarItemClick) {
@@ -113,7 +134,13 @@ export class AppMainComponent {
         event.preventDefault();
     }
 
-    onTopbarSubItemClick(event) {
+    onTopbarSubItemClick(event, type = null) {
+        if (type === 'logout'){
+            this.storage.clear('token');
+            this.router.navigate(['/login']).then(r => {
+                this.service.add({key: 'exit', severity: 'warn', summary: 'Atenção', detail: 'Sessão Encerrada!'});
+            });
+        }
         event.preventDefault();
     }
 

@@ -3,9 +3,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { MenuService } from './app.menu.service';
-import { AppMainComponent } from './app.main.component';
-import { AppComponent } from './app.component';
+import { MenuService } from '../app.menu.service';
+import { AppMainComponent } from '../../app.main.component';
+import { AppComponent } from '../../../app.component';
 
 @Component({
     /* tslint:disable:component-selector */

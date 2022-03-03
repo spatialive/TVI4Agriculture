@@ -1,0 +1,20 @@
+<div class="login-body flex flex-column align-items-center justify-content-center">
+    <div class="login-panel p-5 pt-6 p-fluid flex flex-column justify-content-center">
+        <h4 class="font-bold">TVI4Agriculture</h4>
+        <span class="mb-4 line-height-3"> Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> faça o login para continuar</span>
+
+        <span class="p-input-icon-left mb-3">
+            <i class="pi pi-at"></i>
+            <input type="email" pInputText [(ngModel)]="email" placeholder="E-mail" />
+        </span>
+
+        <span class="p-input-icon-left mb-6">
+            <i class="pi pi-key"></i>
+            <input type="password" pInputText [(ngModel)]="password" placeholder="Senha" />
+        </span>
+
+        <button type="button" pButton label="Login" (click)="login()"></button>
+    </div>
+
+    <span class="mt-4"><span class="font-bold cursor-pointer" [routerLink]="['/signup']">Criar conta</span></span>
+</div>

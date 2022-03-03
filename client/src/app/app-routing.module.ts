@@ -14,11 +14,12 @@ import {EmptyDemoComponent} from './demo/view/emptydemo.component';
 import {ChartsDemoComponent} from './demo/view/chartsdemo.component';
 import {FileDemoComponent} from './demo/view/filedemo.component';
 import {DocumentationComponent} from './demo/view/documentation.component';
-import {AppMainComponent} from './app.main.component';
+import {AppMainComponent} from './main/app.main.component';
 import {AppNotfoundComponent} from './pages/app.notfound.component';
 import {AppErrorComponent} from './pages/app.error.component';
 import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
-import {AppLoginComponent} from './pages/app.login.component';
+import {AppLoginComponent} from './auth/login/app.login.component';
+import {AppSignupComponent} from './auth/signup/app.signup.component';
 import {InputDemoComponent} from './demo/view/inputdemo.component';
 import {ButtonDemoComponent} from './demo/view/buttondemo.component';
 import {TableDemoComponent} from './demo/view/tabledemo.component';
@@ -39,12 +40,14 @@ import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
 import {AppInvoiceComponent} from './pages/app.invoice.component';
 import {AppHelpComponent} from './pages/app.help.component';
 import {DashboardAnalyticsComponent} from './demo/view/dashboardanalytics.component';
+import {AuthGuardService} from './services/auth/auth-guard.service';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
             {
                 path: '', component: AppMainComponent,
+                canActivate: [AuthGuardService],
                 children: [
                     {path: '', component: DashboardDemoComponent},
                     {path: 'analytics', component: DashboardAnalyticsComponent},
@@ -86,6 +89,7 @@ import {DashboardAnalyticsComponent} from './demo/view/dashboardanalytics.compon
             {path: 'access', component: AppAccessdeniedComponent},
             {path: 'notfound', component: AppNotfoundComponent},
             {path: 'login', component: AppLoginComponent},
+            {path: 'signup', component: AppSignupComponent},
             {path: '**', redirectTo: '/notfound'},
         ], {scrollPositionRestoration: 'enabled'})
     ],

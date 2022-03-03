@@ -4,8 +4,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {TopbarMenuService} from './app.topbarmenu.service';
-import {AppMainComponent} from './app.main.component';
-import {AppComponent} from './app.component';
+import {AppMainComponent} from '../../app.main.component';
+import {AppComponent} from '../../../app.component';
 
 @Component({
     /* tslint:disable:component-selector */

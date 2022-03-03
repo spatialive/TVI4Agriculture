@@ -1,0 +1,12 @@
+.login-body {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+:host ::ng-deep .p-button {
+    min-width: 8em;
+}
+
+:host ::ng-deep .p-message {
+    margin-left: .25em;
+}

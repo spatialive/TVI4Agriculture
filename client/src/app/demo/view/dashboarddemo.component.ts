@@ -1,6 +1,6 @@
 import {Component, OnInit } from '@angular/core';
 import {AppComponent} from '../../app.component';
-import {AppMainComponent} from '../../app.main.component';
+import {AppMainComponent} from '../../main/app.main.component';
 import {MenuItem} from 'primeng/api';
 
 @Component({
@@ -123,21 +123,21 @@ export class DashboardDemoComponent implements OnInit {
     }
 
     getGradient() {
-        this.chart = document.getElementsByTagName('canvas')[1].getContext('2d');
-        const gradientStroke = this.chart.createLinearGradient(100, 0, 1150, 100);
-        gradientStroke.addColorStop(0, 'rgba(21, 184, 194, 0)');
-        gradientStroke.addColorStop(0.5, 'rgba(25, 146, 212, 1)');
-        gradientStroke.addColorStop(1, 'rgba(23, 88, 124, 1)');
-
-        const gradientFill = this.chart.createLinearGradient(0, 0, 1150, 0);
-        gradientFill.addColorStop(1, 'rgba(25, 146, 212, 0.34)');
-        gradientFill.addColorStop(0, 'rgba(232, 247, 255, 0.34)');
-
-        this.chartData.datasets[0].borderColor = gradientStroke;
-        this.chartData.datasets[1].borderColor = gradientStroke;
-        this.chartData.datasets[2].borderColor = gradientStroke;
-
-        this.chartData.datasets[2].backgroundColor = gradientFill;
+        // this.chart = document.getElementsByTagName('canvas')[1].getContext('2d');
+        // const gradientStroke = this.chart.createLinearGradient(100, 0, 1150, 100);
+        // gradientStroke.addColorStop(0, 'rgba(21, 184, 194, 0)');
+        // gradientStroke.addColorStop(0.5, 'rgba(25, 146, 212, 1)');
+        // gradientStroke.addColorStop(1, 'rgba(23, 88, 124, 1)');
+        //
+        // const gradientFill = this.chart.createLinearGradient(0, 0, 1150, 0);
+        // gradientFill.addColorStop(1, 'rgba(25, 146, 212, 0.34)');
+        // gradientFill.addColorStop(0, 'rgba(232, 247, 255, 0.34)');
+        //
+        // this.chartData.datasets[0].borderColor = gradientStroke;
+        // this.chartData.datasets[1].borderColor = gradientStroke;
+        // this.chartData.datasets[2].borderColor = gradientStroke;
+        //
+        // this.chartData.datasets[2].backgroundColor = gradientFill;
     }
 
     getOrdersOptions() {

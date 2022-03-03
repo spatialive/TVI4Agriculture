@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
@@ -88,15 +88,15 @@ import {TreeTableModule} from 'primeng/treetable';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 // Application Components
-import {AppCodeModule} from './app.code.component';
+import {AppCodeModule} from './main/code/app.code.component';
 import {AppComponent} from './app.component';
-import {AppMainComponent} from './app.main.component';
-import {AppConfigComponent} from './app.config.component';
-import {AppMenuComponent} from './app.menu.component';
-import {AppMenuitemComponent} from './app.menuitem.component';
-import {AppTopbarMenuComponent} from './app.topbarmenu.component';
-import {AppTopBarComponent} from './app.topbar.component';
-import {AppFooterComponent} from './app.footer.component';
+import {AppMainComponent} from './main/app.main.component';
+import {AppConfigComponent} from './main/config/app.config.component';
+import {AppMenuComponent} from './main/menu/app.menu.component';
+import {AppMenuitemComponent} from './main/menu/menuitem/app.menuitem.component';
+import {AppTopbarMenuComponent} from './main/topbar/topbarmenu/app.topbarmenu.component';
+import {AppTopBarComponent} from './main/topbar/app.topbar.component';
+import {AppFooterComponent} from './main/footer/app.footer.component';
 
 // Demo pages
 import {DashboardDemoComponent} from './demo/view/dashboarddemo.component';
@@ -136,8 +136,8 @@ import {AppHelpComponent} from './pages/app.help.component';
 import {AppNotfoundComponent} from './pages/app.notfound.component';
 import {AppErrorComponent} from './pages/app.error.component';
 import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
-import {AppLoginComponent} from './pages/app.login.component';
-
+import {AppLoginComponent} from './auth/login/app.login.component';
+import {AppSignupComponent} from './auth/signup/app.signup.component';
 // Demo services
 import {CountryService} from './demo/service/countryservice';
 import {CustomerService} from './demo/service/customerservice';
@@ -148,12 +148,18 @@ import {PhotoService} from './demo/service/photoservice';
 import {ProductService} from './demo/service/productservice';
 
 // Application services
-import {MenuService} from './app.menu.service';
-import {TopbarMenuService} from './app.topbarmenu.service';
+import {MenuService} from './main/menu/app.menu.service';
+import {TopbarMenuService} from './main/topbar/topbarmenu/app.topbarmenu.service';
+
+// External libs
+import {NgxWebstorageModule} from 'ngx-webstorage';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import {JWTInterceptor} from './interceptors/jwt.interceptor';
+import {AuthGuardService} from './services/auth/auth-guard.service';
+import {MessageService} from "primeng/api";
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
@@ -248,7 +254,8 @@ FullCalendarModule.registerPlugins([
         TreeModule,
         TreeTableModule,
         VirtualScrollerModule,
-        AppCodeModule
+        AppCodeModule,
+        NgxWebstorageModule.forRoot({ prefix: 'tvi', separator: '.', caseSensitive: true })
     ],
     declarations: [
         AppComponent,
@@ -293,6 +300,7 @@ FullCalendarModule.registerPlugins([
         AppCalendarComponent,
         AppTimelineDemoComponent,
         AppLoginComponent,
+        AppSignupComponent,
         AppInvoiceComponent,
         AppHelpComponent,
         AppNotfoundComponent,
@@ -300,9 +308,25 @@ FullCalendarModule.registerPlugins([
         AppAccessdeniedComponent,
     ],
     providers: [
-        {provide: LocationStrategy, useClass: HashLocationStrategy},
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, MenuService, TopbarMenuService
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JWTInterceptor,
+            multi: true,
+        },
+        {
+            provide: LocationStrategy, useClass: HashLocationStrategy
+        },
+        MessageService,
+        CountryService,
+        CustomerService,
+        EventService,
+        IconService,
+        NodeService,
+        PhotoService,
+        ProductService,
+        MenuService,
+        TopbarMenuService,
+        AuthGuardService,
     ],
     bootstrap: [AppComponent]
 })
