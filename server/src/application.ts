@@ -7,7 +7,6 @@ export interface ApplicationOptions {
     host?: string
     backlog?: number
 }
-
 /** Simple Application class wrapper around `Fastify` */
 export class Application {
     /** Public Fastify instance */

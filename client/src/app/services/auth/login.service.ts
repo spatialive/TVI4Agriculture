@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {  Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { User } from '../../interfaces/user.interface';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {User} from '../../interfaces/user.interface';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -16,7 +17,8 @@ export class LoginService {
         }),
     };
 
-    constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) {
+    }
 
     // login(Us): Observable<User[]> {
     //     return this.httpClient.get<User[]>(this.apiURL + '/login')
@@ -30,57 +32,23 @@ export class LoginService {
             this.apiURL + '/login',
             JSON.stringify(user),
             this.httpOptions,
-        )
-            .pipe(
-                catchError(this.errorHandler),
-            );
+        ).pipe(
+            catchError(this.errorHandler),
+        );
     }
 
+    signup(user: User): Observable<any> {
+        return this.httpClient.post<User>(
+            this.apiURL + '/signup',
+            JSON.stringify(user),
+            this.httpOptions,
+        ).pipe(
+            catchError(this.errorHandler),
+        );
+    }
 
-    // create(satellite): Observable<User> {
-    //     return this.httpClient.post<User>(
-    //         this.apiURL + '/satellites/',
-    //         JSON.stringify(satellite),
-    //         this.httpOptions,
-    //     )
-    //         .pipe(
-    //             catchError(this.errorHandler),
-    //         );
-    // }
-    //
-    // find(id): Observable<Satellite> {
-    //     return this.httpClient.get<Satellite>(this.apiURL + '/satellites/' + id)
-    //         .pipe(
-    //             catchError(this.errorHandler),
-    //         );
-    // }
-    //
-    // update(id, satellite): Observable<Satellite> {
-    //     return this.httpClient.put<Satellite>(
-    //         this.apiURL + '/satellites/' + id,
-    //         JSON.stringify(satellite),
-    //         this.httpOptions,
-    //     )
-    //         .pipe(
-    //             catchError(this.errorHandler),
-    //         );
-    // }
-    //
-    // delete(id) {
-    //     return this.httpClient.delete<Satellite>(this.apiURL + '/satellites/' + id, this.httpOptions)
-    //         .pipe(
-    //             catchError(this.errorHandler),
-    //         );
-    // }
-
-
-    errorHandler(error) {
-        let errorMessage = '';
-        if (error.error instanceof ErrorEvent) {
-            errorMessage = error.error.message;
-        } else {
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-        }
+    errorHandler(error: HttpErrorResponse) {
+        const errorMessage = `Código do erro: ${error.status} - Mensagem: ${error.error.error}`;
         return throwError(errorMessage);
     }
 }

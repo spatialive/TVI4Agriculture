@@ -8,6 +8,7 @@ import fastifyPostgres, { PostgresPluginOptions } from "fastify-postgres"
 import { Application } from "./application"
 import prismaPlugin from "./plugins/prisma"
 import { router } from "./routes"
+import { FastifyLoggerOptions } from "fastify/types/logger"
 
 /** Define a factory function that will create an instance of `Application` */
 export type ApplicationFactory = (worker: number) => Promise<void>
@@ -19,7 +20,11 @@ export async function applicationFactory (worker: number) {
         const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
         const host: string = process.env.HOST ? process.env.HOST : "localhost"
         const psqlConnection: string = process.env.PG_CONNECTION ? process.env.PG_CONNECTION : ""
-        const app: Application = new Application({ host: host, port: port })
+        const logger: FastifyLoggerOptions = {
+            level: "error",
+            file: path.resolve("logs/error.log")
+        }
+        const app: Application = new Application({ host: host, port: port }, { logger: logger })
         const secretJWT: string = process.env.ACCESS_TOKEN_SECRET ? process.env.ACCESS_TOKEN_SECRET : "super-secret"
 
         const staticOptions: FastifyStaticOptions = {

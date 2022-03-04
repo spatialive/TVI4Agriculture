@@ -55,7 +55,7 @@
 
             <li *ngIf="appMain.user" #profile class="profile-item" [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === profile}">
                 <div class="profile-container" (click)="appMain.onTopbarItemClick($event,profile)">
-                    <a href="#">GR</a>
+                    <a href="#">{{appMain.initialsName}}</a>
                     <div class="name-container">
                         <span class="name">{{appMain.user.name}}</span>
                         <span class="job">{{appMain.user.email}}</span>

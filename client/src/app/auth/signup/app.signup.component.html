@@ -3,27 +3,29 @@
         <h4 class="font-bold">TVI4Agriculture</h4>
         <span class="mb-4 line-height-3"> Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> digite seus dados para criar sua conta</span>
 
+        <p-toast key="exp" [position]="'top-center'"></p-toast>
+
         <span class="p-input-icon-left mb-3">
             <i class="pi pi-user"></i>
-            <input type="text" pInputText placeholder="Nome" />
+            <input type="text" pInputText placeholder="Nome" [(ngModel)]="name" (blur)="validateName()" />
         </span>
 
         <span class="p-input-icon-left mb-3">
             <i class="pi pi-at"></i>
-            <input type="email" pInputText placeholder="E-mail" />
+            <input type="email" pInputText placeholder="E-mail" [(ngModel)]="email" (blur)="validateEmail()" />
         </span>
 
         <span class="p-input-icon-left mb-3">
             <i class="pi pi-key"></i>
-            <input type="password" pInputText placeholder="Senha" />
+            <input type="password" pInputText placeholder="Senha" [(ngModel)]="prePassword" />
         </span>
 
         <span class="p-input-icon-left mb-3">
             <i class="pi pi-key"></i>
-            <input type="password" pInputText placeholder="Digite a senha novamente" />
+            <input type="password" pInputText placeholder="Digite a senha novamente" [(ngModel)]="password" (blur)="validatePassword()" />
         </span>
 
-        <button type="button" pButton label="Criar Conta" ></button>
+        <button *ngIf="valid" type="button" pButton label="Criar Conta" (click)="signup()"></button>
     </div>
 
     <span class="mt-4"><span class="font-bold cursor-pointer" [routerLink]="['/login']">Login</span></span>

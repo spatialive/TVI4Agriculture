@@ -39,6 +39,7 @@ export class AppMainComponent implements AfterViewInit{
     topbarMenuClick = false;
 
     user: User;
+    initialsName: string;
 
     constructor(
         private menuService: MenuService,
@@ -49,11 +50,14 @@ export class AppMainComponent implements AfterViewInit{
         private storage: LocalStorageService,
         private service: MessageService,
         private cdref: ChangeDetectorRef
-    ) { }
+    ) {
+        this.initialsName = '';
+    }
     ngAfterViewInit(): void {
         const token = this.storage.retrieve('token');
         if (token){
             this.user = jwtDecode(token);
+            this.initialsName = this.getShortName(this.user.name);
             this.cdref.detectChanges();
         }
     }
@@ -168,5 +172,12 @@ export class AppMainComponent implements AfterViewInit{
     isTablet() {
         const width = window.innerWidth;
         return width <= 1024 && width > 640;
+    }
+    getShortName(name) {
+        const rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+        const initials = [...name.matchAll(rgx)] || [];
+        return  (
+            (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+        ).toUpperCase();
     }
 }

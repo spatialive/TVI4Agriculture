@@ -4,7 +4,8 @@ import {AppMainComponent} from '../app.main.component';
 
 @Component({
     selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+    templateUrl: './app.topbar.component.html',
+    styleUrls: ['./app.topbar.component.scss']
 })
 export class AppTopBarComponent implements OnInit {
 
