@@ -61,12 +61,12 @@ export async function applicationFactory (worker: number) {
                     url: "https://swagger.io",
                     description: "Find more info here"
                 },
-                host: "localhost",
+                host: "localhost:3000",
                 schemes: [ "http" ],
                 consumes: [ "application/json" ],
                 produces: [ "application/json" ],
                 tags: [
-                    { name: "Auth", description: "Auth related end-points" }
+                    { name: "Auth", description: "Auth end-points relacionados" }
                 ],
                 definitions: {
                     User: {
@@ -81,9 +81,9 @@ export async function applicationFactory (worker: number) {
                     }
                 },
                 securityDefinitions: {
-                    apiKey: {
+                    Bearer: {
                         type: "apiKey",
-                        name: "apiKey",
+                        name: "Authorization",
                         in: "header"
                     }
                 }
@@ -103,8 +103,9 @@ export async function applicationFactory (worker: number) {
         app.$server.register(fastifyPostgres, postgresOptions)
         app.$server.register(fastifyJwt, JWTOptions)
         app.$server.register(router)
-
         const url = await app.listen()
+
+        // console.log(app.$server.printRoutes({commonPrefix: true}))
 
         console.log(process.env.APP_NAME + " ready at %s on worker %o", url, worker)
     } catch (e) {

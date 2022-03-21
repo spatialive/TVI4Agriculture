@@ -1,32 +1,33 @@
+<p-toast key="notification" position="top-right"></p-toast>
 <div class="login-body flex flex-column align-items-center justify-content-center">
     <div class="login-panel p-5 pt-6 p-fluid flex flex-column justify-content-center">
         <h4 class="font-bold">TVI4Agriculture</h4>
         <span class="mb-4 line-height-3"> Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> digite seus dados para criar sua conta</span>
-
         <p-toast key="exp" [position]="'top-center'"></p-toast>
-
-        <span class="p-input-icon-left mb-3">
-            <i class="pi pi-user"></i>
-            <input type="text" pInputText placeholder="Nome" [(ngModel)]="name" (blur)="validateName()" />
-        </span>
-
-        <span class="p-input-icon-left mb-3">
-            <i class="pi pi-at"></i>
-            <input type="email" pInputText placeholder="E-mail" [(ngModel)]="email" (blur)="validateEmail()" />
-        </span>
-
-        <span class="p-input-icon-left mb-3">
-            <i class="pi pi-key"></i>
-            <input type="password" pInputText placeholder="Senha" [(ngModel)]="prePassword" />
-        </span>
-
-        <span class="p-input-icon-left mb-3">
-            <i class="pi pi-key"></i>
-            <input type="password" pInputText placeholder="Digite a senha novamente" [(ngModel)]="password" (blur)="validatePassword()" />
-        </span>
-
-        <button *ngIf="valid" type="button" pButton label="Criar Conta" (click)="signup()"></button>
+        <form class="form-signup" [formGroup]="signupFormGroup" (ngSubmit)="signup()">
+            <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('name')">
+                <i class="pi pi-user"></i>
+                <input type="text" pInputText aria-describedby="name" [ngClass]="displayFieldCss('name')" placeholder="Nome" formControlName="name" required/>
+                <small id="name-required" class="p-error" *ngIf="isFieldValid('name')">O nome do usuário é obrigatório!</small>
+            </span>
+            <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('email')">
+                <i class="pi pi-at"></i>
+                <input type="email" aria-describedby="email" [ngClass]="displayFieldCss('email')" pInputText placeholder="E-mail" formControlName="email" required/>
+                <small id="email-invalid" class="p-error" *ngIf="isFieldValid('email')">E-mail inválido!</small>
+            </span>
+            <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('password')">
+                <i class="pi pi-key"></i>
+                <input type="password" aria-describedby="password" [ngClass]="displayFieldCss('password')" pInputText placeholder="Senha" formControlName="password" required />
+                <small id="password-required" class="p-error" *ngIf="isFieldValid('password')">A senha é obrigatória!</small>
+            </span>
+            <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('confirmPassword')">
+                <i class="pi pi-key"></i>
+                <input type="password" aria-describedby="confirm-password" [ngClass]="displayFieldCss('confirmPassword')" pInputText placeholder="Digite a senha novamente" formControlName="confirmPassword" required/>
+                <small id="confirm-password-requires" class="p-error" *ngIf="confirmPassword.errors?.required && isFieldValid('confirmPassword')">A confirmação da senha é obrigatória!</small>
+                <small id="confirm-password-not-same" class="p-error" *ngIf="confirmPassword.errors?.matching && isFieldValid('confirmPassword')">As senhas são diferentes!</small>
+            </span>
+            <button type="submit" pButton label="Criar Conta"></button>
+        </form>
     </div>
-
     <span class="mt-4"><span class="font-bold cursor-pointer" [routerLink]="['/login']">Login</span></span>
 </div>

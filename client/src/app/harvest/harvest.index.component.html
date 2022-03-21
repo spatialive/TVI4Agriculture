@@ -1,0 +1,138 @@
+<div class="grid">
+	<div class="col-12">
+        <p-toast></p-toast>
+		<div class="card">
+			<p-toolbar styleClass="mb-4">
+				<ng-template pTemplate="left">
+					<button pButton pRipple label="Adiconar" icon="pi pi-plus" class="p-button-success mr-2 mb-2" (click)="openNew()"></button>
+					<button pButton pRipple label="Remover" icon="pi pi-trash" class="p-button-danger mb-2" (click)="deleteSelectedHarvests()" [disabled]="!selectedHarvests || !selectedHarvests.length"></button>
+				</ng-template>
+
+				<ng-template pTemplate="right">
+					<button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mb-2" (click)="dt.exportCSV({name: 'safras.csv'})"></button>
+				</ng-template>
+			</p-toolbar>
+			<p-table #dt [value]="harvests" [columns]="cols" [rows]="10" [paginator]="true" [globalFilterFields]="['name','start','end','startWet','startWet','endWet','startDry','endDry', 'createdAt', 'updatedAt']"
+					 [(selection)]="selectedHarvests" [rowHover]="true" dataKey="id"
+					 styleClass="p-datatable-customers"
+					 currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} regsitros" [showCurrentPageReport]="true">
+				<ng-template pTemplate="caption">
+					<div class="flex p-flex-column md:flex-row md:justify-content-between table-header">
+						<h5 class="m-0">Safras</h5>
+						<span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Pesquisar..." />
+                    </span>
+					</div>
+				</ng-template>
+				<ng-template pTemplate="header">
+					<tr>
+						<th style="width: 3rem">
+							<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+						</th>
+						<th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="start">Início <p-sortIcon field="start"></p-sortIcon></th>
+						<th pSortableColumn="end">Fim <p-sortIcon field="end"></p-sortIcon></th>
+						<th pSortableColumn="startWet">Início Período Chuvoso <p-sortIcon field="startWet"></p-sortIcon></th>
+						<th pSortableColumn="endWet">Fim Período Chuvoso <p-sortIcon field="endWet"></p-sortIcon></th>
+						<th pSortableColumn="startDry">Início Periodo Seco <p-sortIcon field="startDry"></p-sortIcon></th>
+						<th pSortableColumn="endDry">Fim Periodo Seco <p-sortIcon field="endDry"></p-sortIcon></th>
+                        <th pSortableColumn="createdAt">Criado em  <p-sortIcon field="createdAt"></p-sortIcon></th>
+                        <th pSortableColumn="updatedAt">Atualizado em <p-sortIcon field="updatedAt"></p-sortIcon></th>
+						<th></th>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-harvest>
+					<tr>
+						<td>
+							<p-tableCheckbox [value]="harvest"></p-tableCheckbox>
+						</td>
+						<td><span class="p-column-title">Nome</span>
+							{{harvest.name}}
+						</td>
+                        <td><span class="p-column-title">Início</span>
+                            {{harvest.start | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Fim</span>
+                            {{harvest.end | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Início Período Chuvoso</span>
+                            {{harvest.startWet | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Fim Período Chuvoso</span>
+                            {{harvest.endWet | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Início Periodo Seco</span>
+                            {{harvest.startDry | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Fim Periodo Seco</span>
+                            {{harvest.endDry | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td><span class="p-column-title">Criado em </span>
+                            {{harvest.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+                        <td><span class="p-column-title">Atualizado em </span>
+                            {{harvest.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+
+						<td>
+							<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editHarvest(harvest)"></button>
+							<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteHarvest(harvest)"></button>
+						</td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="summary">
+					<div class="flex align-items-center justify-content-between">
+						No total existem {{harvests ? harvests.length : 0 }} safras.
+					</div>
+				</ng-template>
+			</p-table>
+		</div>
+		<p-dialog [(visible)]="harvestDialog" [style]="{width: '400px'}" header="Detalhes da Safra" [modal]="true" styleClass="p-fluid">
+			<ng-template pTemplate="content">
+                <div class="field">
+                    <label for="name">Nome</label>
+                    <input type="text" pInputText id="name" [ngClass]="displayFieldCss('name')" [(ngModel)]="harvest.name" />
+                    <small class="p-error" *ngIf="submitted && harvest.name === ''">O nome da safra é obrigatório!</small>
+                </div>
+                <div class="field">
+                    <div class="formgrid grid">
+                        <div class="field col-6">
+                            <label for="start">Início</label>
+                            <p-calendar appendTo="body" id="start" inputId="start" [ngClass]="displayFieldCss('start')" [(ngModel)]="harvest.start" [showIcon]="true"></p-calendar>
+                            <small id="start-required" class="p-error"  *ngIf="submitted && harvest.start === ''">A data de início é obrigatória!</small>
+                        </div>
+                        <div class="field col-6">
+                            <label for="end">Fim</label>
+                            <p-calendar appendTo="body" id="end" inputId="end" [ngClass]="displayFieldCss('end')"  [(ngModel)]="harvest.end" [showIcon]="true"></p-calendar>
+                            <small id="end-required" class="p-error"  *ngIf="submitted && harvest.end === ''">A data de fim é obrigatória!</small>
+                        </div>
+                        <div class="field col-6">
+                            <label for="start-wet">Início Período Chuvoso</label>
+                            <p-calendar appendTo="body" id="start-wet" inputId="start-wet" [(ngModel)]="harvest.startWet" [showIcon]="true"></p-calendar>
+                        </div>
+                        <div class="field col-6">
+                            <label for="end-wet">Fim Período Chuvoso</label>
+                            <p-calendar appendTo="body" id="end-wet" inputId="start-wet" [(ngModel)]="harvest.endWet" [showIcon]="true"></p-calendar>
+                        </div>
+                        <div class="field col-6">
+                            <label for="start-dry">Início Periodo Seco</label>
+                            <p-calendar appendTo="body" id="start-dry" inputId="start-dry"  [(ngModel)]="harvest.startDry" [showIcon]="true"></p-calendar>
+                        </div>
+                        <div class="field col-6">
+                            <label for="end-dry">Fim Periodo Seco</label>
+                            <p-calendar appendTo="body" id="end-dry" inputId="end-dry"  [(ngModel)]="harvest.endDry" [showIcon]="true"></p-calendar>
+                        </div>
+                    </div>
+                </div>
+			</ng-template>
+
+			<ng-template pTemplate="footer">
+				<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+				<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="saveHarvest()"></button>
+			</ng-template>
+		</p-dialog>
+
+		<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+	</div>
+</div>

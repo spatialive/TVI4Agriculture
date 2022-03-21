@@ -18,16 +18,15 @@ export class AuthGuardService implements CanActivate {
           const jwtToken = jwtDecode<JwtPayload>(token);
           const currentTimestamp = new Date().getTime() / 1000;
           const valid = jwtToken.exp > currentTimestamp;
-
           if (!valid){
               this.router.navigate(['/login']).then(r => {
-                  this.service.add({key: 'exp', severity: 'warn', summary: 'Atenção', detail: 'Sessão Expirada!'});
+                  this.service.add({key: 'notification', severity: 'warn', summary: 'Atenção', detail: 'Sessão Expirada!'});
               });
           }
           return valid;
       } else {
           this.router.navigate(['/login']).then(r => {
-              this.service.add({key: 'exp', severity: 'warn', summary: 'Atenção', detail: 'Acesso não autorizado!'});
+              this.service.add({key: 'notification', severity: 'warn', summary: 'Atenção', detail: 'Acesso não autorizado!'});
           });
           return false;
       }

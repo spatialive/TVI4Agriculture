@@ -4,7 +4,7 @@ import { TopbarMenuService } from './topbar/topbarmenu/app.topbarmenu.service';
 import {MessageService, PrimeNGConfig} from 'primeng/api';
 import { AppComponent } from '../app.component';
 import jwtDecode from 'jwt-decode';
-import {User} from '../interfaces/user.interface';
+import {User} from '../@core/interfaces/user.interface';
 import {LocalStorageService} from 'ngx-webstorage';
 import {Router} from '@angular/router';
 

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
@@ -138,6 +138,7 @@ import {AppErrorComponent} from './pages/app.error.component';
 import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
 import {AppLoginComponent} from './auth/login/app.login.component';
 import {AppSignupComponent} from './auth/signup/app.signup.component';
+import {HarvestIndexComponent} from './harvest/harvest.index.component';
 // Demo services
 import {CountryService} from './demo/service/countryservice';
 import {CustomerService} from './demo/service/customerservice';
@@ -157,15 +158,31 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import {JWTInterceptor} from './interceptors/jwt.interceptor';
+import {JWTInterceptor} from './@core/interceptors/jwt.interceptor';
 import {AuthGuardService} from './services/auth/auth-guard.service';
-import {MessageService} from "primeng/api";
+import {MessageService} from 'primeng/api';
+import {ReactiveFormsModule} from '@angular/forms';
+
+import { InternationalizationModule } from './@core/internationalization/internationalization.module';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
     timeGridPlugin,
     interactionPlugin
 ]);
+
+/**
+ * The http loader factory : Loads the files from define path.
+ * @param {HttpClient} http
+ * @returns {TranslateHttpLoader}
+ * @constructor
+ */
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http, '../assets/locales/', '.json');
+}
 
 @NgModule({
     imports: [
@@ -255,7 +272,16 @@ FullCalendarModule.registerPlugins([
         TreeTableModule,
         VirtualScrollerModule,
         AppCodeModule,
-        NgxWebstorageModule.forRoot({ prefix: 'tvi', separator: '.', caseSensitive: true })
+        ReactiveFormsModule,
+        NgxWebstorageModule.forRoot({ prefix: 'tvi', separator: '.', caseSensitive: true }),
+        InternationalizationModule.forRoot({ locale_id: 'pt' }),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
     ],
     declarations: [
         AppComponent,
@@ -306,6 +332,7 @@ FullCalendarModule.registerPlugins([
         AppNotfoundComponent,
         AppErrorComponent,
         AppAccessdeniedComponent,
+        HarvestIndexComponent,
     ],
     providers: [
         {

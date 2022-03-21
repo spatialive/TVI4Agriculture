@@ -9,3 +9,28 @@ $gutter: 1rem; //for primeflex grid system
 @import "../node_modules/@fullcalendar/timegrid/main.min.css";
 @import "assets/demo/flags/flags.css";
 
+::-webkit-scrollbar {
+    width: 8px !important;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #87a9c0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    transition: all 0.5s ease;
+    background: lighten(#0a4770, 10%);
+    border-radius: 20px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: lighten(#87a9c0, 30%);
+    cursor: pointer !important;
+}
+
+

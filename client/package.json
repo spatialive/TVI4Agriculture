@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "start": "npx ng serve",
+        "start": "npx ng serve --open",
         "build": "npx ng build",
         "prod": "npx ng build --aot --output-hashing=all",
         "test": "ng test",
@@ -26,6 +26,8 @@
         "@fullcalendar/daygrid": "^5.8.0",
         "@fullcalendar/interaction": "^5.8.0",
         "@fullcalendar/timegrid": "^5.8.0",
+        "@ngx-translate/core": "^14.0.0",
+        "@ngx-translate/http-loader": "^7.0.0",
         "chart.js": "^3.3.2",
         "jwt-decode": "^3.1.2",
         "ngx-mask": "^13.1.1",

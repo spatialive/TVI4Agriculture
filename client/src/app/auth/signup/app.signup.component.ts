@@ -1,8 +1,11 @@
 import {Component} from '@angular/core';
 import {MessageService} from 'primeng/api';
 import {LoginService} from '../../services/auth/login.service';
-import {User} from '../../interfaces/user.interface';
+import {User} from '../../@core/interfaces/user.interface';
 import {Router} from '@angular/router';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Validators} from '@angular/forms';
+import {MustMatch} from '../../@core/validators/must-match.validator';
 
 @Component({
     selector: 'app-signup',
@@ -11,60 +14,86 @@ import {Router} from '@angular/router';
     providers: [MessageService]
 })
 export class AppSignupComponent {
-    name: string;
-    email: string;
-    password: string;
-    prePassword: string;
-    valid: boolean;
-    emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+    signupFormGroup: FormGroup;
+    user: User = {name: '', email: '', password: '', confirmPassword: ''};
+
     constructor(
         private service: MessageService,
         private loginService: LoginService,
         private router: Router
     ) {
-        this.valid = false;
-        this.name = '';
-        this.email = '';
-        this.prePassword = '';
-        this.password = '';
+
+        this.signupFormGroup = new FormGroup({
+                name: new FormControl(this.user.name, [
+                    Validators.required
+                ]),
+                email: new FormControl(this.user.email, [
+                    Validators.required,
+                    Validators.email,
+                    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+                ]),
+                password: new FormControl(this.user.password, [
+                    Validators.required
+                ]),
+                confirmPassword: new FormControl(this.user.confirmPassword, [
+                    Validators.required
+                ])
+            },
+            {
+                validators: [MustMatch('password', 'confirmPassword')]
+            });
     }
 
-    validateName() {
-        if (this.name === '') {
-            this.service.add({severity: 'error', summary: 'Erro', detail: 'Informe o nome do usuário!', life: 3000});
-        }
-    }
-
-    validateEmail() {
-        if (!this.emailRegex.test(this.email)) {
-            this.service.add({severity: 'error', summary: 'Erro', detail: 'Informe um e-mail válido!', life: 3000});
-        }
-    }
-
-    validatePassword() {
-        if (this.prePassword !== this.password) {
-            this.service.add({severity: 'error', summary: 'Erro', detail: 'Senha divergentes!', life: 3000});
-        }
-        this.valid = this.prePassword === this.password && this.emailRegex.test(this.email) && this.name !== '';
-    }
+    get name() { return this.signupFormGroup.get('name'); }
+    get email() { return this.signupFormGroup.get('email'); }
+    get password() { return this.signupFormGroup.get('password'); }
+    get confirmPassword() { return this.signupFormGroup.get('confirmPassword'); }
 
     signup() {
-        const user: User = {
-            name: this.name,
-            email: this.email,
-            password: this.password
-        };
-        this.loginService.signup(user).subscribe(result => {
-            this.router.navigate(['/login']).then(r => {
+        if (this.signupFormGroup.valid) {
+            this.user = {
+                name: this.name.value,
+                email: this.email.value,
+                password: this.password.value
+            };
+            this.loginService.signup(this.user).subscribe(result => {
+                this.router.navigate(['/login']).then(r => {
+                });
+                this.service.add({
+                    key: 'exp',
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Conta criada com sucesso!'
+                });
+            }, error => {
+                this.service.add({key: 'exp', severity: 'error', summary: 'Erro', detail: error, life: 3000});
             });
+        } else {
             this.service.add({
                 key: 'exp',
-                severity: 'success',
-                summary: 'Sucesso',
-                detail: 'Conta criada com sucesso!'
+                severity: 'warn',
+                summary: 'Atenção',
+                detail: 'Preencha o formulário corretamento!',
+                life: 3000
             });
-        }, error => {
-            this.service.add({key: 'exp', severity: 'error', summary: 'Erro', detail: error, life: 3000});
-        });
+        }
+    }
+
+    isFieldValid(field: string) {
+        return !this.signupFormGroup.get(field).valid && this.signupFormGroup.get(field).touched;
+    }
+
+    displayFieldCss(field: string) {
+        return {
+            'ng-dirty': this.isFieldValid(field),
+            'ng-invalid': this.isFieldValid(field)
+        };
+    }
+
+    displayContainerFieldCss(field: string) {
+        return {
+            'has-error': this.isFieldValid(field),
+        };
     }
 }

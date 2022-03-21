@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
+import {PrimeNGConfig, Translation} from 'primeng/api';
+import {LocalizationService} from './@core/internationalization/localization.service';
 
 @Component({
     selector: 'app-root',
@@ -20,11 +21,14 @@ export class AppComponent implements OnInit{
 
     menuMode = 'slim';
 
-    constructor(private primengConfig: PrimeNGConfig) {
-    }
+    constructor(private primengConfig: PrimeNGConfig, public localizationService: LocalizationService) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;
         this.ripple = true;
+        this.localizationService.translateService.setDefaultLang('pt');
+        this.localizationService.translateService.get('primeng').subscribe((res: Translation) => {
+            this.primengConfig.setTranslation(res);
+        });
     }
 }

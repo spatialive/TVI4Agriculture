@@ -33,14 +33,18 @@ model Token {
 
 model Harvest {
   id           Int  @id @default(autoincrement())
+  name         String
   start        DateTime
   end          DateTime
   startDry     DateTime?
   endDry       DateTime?
   startWet     DateTime?
   endWet       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   campaigns    Campaign[]
   inspections  Inspection[]
+
 }
 
 model Campaign {

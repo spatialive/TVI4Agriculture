@@ -1,20 +1,24 @@
-<div class="login-body flex flex-column align-items-center justify-content-center">
+<p-toast key="notification" position="top-right"></p-toast>
+<div class="login-body flex flex-column align-items-center justify-content-center" xmlns="http://www.w3.org/1999/html">
     <div class="login-panel p-5 pt-6 p-fluid flex flex-column justify-content-center">
+        <p-toast key="exp" [position]="'top-center'"></p-toast>
         <h4 class="font-bold">TVI4Agriculture</h4>
-        <span class="mb-4 line-height-3"> Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> faça o login para continuar</span>
-
-        <span class="p-input-icon-left mb-3">
-            <i class="pi pi-at"></i>
-            <input type="email" pInputText [(ngModel)]="email" placeholder="E-mail" />
+        <span class="mb-4 line-height-3">
+            Bem vindo ao sistema de geração de amostras TVI4Agriculture,<br> faça o login para continuar
         </span>
-
-        <span class="p-input-icon-left mb-6">
-            <i class="pi pi-key"></i>
-            <input type="password" pInputText [(ngModel)]="password" placeholder="Senha" />
-        </span>
-
-        <button type="button" pButton label="Login" (click)="login()"></button>
+        <form class="form-signup" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+            <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('email')">
+                <i class="pi pi-at"></i>
+                <input type="email" pInputText placeholder="E-mail" [ngClass]="displayFieldCss('email')" formControlName="email" required />
+                <small id="email-invalid" class="p-error" *ngIf="isFieldValid('email')">E-mail inválido!</small>
+            </span>
+            <span class="p-input-icon-left mb-6" [ngClass]="displayContainerFieldCss('password')">
+                <i class="pi pi-key"></i>
+                <input type="password" pInputText  placeholder="Senha" [ngClass]="displayFieldCss('password')" formControlName="password" required />
+                <small id="password-required" class="p-error" *ngIf="isFieldValid('password')">A senha é obrigatória!</small>
+            </span>
+            <button type="submit" pButton label="Login"></button>
+        </form>
     </div>
-
     <span class="mt-4"><span class="font-bold cursor-pointer" [routerLink]="['/signup']">Criar conta</span></span>
 </div>

@@ -31,27 +31,27 @@
     </div>
     <div class="layout-topbar-right">
         <ul class="layout-topbar-actions">
-            <li #searchItem class="search-item" [ngClass]="{'active-topmenuitem': appMain.search}">
-                <a href="#" tabindex="0" (click)="appMain.onTopbarItemClick($event,searchItem); searchFocus($event)">
-                    <i class="pi pi-search"></i>
-                </a>
+<!--            <li #searchItem class="search-item" [ngClass]="{'active-topmenuitem': appMain.search}">-->
+<!--                <a href="#" tabindex="0" (click)="appMain.onTopbarItemClick($event,searchItem); searchFocus($event)">-->
+<!--                    <i class="pi pi-search"></i>-->
+<!--                </a>-->
 
-                <div class="search-input-wrapper">
-                    <span class="p-input-icon-right">
-                        <input #input1 type="text" pInputText placeholder="Type your keywords" (click)="appMain.searchClick = true;" autofocus/>
-                        <i class="pi pi-search"></i>
-                    </span>
-                </div>
+<!--                <div class="search-input-wrapper">-->
+<!--                    <span class="p-input-icon-right">-->
+<!--                        <input #input1 type="text" pInputText placeholder="Type your keywords" (click)="appMain.searchClick = true;" autofocus/>-->
+<!--                        <i class="pi pi-search"></i>-->
+<!--                    </span>-->
+<!--                </div>-->
 
-                <ul class="fadeInDown">
-                    <div class="search-input-wrapper p-fluid" style="width: 100%">
-                        <span class="p-input-icon-right">
-                            <input #input2 type="text" pInputText placeholder="Type your keywords" (click)="appMain.searchClick = true;" autofocus/>
-                            <i class="pi pi-search"></i>
-                        </span>
-                    </div>
-                </ul>
-            </li>
+<!--                <ul class="fadeInDown">-->
+<!--                    <div class="search-input-wrapper p-fluid" style="width: 100%">-->
+<!--                        <span class="p-input-icon-right">-->
+<!--                            <input #input2 type="text" pInputText placeholder="Type your keywords" (click)="appMain.searchClick = true;" autofocus/>-->
+<!--                            <i class="pi pi-search"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </ul>-->
+<!--            </li>-->
 
             <li *ngIf="appMain.user" #profile class="profile-item" [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === profile}">
                 <div class="profile-container" (click)="appMain.onTopbarItemClick($event,profile)">

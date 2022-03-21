@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {User} from '../../interfaces/user.interface';
+import {User} from '../../@core/interfaces/user.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -20,16 +20,9 @@ export class LoginService {
     constructor(private httpClient: HttpClient) {
     }
 
-    // login(Us): Observable<User[]> {
-    //     return this.httpClient.get<User[]>(this.apiURL + '/login')
-    //         .pipe(
-    //             catchError(this.errorHandler),
-    //         );
-    // }
-
     login(user: User): Observable<any> {
         return this.httpClient.post<User>(
-            this.apiURL + '/login',
+            this.apiURL + 'login',
             JSON.stringify(user),
             this.httpOptions,
         ).pipe(
@@ -39,7 +32,7 @@ export class LoginService {
 
     signup(user: User): Observable<any> {
         return this.httpClient.post<User>(
-            this.apiURL + '/signup',
+            this.apiURL + 'signup',
             JSON.stringify(user),
             this.httpOptions,
         ).pipe(

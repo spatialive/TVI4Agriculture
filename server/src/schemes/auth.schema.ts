@@ -3,7 +3,7 @@ export const authSchema = {
         description: "signup",
         tags: [ "Auth" ],
         summary: "Cadastro do usuário",
-        params: {
+        body: {
             type: "object",
             properties: {
                 name: {
@@ -20,85 +20,55 @@ export const authSchema = {
                 }
             }
         },
-        body: {
-            type: "object",
-            properties: {
-                hello: { type: "string" },
-                obj: {
-                    type: "object",
-                    properties: {
-                        some: { type: "string" }
-                    }
-                }
-            }
-        },
         response: {
             201: {
-                description: "Successful response",
+                description: "Cadastro do usuário cfetuado com sucesso",
                 type: "object",
                 properties: {
-                    hello: { type: "string" }
+                    token: { type: "string" }
                 }
             },
             default: {
-                description: "Default response",
+                description: "Resposta padrão",
                 type: "object",
                 properties: {
-                    foo: { type: "string" }
+                    token: { type: "string" }
                 }
             }
-        },
-        security: [
-            {
-                "apiKey": []
-            }
-        ]
+        }
     },
     login: {
         description: "login",
         tags: [ "Auth" ],
-        summary: "qwerty",
-        params: {
-            type: "object",
-            properties: {
-                id: {
-                    type: "string",
-                    description: "user id"
-                }
-            }
-        },
+        summary: "Login de acesso a plataforma",
         body: {
             type: "object",
             properties: {
-                hello: { type: "string" },
-                obj: {
-                    type: "object",
-                    properties: {
-                        some: { type: "string" }
-                    }
+                email: {
+                    type: "string",
+                    description: "E-mail do usuário"
+                },
+                password: {
+                    type: "string",
+                    description: "Senha do usuário"
                 }
             }
         },
         response: {
             201: {
-                description: "Successful response",
+                description: "Login efetuado com sucesso",
                 type: "object",
                 properties: {
-                    hello: { type: "string" }
+                    token: { type: "string" }
                 }
             },
             default: {
-                description: "Default response",
+                description: "Resposta Psdrão",
                 type: "object",
                 properties: {
-                    foo: { type: "string" }
+                    token: { type: "string" }
                 }
             }
-        },
-        security: [
-            {
-                "apiKey": []
-            }
-        ]
+        }
     }
 }

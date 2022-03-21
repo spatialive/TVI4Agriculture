@@ -6,7 +6,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "verona": {
+        "TVI4Agriculture": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -76,15 +76,17 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "verona:build",
+                        "browserTarget": "TVI4Agriculture:build",
                         "proxyConfig": "src/proxy.conf.json"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "verona:build:production"
+                            "browserTarget": "TVI4Agriculture:build:production",
+                            "proxyConfig": "src/proxy.conf.json"
                         },
                         "development": {
-                            "browserTarget": "verona:build:development"
+                            "browserTarget": "TVI4Agriculture:build:development",
+                            "proxyConfig": "src/proxy.conf.json"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -92,7 +94,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "verona:build"
+                        "browserTarget": "TVI4Agriculture:build"
                     }
                 },
                 "test": {
@@ -128,5 +130,5 @@
             }
         }
     },
-    "defaultProject": "verona"
+    "defaultProject": "TVI4Agriculture"
 }

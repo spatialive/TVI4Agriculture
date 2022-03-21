@@ -1,6 +1,6 @@
 import { RouteHandlerMethod } from "fastify"
 
-export const getAllUsers: RouteHandlerMethod = async (
+const all: RouteHandlerMethod = async (
     _req,
     res
 ) => {
@@ -14,3 +14,4 @@ export const getAllUsers: RouteHandlerMethod = async (
         res.status(500).send({ error: `Cannot fetch users` })
     }
 }
+export const userController = { all }

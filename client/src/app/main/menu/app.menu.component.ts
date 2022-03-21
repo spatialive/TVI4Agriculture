@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Classes', icon: 'pi pi-list', routerLink: ['/']
             },
             {
-                label: 'Safras', icon: 'pi pi-calendar', routerLink: ['/']
+                label: 'Safras', icon: 'pi pi-calendar', routerLink: ['/harvest']
             }
 
             // {

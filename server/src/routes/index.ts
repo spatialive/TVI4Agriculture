@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyPluginCallback } from "fastify"
 import { appRoutes } from "./app"
 import { authRoutes } from "./auth"
 import { userRoutes } from "./user"
+import { harvestRoutes } from "./harvest"
 
 export const router: FastifyPluginCallback = (
     fastify: FastifyInstance,
@@ -11,7 +12,8 @@ export const router: FastifyPluginCallback = (
     const renderRoutes = [
         ...appRoutes,
         ...authRoutes,
-        ...userRoutes
+        ...userRoutes,
+        ...harvestRoutes
     ]
     fastify.addHook("onRequest", (_req, _res, next) => {
         _req.user = ""

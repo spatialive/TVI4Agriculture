@@ -9,7 +9,7 @@ import {
 
 const tokenExpiration: number = process.env.EMAIL_TOKEN_EXPIRATION_MINUTES ? parseInt(process.env.EMAIL_TOKEN_EXPIRATION_MINUTES) : 60
 
-export const signup: RouteHandlerMethod = async (req, res) => {
+const signup: RouteHandlerMethod = async (req, res) => {
     try {
         // tslint:disable-next-line:prefer-const
         let { name, email, password } = req.body as any
@@ -24,8 +24,7 @@ export const signup: RouteHandlerMethod = async (req, res) => {
         logError("signup", error)
     }
 }
-
-export const login: RouteHandlerMethod = async (req, res) => {
+const login: RouteHandlerMethod = async (req, res) => {
     try {
         // tslint:disable-next-line:prefer-const
         let { email, password } = req.body as any
@@ -62,3 +61,4 @@ export const login: RouteHandlerMethod = async (req, res) => {
         logError("login", error)
     }
 }
+export const authController = { signup, login }
