@@ -40,7 +40,9 @@ import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
 import {AppInvoiceComponent} from './pages/app.invoice.component';
 import {AppHelpComponent} from './pages/app.help.component';
 import {DashboardAnalyticsComponent} from './demo/view/dashboardanalytics.component';
-import {HarvestIndexComponent} from './harvest/harvest.index.component';
+import {HarvestComponent} from './harvest/harvest.component';
+import {ClassComponent} from './class/class.component';
+import {CampaignComponent} from './campaign/campaign.component';
 import {AuthGuardService} from './services/auth/auth-guard.service';
 
 @NgModule({
@@ -51,7 +53,9 @@ import {AuthGuardService} from './services/auth/auth-guard.service';
                 canActivate: [AuthGuardService],
                 children: [
                     {path: '', component: DashboardDemoComponent},
-                    {path: 'harvest', component: HarvestIndexComponent},
+                    {path: 'campaign', component: CampaignComponent},
+                    {path: 'class', component: ClassComponent},
+                    {path: 'harvest', component: HarvestComponent},
                     {path: 'analytics', component: DashboardAnalyticsComponent},
                     {path: 'uikit/formlayout', component: FormLayoutDemoComponent},
                     {path: 'uikit/input', component: InputDemoComponent},

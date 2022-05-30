@@ -1,0 +1,188 @@
+<div class="grid">
+    <div class="col-12">
+        <p-toast></p-toast>
+        <div class="card">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Adicionar" icon="pi pi-plus"
+                            class="p-button-text p-button-success mr-2 mb-2" (click)="openNew()"></button>
+                    <button pButton pRipple label="Remover em lote" icon="pi pi-trash"
+                            class="p-button-text p-button-danger mb-2" (click)="deleteSelectedCampaigns()"
+                            [disabled]="!selectedCampaigns || !selectedCampaigns.length"></button>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mb-2"
+                            (click)="dt.exportCSV({name: 'campaign.csv'})"></button>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="campaigns" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['name','description']"
+                     [(selection)]="selectedCampaigns" [rowHover]="true" dataKey="id"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} regsitros"
+                     [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="flex p-flex-column md:flex-row md:justify-content-between table-header">
+                        <h5 class="m-0">Campanhas</h5>
+                        <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                               placeholder="Pesquisar..."/>
+                    </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="name">Nome
+                            <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="description">Descrição
+                            <p-sortIcon field="description"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="createdAt">Criado em
+                            <p-sortIcon field="createdAt"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="updatedAt">Atualizado em
+                            <p-sortIcon field="updatedAt"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-campaign>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="campaign"></p-tableCheckbox>
+                        </td>
+                        <td><span class="p-column-title">Nome</span>
+                            {{campaign.name}}
+                        </td>
+                        <td><span class="p-column-title">Início</span>
+                            {{campaign.description}}
+                        </td>
+                        <td><span class="p-column-title">Criado em </span>
+                            {{campaign.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+                        <td><span class="p-column-title">Atualizado em </span>
+                            {{campaign.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+
+                        <td>
+                            <button pTooltip="Inspecionar" pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-help mr-2"
+                                    (click)="editCampaign(campaign)"></button>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2"
+                                    (click)="editCampaign(campaign)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger "
+                                    (click)="deleteCampaign(campaign)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                        No total existem {{campaigns ? campaigns.length : 0 }} classes.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog [(visible)]="campaignDialog" [style]="{width: '90%'}" header="Detalhes da Campanha" [modal]="true"
+                  styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <div class="formgrid grid">
+                        <div class="field col-4">
+                            <label for="name">Nome</label>
+                            <input type="text" pInputText id="name" [ngClass]="displayFieldCss('name')"
+                                   [(ngModel)]="campaign.name"/>
+                            <small class="p-error" *ngIf="submitted && campaign.name === ''">O nome da campanha é
+                                obrigatório!</small>
+                        </div>
+                        <div class="field col-4">
+                            <label for="classesId">Classes</label>
+                            <p-multiSelect id="classesId" inputId="classesId" [options]="classes"
+                                           [(ngModel)]="campaign.classes" optionLabel="name"
+                                           [filter]="true"></p-multiSelect>
+                        </div>
+                        <div class="field col-4">
+                            <label for="safrasId">Safras</label>
+                            <p-multiSelect id="safrasId" inputId="safrasId" [options]="harvests"
+                                           [(ngModel)]="campaign.harvests" optionLabel="name"
+                                           [filter]="true"></p-multiSelect>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" type="text" rows="5" pInputTextarea
+                              [ngClass]="displayFieldCss('description')" [(ngModel)]="campaign.description"></textarea>
+                </div>
+
+                <div class="field file">
+                    <p-fileUpload chooseLabel="Escolha o arquivo CSV com os pontos da Campanha"
+                                  [auto]="true"
+                                  [showUploadButton]="true"
+                                  [cancelIcon]="'pi-trash'"
+                                  accept="text/csv" [customUpload]="true"
+                                  (uploadHandler)="onUploadPoints($event)"
+                                  (onRemove)="clearMap()"
+                                  (onClear)="clearMap()"
+                    ></p-fileUpload>
+                </div>
+
+                <div *ngIf="points.length > 0" class="field">
+                    <div style="height: 400px;"
+                         leaflet
+                         [leafletOptions]="options"
+                         [leafletLayers]="mapPoints"
+                    >
+                    </div>
+                </div>
+                <div *ngIf="points.length > 0" class="field">
+                    <p-table #dtPoint [value]="points" [columns]="colsTablePoints" [rows]="10" [paginator]="true"
+                             [globalFilterFields]="['lat','lon','description']" [rowHover]="true" dataKey="id"
+                             styleClass="p-datatable-customers"
+                             currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} regsitros"
+                             [showCurrentPageReport]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="lat">Latitude
+                                    <p-sortIcon field="lat"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="lon">Longitude
+                                    <p-sortIcon field="lon"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="description">Descrição
+                                    <p-sortIcon field="description"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-point>
+                            <tr>
+                                <td><span class="p-column-title">Latitude</span>
+                                    {{point.lat}}
+                                </td>
+                                <td><span class="p-column-title">Longitude</span>
+                                    {{point.lon}}
+                                </td>
+                                <td><span class="p-column-title">Descrição</span>
+                                    {{point.description}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="mt-5 p-button-danger"
+                        (click)="hideDialog()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="mt-5 p-button-success"
+                        (click)="saveCamapaign()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

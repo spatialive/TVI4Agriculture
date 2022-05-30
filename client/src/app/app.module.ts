@@ -138,7 +138,9 @@ import {AppErrorComponent} from './pages/app.error.component';
 import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
 import {AppLoginComponent} from './auth/login/app.login.component';
 import {AppSignupComponent} from './auth/signup/app.signup.component';
-import {HarvestIndexComponent} from './harvest/harvest.index.component';
+import {HarvestComponent} from './harvest/harvest.component';
+import {ClassComponent} from './class/class.component';
+import {CampaignComponent} from './campaign/campaign.component';
 // Demo services
 import {CountryService} from './demo/service/countryservice';
 import {CustomerService} from './demo/service/customerservice';
@@ -166,7 +168,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { InternationalizationModule } from './@core/internationalization/internationalization.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
@@ -273,6 +275,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         VirtualScrollerModule,
         AppCodeModule,
         ReactiveFormsModule,
+        LeafletModule,
         NgxWebstorageModule.forRoot({ prefix: 'tvi', separator: '.', caseSensitive: true }),
         InternationalizationModule.forRoot({ locale_id: 'pt' }),
         TranslateModule.forRoot({
@@ -332,7 +335,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppNotfoundComponent,
         AppErrorComponent,
         AppAccessdeniedComponent,
-        HarvestIndexComponent,
+        HarvestComponent,
+        ClassComponent,
+        CampaignComponent
     ],
     providers: [
         {

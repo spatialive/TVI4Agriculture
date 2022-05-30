@@ -9,12 +9,12 @@
         <form class="form-signup" [formGroup]="loginFormGroup" (ngSubmit)="login()">
             <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('email')">
                 <i class="pi pi-at"></i>
-                <input type="email" pInputText placeholder="E-mail" [ngClass]="displayFieldCss('email')" formControlName="email" required />
+                <input type="email" pInputText placeholder="E-mail" [ngClass]="displayFieldCss('email')" formControlName="email" autocomplete="on" />
                 <small id="email-invalid" class="p-error" *ngIf="isFieldValid('email')">E-mail inválido!</small>
             </span>
             <span class="p-input-icon-left mb-6" [ngClass]="displayContainerFieldCss('password')">
                 <i class="pi pi-key"></i>
-                <input type="password" pInputText  placeholder="Senha" [ngClass]="displayFieldCss('password')" formControlName="password" required />
+                <input type="password" pInputText  placeholder="Senha" [ngClass]="displayFieldCss('password')" formControlName="password" autocomplete="on" />
                 <small id="password-required" class="p-error" *ngIf="isFieldValid('password')">A senha é obrigatória!</small>
             </span>
             <button type="submit" pButton label="Login"></button>

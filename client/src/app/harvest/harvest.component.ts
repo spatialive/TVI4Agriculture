@@ -4,11 +4,11 @@ import {Harvest} from '../@core/interfaces/harvest.interface' ;
 import {HarvestService} from '../services/harvest.service';
 
 @Component({
-    templateUrl: './harvest.index.component.html',
-    styleUrls: ['../demo/view/tabledemo.scss', 'harvest.index.component.scss'],
+    templateUrl: './harvest.component.html',
+    styleUrls: ['../demo/view/tabledemo.scss', 'harvest.component.scss'],
     providers: [MessageService, ConfirmationService]
 })
-export class HarvestIndexComponent implements OnInit {
+export class HarvestComponent implements OnInit {
     harvest: Harvest;
     harvests: Harvest[];
     harvestDialog: boolean;

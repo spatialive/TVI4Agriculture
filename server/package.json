@@ -17,7 +17,7 @@
         "test": "tap"
     },
     "dependencies": {
-        "@prisma/client": "^3.11.0",
+        "@prisma/client": "^3.14.0",
         "bcrypt": "^5.0.1",
         "dotenv": "^16.0.0",
         "fastify": "^3.27.1",
@@ -42,7 +42,7 @@
         "cross-env": "^7.0.3",
         "fastify-cli": "^2.15.0",
         "nodemon": "^2.0.15",
-        "prisma": "^3.11.0",
+        "prisma": "^3.14.0",
         "tap": "^15.1.6",
         "ts-node": "^9.0.0",
         "tslint": "^6.1.3",

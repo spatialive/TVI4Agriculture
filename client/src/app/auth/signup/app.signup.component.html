@@ -7,22 +7,22 @@
         <form class="form-signup" [formGroup]="signupFormGroup" (ngSubmit)="signup()">
             <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('name')">
                 <i class="pi pi-user"></i>
-                <input type="text" pInputText aria-describedby="name" [ngClass]="displayFieldCss('name')" placeholder="Nome" formControlName="name" required/>
+                <input type="text" pInputText aria-describedby="name" [ngClass]="displayFieldCss('name')" placeholder="Nome" formControlName="name" required autocomplete="on"/>
                 <small id="name-required" class="p-error" *ngIf="isFieldValid('name')">O nome do usuário é obrigatório!</small>
             </span>
             <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('email')">
                 <i class="pi pi-at"></i>
-                <input type="email" aria-describedby="email" [ngClass]="displayFieldCss('email')" pInputText placeholder="E-mail" formControlName="email" required/>
+                <input type="email" aria-describedby="email" [ngClass]="displayFieldCss('email')" pInputText placeholder="E-mail" formControlName="email" required autocomplete="on" />
                 <small id="email-invalid" class="p-error" *ngIf="isFieldValid('email')">E-mail inválido!</small>
             </span>
             <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('password')">
                 <i class="pi pi-key"></i>
-                <input type="password" aria-describedby="password" [ngClass]="displayFieldCss('password')" pInputText placeholder="Senha" formControlName="password" required />
+                <input type="password" aria-describedby="password" [ngClass]="displayFieldCss('password')" pInputText placeholder="Senha" formControlName="password" required autocomplete="on" />
                 <small id="password-required" class="p-error" *ngIf="isFieldValid('password')">A senha é obrigatória!</small>
             </span>
             <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('confirmPassword')">
                 <i class="pi pi-key"></i>
-                <input type="password" aria-describedby="confirm-password" [ngClass]="displayFieldCss('confirmPassword')" pInputText placeholder="Digite a senha novamente" formControlName="confirmPassword" required/>
+                <input type="password" aria-describedby="confirm-password" [ngClass]="displayFieldCss('confirmPassword')" pInputText placeholder="Digite a senha novamente" formControlName="confirmPassword" required autocomplete="on"/>
                 <small id="confirm-password-requires" class="p-error" *ngIf="confirmPassword.errors?.required && isFieldValid('confirmPassword')">A confirmação da senha é obrigatória!</small>
                 <small id="confirm-password-not-same" class="p-error" *ngIf="confirmPassword.errors?.matching && isFieldValid('confirmPassword')">As senhas são diferentes!</small>
             </span>

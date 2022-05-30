@@ -22,4 +22,5 @@ export class FileDemoComponent {
     onBasicUpload(event) {
         this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
     }
+
 }

@@ -1,0 +1,104 @@
+<div class="grid">
+	<div class="col-12">
+        <p-toast></p-toast>
+		<div class="card">
+			<p-toolbar styleClass="mb-4">
+				<ng-template pTemplate="left">
+					<button pButton pRipple label="Adicionar" icon="pi pi-plus" class="p-button-text p-button-success mr-2 mb-2" (click)="openNew()"></button>
+					<button pButton pRipple label="Remover em lote" icon="pi pi-trash" class="p-button-text p-button-danger mb-2" (click)="deleteSelectedClasses()" [disabled]="!selectedClasses || !selectedClasses.length"></button>
+				</ng-template>
+
+				<ng-template pTemplate="right">
+					<button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mb-2" (click)="dt.exportCSV({name: 'classes.csv'})"></button>
+				</ng-template>
+			</p-toolbar>
+			<p-table #dt [value]="classes" [columns]="cols" [rows]="10" [paginator]="true" [globalFilterFields]="['name','description','type']"
+					 [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
+					 styleClass="p-datatable-customers"
+					 currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} regsitros" [showCurrentPageReport]="true">
+				<ng-template pTemplate="caption">
+					<div class="flex p-flex-column md:flex-row md:justify-content-between table-header">
+						<h5 class="m-0">Classes</h5>
+						<span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Pesquisar..." />
+                    </span>
+					</div>
+				</ng-template>
+				<ng-template pTemplate="header">
+					<tr>
+						<th style="width: 3rem">
+							<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+						</th>
+						<th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="description">Descrição <p-sortIcon field="description"></p-sortIcon></th>
+						<th pSortableColumn="type">Tipo <p-sortIcon field="type"></p-sortIcon></th>
+                        <th pSortableColumn="createdAt">Criado em  <p-sortIcon field="createdAt"></p-sortIcon></th>
+                        <th pSortableColumn="updatedAt">Atualizado em <p-sortIcon field="updatedAt"></p-sortIcon></th>
+						<th></th>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-classe>
+					<tr>
+						<td>
+							<p-tableCheckbox [value]="classe"></p-tableCheckbox>
+						</td>
+						<td><span class="p-column-title">Nome</span>
+							{{classe.name}}
+						</td>
+                        <td><span class="p-column-title">Início</span>
+                            {{classe.description}}
+                        </td>
+                        <td><span class="p-column-title">Tipo</span>
+                            {{ getTypeName(classe) }}
+                        </td>
+                        <td><span class="p-column-title">Criado em </span>
+                            {{classe.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+                        <td><span class="p-column-title">Atualizado em </span>
+                            {{classe.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+
+						<td>
+							<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" (click)="editClass(classe)"></button>
+							<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger " (click)="deleteClass(classe)"></button>
+						</td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="summary">
+					<div class="flex align-items-center justify-content-between">
+						No total existem {{classes ? classes.length : 0 }} classes.
+					</div>
+				</ng-template>
+			</p-table>
+		</div>
+		<p-dialog [(visible)]="classeDialog" [style]="{width: '80%'}" header="Detalhes da Classe" [modal]="true" styleClass="p-fluid">
+			<ng-template pTemplate="content">
+                <div class="field">
+                    <div class="formgrid grid">
+                        <div class="field col-8">
+                            <label for="name">Nome</label>
+                            <input type="text" pInputText id="name" [ngClass]="displayFieldCss('name')" [(ngModel)]="classe.name" />
+                            <small class="p-error" *ngIf="submitted && classe.name === ''">O nome da safra é obrigatório!</small>
+                        </div>
+                        <div class="field col-4">
+                            <label for="type">Tipo</label>
+                            <p-dropdown appendTo="body" id="type" inputId="type" [options]="types" [(ngModel)]="selectedType" placeholder="Selecione o tipo da classe" optionLabel="name"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" type="text" rows="5" pInputTextarea [ngClass]="displayFieldCss('description')" [(ngModel)]="classe.description"></textarea>
+                </div>
+			</ng-template>
+
+			<ng-template pTemplate="footer">
+				<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
+				<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveClass()"></button>
+			</ng-template>
+		</p-dialog>
+
+		<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+:host ::ng-deep .p-dialog .product-image {
+    width: 150px;
+    margin: 0 auto 2rem auto;
+    display: block;
+}
+
+@media screen and (max-width: 960px) {
+    :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td:last-child {
+        text-align: center;
+    }
+
+    :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td:nth-child(6) {
+        display: flex;
+    }
+}
+
+:host ::ng-deep .p-dialog .warn {
+    color: #ff9f42;
+}
+
+:host ::ng-deep .file{
+    .p-button.p-button-icon-only {
+     width: 3rem;
+    }
+}

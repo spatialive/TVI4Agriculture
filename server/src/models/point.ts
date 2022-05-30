@@ -2,7 +2,7 @@ import { Inspection } from "./inspection"
 import { Campaign } from "./campaign"
 
 export interface Point {
-    id: number
+    id?: number
     lat: string
     lon: string
     description?: string

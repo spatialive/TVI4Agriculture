@@ -1,3 +1,5 @@
 export * from "./auth"
 export * from "./user"
 export * from "./harvest"
+export * from "./class"
+export * from "./campaign"
