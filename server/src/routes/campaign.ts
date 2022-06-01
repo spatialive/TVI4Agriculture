@@ -9,6 +9,18 @@ const routes: RouteConfig = {
         preHandler: [ middleware.validateRequest ],
         handler: campaignController.all
     },
+    mosaics: {
+        method: "GET",
+        url: routePrefix + "mosaics",
+        preHandler: [ middleware.validateRequest ],
+        handler: campaignController.mosaicsPlanet
+    },
+    timeseries: {
+        method: "GET",
+        url: routePrefix + "timeseries",
+        preHandler: [ middleware.validateRequest ],
+        handler: campaignController.timeseries
+    },
     get: {
         method: "GET",
         url: routePrefix + ":id",

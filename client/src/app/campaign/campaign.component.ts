@@ -11,6 +11,10 @@ import {LocalStorageService} from 'ngx-webstorage';
 import {User} from '../@core/interfaces/user.interface';
 import jwtDecode from 'jwt-decode';
 import {Point} from '../@core/interfaces/point.interface';
+import {Inspection} from '../@core/interfaces/inspection.interface';
+import {InspectionService} from '../services/inspection.service';
+import {SafePipe} from "../pipes/safe";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
     templateUrl: './campaign.component.html',
@@ -22,46 +26,78 @@ export class CampaignComponent implements OnInit {
     campaigns: Campaign[];
     campaignDialog: boolean;
     selectedCampaigns: Campaign[];
+    campaignInspectionDialog: boolean;
+    currentPoint: number;
     classes: Class[];
     harvests: Harvest[];
     points: Point[];
+    inspections: Inspection[];
     submitted: boolean;
     cols: any[];
+    planetMosaics: any[];
     colsTablePoints: any[];
-    selectedTypeClass: any = { name: 'Dinâmicas', value: 'DYNAMIC' };
+    selectedTypeClass: any = {name: 'Dinâmicas', value: 'DYNAMIC'};
     typesClass: any[] = [
         {name: 'Dinâmicas', value: 'DYNAMIC'},
         {name: 'Áreas Irrigadas e Não Irrigadas', value: 'IRRIGATED_NON_IRRIGATED'}
     ];
     options = {
         layers: [
-            tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'TVI4Agriculture' })
+            tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'TVI4Agriculture'
+            })
         ],
         zoom: 3,
         minZoom: 4,
-        maxZoom: 10,
+        maxZoom: 16,
         center: latLng(-14.235004, -51.92528)
     };
+    optionsMoisaicMap = {
+        layers: [
+            tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'TVI4Agriculture'
+            })
+        ],
+        zoom: 10,
+        minZoom: 4,
+        maxZoom: 16,
+        center: latLng(-14.235004, -51.92528)
+    };
+    mosaicsLayers: any[];
     user: User;
     loadingPoints: boolean;
     mapPoints: any[];
+    timeSeriesOptions: any;
+    timeSeriesData: any;
+    private safePipe: SafePipe = new SafePipe(this.domSanitizer);
+
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private campaignService: CampaignService,
         private classService: ClassService,
         private harvestService: HarvestService,
+        private inpectionsService: InspectionService,
         private storage: LocalStorageService,
+        private domSanitizer: DomSanitizer
     ) {
         this.campaign = this.clearCampaign();
         this.loadingPoints = false;
+        this.campaignInspectionDialog = false;
         this.mapPoints = [];
+        this.mosaicsLayers = [];
         this.points = [];
+        this.inspections = [];
+        this.currentPoint = 0;
     }
+
     ngOnInit() {
         this.getClasses();
         this.getHarversts();
         this.getCampaigns();
+        this.getPlanetMosaics();
         this.cols = [
             {field: 'name', header: 'Nome'},
             {field: 'description', header: 'Descrição'}
@@ -75,8 +111,59 @@ export class CampaignComponent implements OnInit {
         const token = this.storage.retrieve('token');
         const jwtToken = jwtDecode(token);
         // @ts-ignore
-        this.user = {id: jwtToken.id, email: jwtToken.email, password: ''  };
+        this.user = {id: jwtToken.id, email: jwtToken.email, password: ''};
+        this.timeSeriesOptions =  {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#495057'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#495057'
+                    },
+                    grid: {
+                        color: '#ebedef'
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#495057'
+                    },
+                    grid: {
+                        color: '#ebedef'
+                    }
+                }
+            }
+        };
     }
+
+    changeMosaic(evt) {
+        const pointLayer = marker([
+            parseFloat(this.campaign.points[this.currentPoint].lat),
+            parseFloat(this.campaign.points[this.currentPoint].lon)], {
+            icon: icon({
+                ...Icon.Default.prototype.options,
+                iconUrl: 'assets/leaflet/marker.png',
+                iconRetinaUrl: 'assets/leaflet/marker.png',
+                shadowUrl: 'assets/marker-shadow.png',
+                className: 'dummy'
+            })
+        });
+        this.mosaicsLayers = [];
+        this.mosaicsLayers.push(pointLayer);
+        this.mosaicsLayers.push(tileLayer(evt.value, {maxZoom: 18, attribution: 'TVI4Agriculture'}));
+    }
+
+    getPlanetMosaics() {
+        this.campaignService.mosaics().subscribe(mosaics => {
+            this.planetMosaics = mosaics;
+        });
+    }
+
     clearCampaign(): Campaign {
         this.points = [];
         return {
@@ -96,25 +183,36 @@ export class CampaignComponent implements OnInit {
         this.campaignDialog = true;
     }
 
-    getClasses(){
+    getClasses() {
         this.classService.all().subscribe(result => {
             this.classes = result.data.classes;
         }, error => {
             this.messageService.add({severity: 'error', summary: 'Busca das Classes', detail: error, life: 3000});
         });
     }
-    getHarversts(){
+
+    getHarversts() {
         this.harvestService.all().subscribe(result => {
             this.harvests = result.data.harvests;
         }, error => {
             this.messageService.add({severity: 'error', summary: 'Busca das Safras', detail: error, life: 3000});
         });
     }
-    getCampaigns(){
+
+    getCampaigns() {
         this.campaignService.all().subscribe(result => {
             this.campaigns = result.data.campaigns;
         }, error => {
             this.messageService.add({severity: 'error', summary: 'Busca das Campanhas', detail: error, life: 3000});
+        });
+    }
+
+    setClass(evt, haverst) {
+        this.inspections.push({
+            userId: this.user.id,
+            harvestId: haverst.id,
+            pointId: this.campaign.points[this.currentPoint].id,
+            classId: evt.value
         });
     }
 
@@ -130,7 +228,12 @@ export class CampaignComponent implements OnInit {
                 this.campaignService.deleteMany(this.selectedCampaigns).subscribe(result => {
                     this.getCampaigns();
                     this.selectedCampaigns = null;
-                    this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Campanhas removidas', life: 3000});
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Sucesso',
+                        detail: 'Campanhas removidas',
+                        life: 3000
+                    });
                 }, error => {
                     this.messageService.add({severity: 'error', summary: 'Remoção em Lote', detail: error, life: 3000});
                 });
@@ -206,7 +309,12 @@ export class CampaignComponent implements OnInit {
                         }
                     );
                 }, error => {
-                    this.messageService.add({severity: 'error', summary: 'Atualização da Campanha', detail: error, life: 3000});
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Atualização da Campanha',
+                        detail: error,
+                        life: 3000
+                    });
                 });
             } else {
                 this.campaignService.create(this.campaign).subscribe(result => {
@@ -220,7 +328,12 @@ export class CampaignComponent implements OnInit {
                         }
                     );
                 }, error => {
-                    this.messageService.add({severity: 'error', summary: 'Criação da campanha', detail: error, life: 3000});
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Criação da campanha',
+                        detail: error,
+                        life: 3000
+                    });
                 });
             }
             this.campaignDialog = false;
@@ -237,8 +350,32 @@ export class CampaignComponent implements OnInit {
         }
     }
 
-    getTypeName(campaign: Campaign): string{
-        return  this.typesClass.find((typ) => typ.value === campaign.classesType).name;
+    inspectCampaign(camp: Campaign) {
+        this.campaignInspectionDialog = true;
+        this.campaign = {...camp};
+        const pointLayer = marker([
+            parseFloat(this.campaign.points[this.currentPoint].lat),
+            parseFloat(this.campaign.points[this.currentPoint].lon)], {
+            icon: icon({
+                ...Icon.Default.prototype.options,
+                iconUrl: 'assets/leaflet/marker.png',
+                iconRetinaUrl: 'assets/leaflet/marker.png',
+                shadowUrl: 'assets/marker-shadow.png',
+                className: 'dummy'
+            })
+        });
+        this.mosaicsLayers = [];
+        this.mosaicsLayers.push(pointLayer);
+        this.optionsMoisaicMap.center = latLng(
+            parseFloat(this.campaign.points[this.currentPoint].lat),
+            parseFloat(this.campaign.points[this.currentPoint].lon)
+        );
+        this.getTimeSeries();
+        this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: this.planetMosaics[0].name}));
+    }
+
+    getTypeName(campaign: Campaign): string {
+        return this.typesClass.find((typ) => typ.value === campaign.classesType).name;
     }
 
     findIndexById(id): number {
@@ -260,7 +397,7 @@ export class CampaignComponent implements OnInit {
         };
     }
 
-    onUploadPoints(evt){
+    onUploadPoints(evt) {
         const self = this;
         this.loadingPoints = true;
         this.points = [];
@@ -288,6 +425,7 @@ export class CampaignComponent implements OnInit {
         };
         fileReader.readAsText(evt.files[0]);
     }
+
     csvToArray(csvString) {
         const lines = csvString.split('\n');
         const headerValues = lines[0].split(',');
@@ -302,7 +440,41 @@ export class CampaignComponent implements OnInit {
             return row as Point;
         });
     }
-    clearMap(){
+
+    clearMap() {
         this.mapPoints = [];
+    }
+
+    onSaveInpection() {
+    }
+
+    back() {
+        if (this.currentPoint !== 0) {
+            this.currentPoint = this.currentPoint - 1;
+        }
+    }
+
+    getTimeSeries(){
+        this.campaignService.timeseries(parseFloat(this.campaign.points[this.currentPoint].lon), parseFloat(this.campaign.points[this.currentPoint].lat), '2016-01-01', '2021-12-31').subscribe((result: any) => {
+            this.timeSeriesData = {
+                labels: result?.dates,
+                datasets: [
+                    {
+                        label: 'EVI Suavizado',
+                        data: result.evi_wtk_smooth_series,
+                        fill: false,
+                        tension: .4,
+                        borderColor: '#42A5F5'
+                    },
+                    {
+                        label: 'EVI Original',
+                        data: result.evi_raw_series,
+                        fill: false,
+                        tension: .4,
+                        borderColor: '#66BB6A'
+                    }
+                ]
+            };
+        });
     }
 }

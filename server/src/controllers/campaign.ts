@@ -2,6 +2,7 @@ import { RouteHandlerMethod } from "fastify"
 import { Point } from "../models/point"
 import { Harvest } from "../models/harvest"
 import { Class } from "../models/class"
+import axios from "axios";
 
 const all: RouteHandlerMethod = async (
     req,
@@ -21,6 +22,59 @@ const all: RouteHandlerMethod = async (
         console.error("Campaigns - ALL: ", error)
         res.status(500).send({ error: `Não é possível buscar as campanhas` })
     }
+}
+
+const getPlanetBasemaps = async () => {
+    let images = null
+    const response = await axios.get(`https://api.planet.com/basemaps/v1/mosaics?api_key=d6f957677fbf40579a90fb3a9c74be1a`)
+    const data = response?.data
+    const mosaics = data.mosaics
+
+    if (response.data._links.hasOwnProperty("_next")) {
+        // tslint:disable-next-line:variable-name
+        const _mosaics = await getNext(data._links._next)
+        for (const [ index ] of _mosaics.entries()) {
+            if (_mosaics[index].name.includes("hancock") || _mosaics[index].name.includes("global_quarterly")){
+                // continua
+            } else {
+                mosaics.push(_mosaics[index])
+            }
+        }
+        images = mosaics
+    } else {
+        images = mosaics
+    }
+    return images
+}
+
+const getNext = async (url: any) => {
+    const response = await axios.get(url)
+    return response.data.mosaics
+}
+
+const mosaicsPlanet: RouteHandlerMethod = async (
+    _req,
+    res
+) => {
+    getPlanetBasemaps().then((resul) => {
+        return res.send(resul)
+    }).catch((err) => {
+        console.error("Mosaics - GET: ", err)
+        res.status(500).send({ error: `Não é possível encontrar o registro da campanha` })
+    })
+}
+
+const timeseries: RouteHandlerMethod = async (
+    _req,
+    res
+) => {
+    const { lon, lat, start_date, end_date } = _req.query as any
+    axios.get(`https://sentinelts.lapig.iesa.ufg.br/sentinel/evi?lon=${lon}&lat=${lat}&start_date=${start_date}&end_date=${end_date}`).then((resul) => {
+        return res.send(resul.data)
+    }).catch((err) => {
+        console.error("Timeseries - GET: ", err)
+        res.status(500).send({ error: `Não é possível encontrar Timeseries` })
+    });
 }
 
 const get: RouteHandlerMethod = async (
@@ -167,4 +221,4 @@ const deleteMany: RouteHandlerMethod = async (
     }
 }
 
-export const campaignController = { all, get, create, update, remove, deleteMany }
+export const campaignController = { all, mosaicsPlanet, timeseries, get, create, update, remove, deleteMany }

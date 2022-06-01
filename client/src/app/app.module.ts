@@ -141,6 +141,7 @@ import {AppSignupComponent} from './auth/signup/app.signup.component';
 import {HarvestComponent} from './harvest/harvest.component';
 import {ClassComponent} from './class/class.component';
 import {CampaignComponent} from './campaign/campaign.component';
+
 // Demo services
 import {CountryService} from './demo/service/countryservice';
 import {CustomerService} from './demo/service/customerservice';
@@ -169,6 +170,7 @@ import { InternationalizationModule } from './@core/internationalization/interna
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {SafePipe} from './pipes/safe';
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
@@ -337,7 +339,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppAccessdeniedComponent,
         HarvestComponent,
         ClassComponent,
-        CampaignComponent
+        CampaignComponent,
+        SafePipe
     ],
     providers: [
         {

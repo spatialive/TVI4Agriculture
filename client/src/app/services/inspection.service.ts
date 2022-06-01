@@ -3,16 +3,18 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { map } from 'rxjs/operators';
-import {Campaign} from '../@core/interfaces/campaign.interface';
+import {Inspection} from '../@core/interfaces/inspection.interface';
+import {environment} from '../../environments/environment';
 @Injectable({
     providedIn: 'root',
 })
-export class CampaignService {
+export class InspectionService {
 
-    private apiURL = '/api/campaign/';
+    private apiURL = '/api/inpection/';
 
     httpOptions = {
         headers: new HttpHeaders({
+            Authorization: `Bearer ${environment.PLANET_KEY}`,
             'Content-Type': 'application/json',
         }),
     };
@@ -26,20 +28,6 @@ export class CampaignService {
             );
     }
 
-    mosaics(): Observable<any> {
-        return this.httpClient.get<any>(this.apiURL + 'mosaics')
-            .pipe(map(response => response))
-            .pipe(catchError(this.errorHandler),
-            );
-    }
-    timeseries(lon: number, lat: number, start: string, end: string): Observable<any> {
-        return this.httpClient.get<any>(this.apiURL + 'timeseries' + '?lon=' + lon + '&lat=' + lat + '&start_date=' + start + '&end_date=' + end)
-            .pipe(map(response => response))
-            .pipe(catchError(this.errorHandler),
-            );
-    }
-
-
     get(id: number): Observable<any> {
         return this.httpClient.get<number>(this.apiURL + id)
             .pipe(map(response => response))
@@ -47,20 +35,20 @@ export class CampaignService {
             );
     }
 
-    create(campaign: Campaign): Observable<any> {
-        return this.httpClient.post<Campaign>(
+    create(inspection: Inspection): Observable<any> {
+        return this.httpClient.post<Inspection>(
             this.apiURL + 'create',
-            JSON.stringify(campaign),
+            JSON.stringify(inspection),
             this.httpOptions,
         ).pipe(
             catchError(this.errorHandler),
         );
     }
 
-    update(campaign: Campaign): Observable<any> {
-        return this.httpClient.put<Campaign>(
+    update(inspection: Inspection): Observable<any> {
+        return this.httpClient.put<Inspection>(
             this.apiURL + 'update',
-            JSON.stringify(campaign),
+            JSON.stringify(inspection),
             this.httpOptions,
         ).pipe(
             catchError(this.errorHandler),
@@ -74,16 +62,15 @@ export class CampaignService {
             );
     }
 
-    deleteMany(campaigns: Campaign[]): Observable<any> {
-        return this.httpClient.post<Campaign>(
+    deleteMany(inspection: Inspection[]): Observable<any> {
+        return this.httpClient.post<Inspection>(
             this.apiURL + 'deleteMany',
-            JSON.stringify({ list: campaigns}),
+            JSON.stringify({ list: inspection}),
             this.httpOptions,
         ).pipe(
             catchError(this.errorHandler),
         );
     }
-
     errorHandler(error: HttpErrorResponse) {
         const errorMessage = `Código do erro: ${error.status} - Mensagem: ${error.error.error}`;
         return throwError(errorMessage);

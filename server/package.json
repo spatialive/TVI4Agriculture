@@ -18,9 +18,11 @@
     },
     "dependencies": {
         "@prisma/client": "^3.14.0",
+        "axios": "^0.27.2",
         "bcrypt": "^5.0.1",
         "dotenv": "^16.0.0",
         "fastify": "^3.27.1",
+        "fastify-axios": "^1.2.5",
         "fastify-cors": "^6.0.2",
         "fastify-decorators": "^3.10.0",
         "fastify-jwt": "^4.1.3",

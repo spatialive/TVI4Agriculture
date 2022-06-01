@@ -70,12 +70,15 @@
                             {{campaign.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
                         </td>
 
-                        <td>
-                            <button pTooltip="Inspecionar" pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-help mr-2"
+                        <td class="btn-table-actions">
+                            <button pButton pRipple pTooltip="Inspecionar" icon="pi pi-search"
+                                    class="mt-5 p-button-rounded p-button-info"
+                                    (click)="inspectCampaign(campaign)"></button>
+                            <button pButton pRipple pTooltip="Editar" icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editCampaign(campaign)"></button>
-                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2"
-                                    (click)="editCampaign(campaign)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger "
+                            <button pButton pRipple pTooltip="Remover" icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger"
                                     (click)="deleteCampaign(campaign)"></button>
                         </td>
                     </tr>
@@ -183,6 +186,52 @@
             </ng-template>
         </p-dialog>
 
+        <p-dialog [(visible)]="campaignInspectionDialog" [style]="{width: '98%', heigth: '98%'}"
+                  header="Inspeção da Campanha" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="header-inspection">
+                    <button (click)="back()" pButton type="button" icon="pi pi-angle-left"
+                            class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2 w-4rem h-4rem"></button>
+                    <div class="card pt-3">
+                        <div class="campaign-title">
+                            <h4>{{campaign.name}}</h4>
+                        </div>
+                        <div class="point-description">
+                            <p>Ponto: <b>{{campaign.points[currentPoint].id}}</b> {{campaign.points[currentPoint].lat}}, {{campaign.points[currentPoint].lon}}</p>
+                            <small>Descrição: {{campaign.points[currentPoint].description}}</small>
+                        </div>
+                    </div>
+                    <button (click)="onSaveInpection()" pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2 w-4rem h-4rem">
+                    </button>
+                </div>
+                <div class="grid">
+                    <div class="col-5">
+                        <div class="field" *ngFor="let harvest of campaign.harvests">
+                            <label for="safra{{harvest.id}}">{{harvest.name}}</label>
+                            <p-dropdown appendTo="body" id="safra{{harvest.id}}" inputId="safra{{harvest.id}}" [options]="campaign.classes"
+                                        (onChange)="setClass($event,harvest)" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="field ">
+                            <label for="basemaps">Mosaicos Planet</label>
+                            <p-dropdown appendTo="body" id="basemaps" inputId="basemaps" [options]="planetMosaics"
+                                        (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
+                        </div>
+                        <div style="height: 400px;"
+                             leaflet
+                             [leafletOptions]="optionsMoisaicMap"
+                             [leafletLayers]="mosaicsLayers"
+                        >
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="timeSeriesData" class="grid">
+                    <div class="col-12"> <p-chart height="200px"  type="line" [data]="timeSeriesData" [options]="timeSeriesOptions"></p-chart></div>
+
+                </div>
+            </ng-template>
+        </p-dialog>
         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
     </div>
 </div>

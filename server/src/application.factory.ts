@@ -4,7 +4,6 @@ import fastifyCors, { FastifyCorsOptions } from "fastify-cors"
 import fastifyJwt, { FastifyJWTOptions } from "fastify-jwt"
 import fastifySwagger, { SwaggerOptions } from "fastify-swagger"
 import fastifyPostgres, { PostgresPluginOptions } from "fastify-postgres"
-
 import { Application } from "./application"
 import prismaPlugin from "./plugins/prisma"
 import { router } from "./routes"

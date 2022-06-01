@@ -7,11 +7,12 @@ export interface Inspection {
     id?: number;
     createdAt?: string;
     updatedAt?: string;
+    classId: number;
     harvestId: number;
     pointId: number;
     userId: number;
-    class: Class;
-    point: Point;
-    harvest: Harvest;
-    user: User;
+    class?: Class;
+    point?: Point;
+    harvest?: Harvest;
+    user?: User;
 }

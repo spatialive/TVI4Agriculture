@@ -23,3 +23,22 @@
      width: 3rem;
     }
 }
+
+.btn-table-actions {
+    button{
+        margin: 10px;
+    }
+}
+.header-inspection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.campaign-title{
+    text-align: center;
+}
+
+.point-description{
+    text-align: center;
+}
