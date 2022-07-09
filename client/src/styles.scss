@@ -7,10 +7,11 @@ $gutter: 1rem; //for primeflex grid system
 @import "../node_modules/prismjs/themes/prism-coy.css";
 @import "../node_modules/@fullcalendar/daygrid/main.min.css";
 @import "../node_modules/@fullcalendar/timegrid/main.min.css";
-@import "assets/demo/flags/flags.css";
+@import "../node_modules/leaflet/dist/leaflet.css";
 
 ::-webkit-scrollbar {
     width: 8px !important;
+    height: 8px !important;
     transition: all 0.5s ease;
     cursor: pointer;
     border-radius: 20px;
@@ -37,3 +38,4 @@ $gutter: 1rem; //for primeflex grid system
     border-radius: 10px;
     box-shadow: 0px 3px 4px rgb(0 0 0 / 10%), 0px 24px 36px rgb(0 0 0 / 4%);
 }
+

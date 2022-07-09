@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
-    PLANET_KEY: 'd6f957677fbf40579a90fb3a9c74be1a'
+  production: true,
+  PLANET_KEY: 'e5ab79625244442295b4093991353285'
 };

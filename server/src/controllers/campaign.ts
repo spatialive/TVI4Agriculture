@@ -26,7 +26,7 @@ const all: RouteHandlerMethod = async (
 
 const getPlanetBasemaps = async () => {
     let images = null
-    const response = await axios.get(`https://api.planet.com/basemaps/v1/mosaics?api_key=d6f957677fbf40579a90fb3a9c74be1a`)
+    const response = await axios.get(`https://api.planet.com/basemaps/v1/mosaics?api_key=e5ab79625244442295b4093991353285`)
     const data = response?.data
     const mosaics = data.mosaics
 

@@ -41,7 +41,7 @@ export class LoginService {
     }
 
     errorHandler(error: HttpErrorResponse) {
-        const errorMessage = `Código do erro: ${error.status} - Mensagem: ${error.error.error}`;
+        const errorMessage = `Código do erro: ${error.status} - Mensagem: ${error.message}`;
         return throwError(errorMessage);
     }
 }
