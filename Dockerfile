@@ -6,7 +6,7 @@ LABEL maintainer="Renato Gomes <renatogomessilverio@gmail.com>"
 ENV URL_TO_APPLICATION_GITHUB="https://github.com/spatialive/TVI4Agriculture.git"
 ENV BRANCH="main"
 
-RUN cd /APP && git clone -b ${BRANCH} ${URL_TO_APPLICATION_GITHUB} \
+RUN apk add curl wget && cd /APP && git clone -b ${BRANCH} ${URL_TO_APPLICATION_GITHUB} \
     && mkdir -p /APP/TVI4Agriculture/server/logs
 
 ADD ./server/node_modules /APP/TVI4Agriculture/server/node_modules  
