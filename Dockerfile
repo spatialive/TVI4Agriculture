@@ -9,8 +9,8 @@ ENV BRANCH="main"
 RUN cd /APP && git clone -b ${BRANCH} ${URL_TO_APPLICATION_GITHUB} \
     && mkdir -p /APP/TVI4Agriculture/server/logs
 
-ADD ./node_modules /APP/TVI4Agriculture/server/node_modules  
-ADD ./dist /APP/TVI4Agriculture/client/dist
+ADD ./server/node_modules /APP/TVI4Agriculture/server/node_modules  
+ADD ./client/dist /APP/agrotoxicos/client/dist
 
 WORKDIR /APP/TVI4Agriculture/server 
 
