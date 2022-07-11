@@ -10,7 +10,7 @@ RUN apk add curl wget && cd /APP && git clone -b ${BRANCH} ${URL_TO_APPLICATION_
     && mkdir -p /APP/TVI4Agriculture/server/logs
 
 ADD ./server/node_modules /APP/TVI4Agriculture/server/node_modules  
-ADD ./client/dist /APP/agrotoxicos/client/dist
+ADD ./client/dist /APP/TVI4Agriculture/client/dist
 
 WORKDIR /APP/TVI4Agriculture/server 
 
