@@ -1,1 +1,1 @@
-export * from "./route-config.typé"
+export * from "./route-config.type"

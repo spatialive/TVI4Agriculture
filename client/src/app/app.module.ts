@@ -141,6 +141,7 @@ import {AppSignupComponent} from './auth/signup/app.signup.component';
 import {HarvestComponent} from './harvest/harvest.component';
 import {ClassComponent} from './class/class.component';
 import {CampaignComponent} from './campaign/campaign.component';
+import {TimeseriesComponent} from './@core/timeseries/timeseries.component';
 
 // Demo services
 import {CountryService} from './demo/service/countryservice';
@@ -340,7 +341,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         HarvestComponent,
         ClassComponent,
         CampaignComponent,
-        SafePipe
+        SafePipe,
+        TimeseriesComponent
     ],
     providers: [
         {

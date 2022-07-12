@@ -69,12 +69,12 @@ const timeseries: RouteHandlerMethod = async (
     res
 ) => {
     const { lon, lat, start_date, end_date } = _req.query as any
-    axios.get(`https://sentinelts.lapig.iesa.ufg.br/sentinel/evi?lon=${lon}&lat=${lat}&start_date=${start_date}&end_date=${end_date}`).then((resul) => {
+    axios.get(`http://127.0.0.1:3002/sentinel/evi?lon=${lon}&lat=${lat}&start_date=${start_date}&end_date=${end_date}`).then((resul) => {
         return res.send(resul.data)
     }).catch((err) => {
         console.error("Timeseries - GET: ", err)
-        res.status(500).send({ error: `Não é possível encontrar Timeseries` })
-    });
+        res.status(500).send({ error: `Não é possível encontrar Timeseries: ${err}` })
+    })
 }
 
 const get: RouteHandlerMethod = async (
@@ -138,12 +138,13 @@ const update: RouteHandlerMethod = async (
     try {
         const { id, name, description, classesType, classes, points, harvests, userId } = _req.body as any
         const arrayQueries = []
+
+        arrayQueries.push(_req.server.prisma.point.deleteMany({
+            where: { campaign: { id: parseInt(id) } }
+        }))
         arrayQueries.push(_req.server.prisma.campaign.update({
             where: { id: parseInt(id) },
             data: { classes: { set: [] }, harvests: { set: [] }, points: { set: [] } }
-        }))
-        arrayQueries.push(_req.server.prisma.point.deleteMany({
-            where: { campaign: { id: parseInt(id) } }
         }))
         const _classes = classes.map((cls: Class) => {
             return { id: cls.id }
@@ -154,8 +155,10 @@ const update: RouteHandlerMethod = async (
         points.forEach((p: Point) => {
             delete p.id
         })
-        console.log(points)
-        arrayQueries.push(_req.server.prisma.point.createMany(points))
+        const _points = points.map((p: Point) => {
+            return { lat: p.lat, lon: p.lon, description: p.description }
+        })
+
         arrayQueries.push(_req.server.prisma.campaign.update({
             where: {
                 id: parseInt(id)
@@ -163,7 +166,8 @@ const update: RouteHandlerMethod = async (
             data: {
                 name, description, classesType, userId,
                 classes: { connect: _classes },
-                harvests: { connect: _harvests }
+                harvests: { connect: _harvests },
+                points: { createMany: { data: _points } }
             }
         }))
         const campaignUpdated = await _req.server.prisma.$transaction(arrayQueries)
