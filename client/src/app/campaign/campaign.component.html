@@ -218,7 +218,7 @@
                             <div class="col-6">
                                 <h4>Mosaicos Planet</h4>
                                 <div class="field ">
-                                    <p-dropdown [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
+                                    <p-dropdown [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [placeholder]="'Selecione o mosaico'" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
                                 </div>
                                 <div *ngIf="mosaicsLayers" style="height: 350px;"
                                      id="pivot"

@@ -45,7 +45,9 @@ export class CampaignComponent implements OnInit {
         {name: 'Áreas Irrigadas e Não Irrigadas', value: 'IRRIGATED_NON_IRRIGATED'}
     ];
     layersControl = {
-        baseLayers: null,
+        baseLayers: {
+            'Google Maps': tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 19 }),
+        },
         overlays: {
             'Google Maps': tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 19 }),
             'Sentinel-2 cloudless 2018':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2018_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19 }),
@@ -198,7 +200,7 @@ export class CampaignComponent implements OnInit {
                     mos.name = name;
                     this.planetMosaics.push(mos);
                 }
-            });
+           });
            this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
         });
     }
@@ -405,6 +407,9 @@ export class CampaignComponent implements OnInit {
     }
 
     inspectCampaign(camp: Campaign) {
+        this.campaign = null;
+        this.pointInfo = null;
+        this.pointInfoClicked = null;
         this.campaignInspectionDialog = true;
         this.campaign = {...camp};
         this.loadPoint();
@@ -529,6 +534,7 @@ export class CampaignComponent implements OnInit {
             this.pointInfo = null;
             this.loadPoint(true);
             this.getPointInfo();
+            this.changeMosaic({value: this.planetMosaics[0]._links.tiles});
         }
     }
     next() {
@@ -538,6 +544,7 @@ export class CampaignComponent implements OnInit {
             this.currentPoint = nextPoint;
             this.loadPoint();
             this.getPointInfo();
+            this.changeMosaic({value: this.planetMosaics[0]._links.tiles});
         }
     }
     onClick(evt){
