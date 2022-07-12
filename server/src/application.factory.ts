@@ -60,8 +60,8 @@ export async function applicationFactory (worker: number) {
                     url: "https://swagger.io",
                     description: "Find more info here"
                 },
-                host: "localhost:3000",
-                schemes: [ "http" ],
+                host: `${process.env.HOST}:${process.env.PORT}`,
+                schemes: [ "https" ],
                 consumes: [ "application/json" ],
                 produces: [ "application/json" ],
                 tags: [

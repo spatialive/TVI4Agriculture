@@ -1,6 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <p-toast></p-toast>
+
         <div class="card">
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -90,8 +91,8 @@
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog [(visible)]="campaignDialog" [style]="{width: '90%'}" header="Detalhes da Campanha" [modal]="true"
-                  styleClass="p-fluid">
+
+        <p-dialog [(visible)]="campaignDialog" [style]="{width: '90%'}" header="Detalhes da Campanha" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <div class="formgrid grid">
@@ -121,7 +122,6 @@
                     <textarea id="description" type="text" rows="5" pInputTextarea
                               [ngClass]="displayFieldCss('description')" [(ngModel)]="campaign.description"></textarea>
                 </div>
-
                 <div class="field file">
                     <p-fileUpload chooseLabel="Escolha o arquivo CSV com os pontos da Campanha"
                                   [auto]="true"
@@ -179,7 +179,6 @@
                     </div>
                 </div>
             </ng-template>
-
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="mt-5 p-button-danger"
                         (click)="hideDialog()"></button>
@@ -188,8 +187,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="campaignInspectionDialog" [style]="{width: '98%', heigth: '98%'}"
-                  header="Inspeção da Campanha" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="campaignInspectionDialog" [style]="{width: '98%', heigth: '98%'}" header="Inspeção da Campanha" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <div class="header-inspection">
                     <button (click)="back()" pButton type="button" icon="pi pi-angle-left"
@@ -200,7 +198,15 @@
                         </div>
                         <div class="point-description">
                             <p>Ponto: <b>{{campaign.points[currentPoint].id}}</b> {{campaign.points[currentPoint].lat}}, {{campaign.points[currentPoint].lon}}</p>
-                            <small *ngIf="campaign.points[currentPoint].description != ''">Descrição: {{campaign.points[currentPoint].description}}</small>
+                            <p-progressBar [hidden]="pointInfo" mode="indeterminate"></p-progressBar>
+                            <div class="point-info" *ngIf="pointInfo">
+                                <small *ngIf="campaign.points[currentPoint].description != ''">Descrição: <b>{{campaign.points[currentPoint].description}}</b></small>
+                                <small *ngIf="pointInfo.geocodigo != ''">Geocódigo: <b>{{pointInfo.geocodigo}}</b></small>
+                                <small *ngIf="pointInfo.municipio != ''">Município: <b>{{pointInfo.municipio}}</b></small>
+                                <small *ngIf="pointInfo.estado != ''">Estado: <b>{{pointInfo.estado}}</b></small>
+                                <small *ngIf="pointInfo.regiao != ''">Região: <b>{{pointInfo.regiao}}</b></small>
+                                <small *ngIf="pointInfo.bioma != ''">Bioma: <b>{{pointInfo.bioma}}</b></small>
+                            </div>
                         </div>
                     </div>
                     <button (click)="next()" pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2 w-4rem h-4rem">
@@ -212,10 +218,9 @@
                             <div class="col-6">
                                 <h4>Mosaicos Planet</h4>
                                 <div class="field ">
-                                    <p-dropdown [filter]="true"  appendTo="body" id="basemaps" inputId="basemaps" [options]="planetMosaics"
-                                                (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
+                                    <p-dropdown [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
                                 </div>
-                                <div style="height: 350px;"
+                                <div *ngIf="mosaicsLayers" style="height: 350px;"
                                      id="pivot"
                                      leaflet
                                      [leafletLayersControl]="layersControl"
@@ -245,12 +250,20 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '98%', heigth: '98%'}"
-                  header="Serie Temporal Sentinel - EVI para o ponto [{{pointTimeSeries.lat}},  {{pointTimeSeries.lon}}]" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '98%', heigth: '98%'}" header="Serie Temporal Sentinel - EVI para o ponto [{{pointTimeSeries.lat}},  {{pointTimeSeries.lon}}]" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
+                <p-progressBar [hidden]="pointInfoClicked" mode="indeterminate"></p-progressBar>
+                <div class="point-info-clicked card" *ngIf="pointInfoClicked">
+                    <small *ngIf="pointInfoClicked.geocodigo != ''">Geocódigo: <b>{{pointInfoClicked.geocodigo}}</b></small>
+                    <small *ngIf="pointInfoClicked.municipio != ''">Município: <b>{{pointInfoClicked.municipio}}</b></small>
+                    <small *ngIf="pointInfoClicked.estado != ''">Estado: <b>{{pointInfoClicked.estado}}</b></small>
+                    <small *ngIf="pointInfoClicked.regiao != ''">Região: <b>{{pointInfoClicked.regiao}}</b></small>
+                    <small *ngIf="pointInfoClicked.bioma != ''">Bioma: <b>{{pointInfoClicked.bioma}}</b></small>
+                </div>
                 <app-timeseries [tsData]="pointTimeSeries"></app-timeseries>
             </ng-template>
         </p-dialog>
+
         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
     </div>
 </div>

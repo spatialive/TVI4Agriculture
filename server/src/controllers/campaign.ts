@@ -69,7 +69,7 @@ const timeseries: RouteHandlerMethod = async (
     res
 ) => {
     const { lon, lat, start_date, end_date } = _req.query as any
-    axios.get(`http://127.0.0.1:3002/sentinel/evi?lon=${lon}&lat=${lat}&start_date=${start_date}&end_date=${end_date}`).then((resul) => {
+    axios.get(`https://sentinelts.lapig.iesa.ufg.br/sentinel/evi?lon=${lon}&lat=${lat}&start_date=${start_date}&end_date=${end_date}`).then((resul) => {
         return res.send(resul.data)
     }).catch((err) => {
         console.error("Timeseries - GET: ", err)

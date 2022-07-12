@@ -14,7 +14,7 @@
             </line>
         </svg>
     </div>
-    <div *ngIf="timeSeriesData" class="col-12">
+    <div *ngIf="timeSeriesData" class="col-12 card">
         <p-chart [height]="height" [width]="width" type="line" [data]="timeSeriesData" [options]="timeSeriesOptions"></p-chart>
     </div>
 </div>

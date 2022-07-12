@@ -45,3 +45,20 @@
 .chart{
     height: 10vh;
 }
+.point-info{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    small{
+        margin: 2px;
+    }
+}
+
+.point-info-clicked{
+    display: flex;
+    justify-content: space-evenly;
+    small{
+        font-size: 14px;
+        margin: 2px;
+    }
+}

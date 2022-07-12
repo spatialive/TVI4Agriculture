@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {Class} from '../@core/interfaces/class.interface';
 import {latLng, Marker, marker, tileLayer, divIcon, Map} from 'leaflet';
@@ -17,6 +17,7 @@ import {SafePipe} from '../pipes/safe';
 import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
 import {TimeSeries} from '../@core/interfaces/timeseries.interface';
+import {PointInfo} from '../@core/interfaces/point.info.interface';
 
 @Component({
     templateUrl: './campaign.component.html',
@@ -55,7 +56,6 @@ export class CampaignComponent implements OnInit {
     };
     startDate: string;
     endDate: string;
-
     options = {
         layers: [
             tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 19 })
@@ -77,7 +77,7 @@ export class CampaignComponent implements OnInit {
     mapPoints: any[];
     timeSeriesOptions: any;
     timeSeriesData: any;
-    markerPoint = '<svg width="60" height="60" viewBox="0 0 42 42" preserveAspectRatio="xMidYMid meet" fill="#495057"><path d="M19.8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5zM20 9c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-6 6.7c0 1 .4 1.4.8.8s1.1-1.3 1.6-1.8c.5-.4.2-.7-.7-.7-1 0-1.7.8-1.7 1.7zm11.6-1c.5.5 1.2 1.2 1.6 1.8s.8.2.8-.8c0-.9-.7-1.7-1.7-1.7-.9 0-1.2.3-.7.7zM.2 21c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zm41 0c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zM2 21c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm18 0a1.08 1.08 0 0 0 1 1c.6 0 1-.5 1-1a.94.94 0 0 0-1-1c-.5 0-1 .4-1 1zm6 0c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm-12 5.3c0 1 .8 1.7 1.8 1.7.9 0 1.3-.4.7-.8-.5-.4-1.3-1.1-1.7-1.6-.5-.5-.8-.2-.8.7zm12.2.2c-1.1 1.2-1 1.5.3 1.5a1.54 1.54 0 0 0 1.5-1.5c0-1.8-.2-1.8-1.8 0zM20 33c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-.2 8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5z"/></svg>';
+    markerPoint = '<svg width="60" height="60" viewBox="0 0 42 42" preserveAspectRatio="xMidYMid meet" fill="#66ff66"><path d="M19.8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5zM20 9c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-6 6.7c0 1 .4 1.4.8.8s1.1-1.3 1.6-1.8c.5-.4.2-.7-.7-.7-1 0-1.7.8-1.7 1.7zm11.6-1c.5.5 1.2 1.2 1.6 1.8s.8.2.8-.8c0-.9-.7-1.7-1.7-1.7-.9 0-1.2.3-.7.7zM.2 21c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zm41 0c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zM2 21c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm18 0a1.08 1.08 0 0 0 1 1c.6 0 1-.5 1-1a.94.94 0 0 0-1-1c-.5 0-1 .4-1 1zm6 0c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm-12 5.3c0 1 .8 1.7 1.8 1.7.9 0 1.3-.4.7-.8-.5-.4-1.3-1.1-1.7-1.6-.5-.5-.8-.2-.8.7zm12.2.2c-1.1 1.2-1 1.5.3 1.5a1.54 1.54 0 0 0 1.5-1.5c0-1.8-.2-1.8-1.8 0zM20 33c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-.2 8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5z"/></svg>';
     // tslint:disable-next-line:max-line-length
     markerPivot = '<svg width="15" height="15" viewBox="0 0 141 143" preserveAspectRatio="xMidYMid meet" fill="#495057"><path d="M55.5 3.6c-3.8.8-11.3 3.5-16.5 6.1-7.9 3.8-10.9 6-18.1 13.2C7 36.8.6 52.2.6 71.5c.1 11.6 1.9 19.8 6.8 30C19.3 126.6 42.5 141 70.9 141c32.3 0 59.1-20.6 67.7-52 2.4-8.8 2.4-25.2 0-34.5-5.2-20.1-21.9-39.5-40.5-47C85.2 2.2 69.2.8 55.5 3.6zm30 7.9c6.9 1.8 18.6 7.4 23 11l3 2.5-16.9 16.9c-14 14-17.3 16.8-18.7 16-5.2-2.7-15 .6-18.4 6.3-2 3.4-2.3 11.4-.6 14.6.6 1.2 2.7 3.3 4.6 4.8 6.6 5 17.1 3.1 21.4-3.9 2.2-3.6 2.8-10.5 1.2-13.6-.8-1.4 2-4.7 16-18.7L117 30.5l2.5 3c3.7 4.5 9.1 15.3 11.1 22 2.7 9.1 2.4 24-.5 33.5-11.5 37.4-52.6 55.2-87.5 38.1C1.7 107-4.1 51.9 31.8 23.1c5.9-4.8 15.4-9.5 23.2-11.7 6.4-1.8 23.4-1.7 30.5.1zm-12 49.1c1.4.6 1.1 1.3-1.9 4.3L68 68.6l2.8 2.7 2.8 2.7 3.4-3.5c3.6-3.7 5-3.3 5 1.3 0 6-5.6 11.2-12.2 11.2-8.2 0-13.7-10.3-9.1-17 3.1-4.5 8.8-6.9 12.8-5.4z"/></svg>';
     pivotsExtent: any = null;
@@ -85,6 +85,8 @@ export class CampaignComponent implements OnInit {
     map: Map = null;
     showTimeSeries: boolean;
     pointTimeSeries: TimeSeries;
+    pointInfo: PointInfo;
+    pointInfoClicked: PointInfo;
     private safePipe: SafePipe = new SafePipe(this.domSanitizer);
 
     constructor(
@@ -108,6 +110,8 @@ export class CampaignComponent implements OnInit {
         this.currentPoint = 2;
         this.startDate = null;
         this.endDate = null;
+        this.pointInfo = null;
+        this.pointInfoClicked = null;
     }
 
     ngOnInit() {
@@ -123,7 +127,6 @@ export class CampaignComponent implements OnInit {
             {field: 'lon', header: 'Longitude'},
             {field: 'description', header: 'Descrição'}
         ];
-
         const token = this.storage.retrieve('token');
         const jwtToken = jwtDecode(token);
         // @ts-ignore
@@ -184,15 +187,33 @@ export class CampaignComponent implements OnInit {
     }
 
     getPlanetMosaics() {
+        this.planetMosaics = [];
         this.campaignService.mosaics().subscribe(mosaics => {
-            // this.planetMosaics = [];
-            // mosaics.forEach(mos => {
-            //     if (moment(mos.last_acquired).isBetween(this.startDate, this.endDate)){
-            //         this.planetMosaics.push(mos);
-            //     }
-            // });
-            this.planetMosaics = mosaics;
-            this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+           mosaics.forEach(mos => {
+                if (mos.name.includes('planet_medres_normalized_analytic_') && mos.name.includes('mosaic')){
+                    let name = mos.name.split('planet_medres_normalized_analytic_')[1].split('_mosaic')[0];
+                    if ( name.includes('_')){
+                        name = name.replace('_', ' - ');
+                    }
+                    mos.name = name;
+                    this.planetMosaics.push(mos);
+                }
+            });
+           this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+        });
+    }
+
+    getPointInfo() {
+        this.campaignService.pointInfo(
+            this.parse(this.campaign.points[this.currentPoint].lon),
+            this.parse(this.campaign.points[this.currentPoint].lat)).subscribe((pointInfo: PointInfo) => {
+                this.pointInfo = pointInfo[0];
+        });
+    }
+    getPointInfoClicked(lon, lat) {
+        this.pointInfoClicked = null;
+        this.campaignService.pointInfo(lon, lat).subscribe((pointInfo: PointInfo) => {
+            this.pointInfoClicked = pointInfo[0];
         });
     }
 
@@ -388,6 +409,7 @@ export class CampaignComponent implements OnInit {
         this.campaign = {...camp};
         this.loadPoint();
         this.loadMosaics();
+        this.getPointInfo();
     }
     loadMosaics(){
         const startDates = this.campaign.harvests.map((harvest) => harvest.start);
@@ -398,7 +420,7 @@ export class CampaignComponent implements OnInit {
         this.endDate = moment(max).format('YYYY-MM-DD');
         this.getPlanetMosaics();
     }
-    loadPoint(){
+    loadPoint(navigation = false){
         const pointLayer = marker([
             parseFloat(this.campaign.points[this.currentPoint].lat),
             parseFloat(this.campaign.points[this.currentPoint].lon)], {
@@ -419,6 +441,9 @@ export class CampaignComponent implements OnInit {
             parseFloat(this.campaign.points[this.currentPoint].lat),
             parseFloat(this.campaign.points[this.currentPoint].lon)
         ).toBounds(1000);
+        if ( navigation ){
+            this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+        }
     }
 
     getTypeName(campaign: Campaign): string {
@@ -501,15 +526,18 @@ export class CampaignComponent implements OnInit {
         const prevPoint = this.currentPoint - 1;
         if (prevPoint >= 0) {
             this.currentPoint = prevPoint;
-            this.loadPoint();
-            this.mosaicsLayers.push(tileLayer(this.planetMosaics[0]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+            this.pointInfo = null;
+            this.loadPoint(true);
+            this.getPointInfo();
         }
     }
     next() {
         const nextPoint = this.currentPoint + 1;
         if (nextPoint <= this.campaign.points.length - 1) {
+            this.pointInfo = null;
             this.currentPoint = nextPoint;
             this.loadPoint();
+            this.getPointInfo();
         }
     }
     onClick(evt){
@@ -519,6 +547,7 @@ export class CampaignComponent implements OnInit {
             startDate: this.startDate,
             endDate: this.endDate
         };
+        this.getPointInfoClicked(evt.latlng.lng, evt.latlng.lat);
         this.showTimeSeries = true;
     }
     onMapReady(map: Map) {

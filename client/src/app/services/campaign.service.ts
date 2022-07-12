@@ -4,6 +4,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import {Campaign} from '../@core/interfaces/campaign.interface';
+import {PointInfo} from "../@core/interfaces/point.info.interface";
 @Injectable({
     providedIn: 'root',
 })
@@ -33,7 +34,15 @@ export class CampaignService {
             );
     }
     timeseries(lon: number, lat: number, start: string, end: string): Observable<any> {
-        return this.httpClient.get<any>(this.apiURL + 'timeseries' + '?lon=' + lon + '&lat=' + lat + '&start_date=' + start + '&end_date=' + end)
+        return this.httpClient.get<any>(
+            this.apiURL + 'timeseries' + '?lon=' + lon + '&lat=' + lat + '&start_date=' + start + '&end_date=' + end)
+            .pipe(map(response => response))
+            .pipe(catchError(this.errorHandler),
+            );
+    }
+    pointInfo(lon: number, lat: number): Observable<PointInfo> {
+        return this.httpClient.get<any>(
+            '/api/point-info' + '?lon=' + lon + '&lat=' + lat)
             .pipe(map(response => response))
             .pipe(catchError(this.errorHandler),
             );
