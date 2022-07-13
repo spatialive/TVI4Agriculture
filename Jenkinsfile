@@ -13,18 +13,18 @@
             sh 'git pull origin main'
 
         }
-        stage('SonarQube analysis') {
+//         stage('SonarQube analysis') {
 
-		def scannerHome = tool 'sonarqube-scanner';
-                    withSonarQubeEnv("sonarqube") {
-                    sh "${tool("sonarqube-scanner")}/bin/sonar-scanner \
-                    -Dsonar.projectKey=tvi4agriculture \
-                    -Dsonar.sources=. \
-                    -Dsonar.css.node=. \
-                    -Dsonar.host.url=$SonarUrl \
-                    -Dsonar.login=$SonarKeyProject"
-                    }
-        }
+// 		def scannerHome = tool 'sonarqube-scanner';
+//                     withSonarQubeEnv("sonarqube") {
+//                     sh "${tool("sonarqube-scanner")}/bin/sonar-scanner \
+//                     -Dsonar.projectKey=tvi4agriculture \
+//                     -Dsonar.sources=. \
+//                     -Dsonar.css.node=. \
+//                     -Dsonar.host.url=$SonarUrl \
+//                     -Dsonar.login=$SonarKeyProject"
+//                     }
+//         }
         stage('Build') {
                         //INSTALL NVM BINARY AND INSTALL NODE VERSION AND USE NODE VERSION
                         nvm(nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/master/install.sh', 
