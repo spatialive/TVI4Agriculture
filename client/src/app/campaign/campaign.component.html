@@ -81,7 +81,7 @@
                             <button pButton pRipple pTooltip="Remover" icon="pi pi-trash"
                                     class="p-button-rounded p-button-danger"
                                     (click)="deleteCampaign(campaign)"></button>
-                            <button *ngIf="campaign.inspections.length > 0" pButton pRipple pTooltip="Baixar SHP do Pontos Inpecionados" icon="pi pi-file"
+                            <button *ngIf="campaign.inspections.length > 0" pButton pRipple pTooltip="Baixar SHP dos pontos inpecionados" icon="pi pi-file"
                                     class="p-button-rounded p-button-success"
                                     (click)="exportSHP(campaign)"></button>
                         </td>
@@ -270,6 +270,7 @@
                         </div>
                     </div>
                     <div class="col-7 chart">
+                        <h4> &nbsp;</h4>
                         <app-timeseries [tsData]="{lon: parse(campaign.points[currentPoint].lon), lat: parse(campaign.points[currentPoint].lat), startDate: startDate, endDate: endDate}"></app-timeseries>
                     </div>
                 </div>
