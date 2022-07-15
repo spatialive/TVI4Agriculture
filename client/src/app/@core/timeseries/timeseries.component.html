@@ -1,5 +1,5 @@
-<p-toast key="timeseries" position="top-right"></p-toast>
 <div  class="grid container-timeseries">
+    <p-toast [key]="'timeseries'"></p-toast>
     <div class="loading" *ngIf="loading && !timeSeriesData">
         <svg width="100" height="100"  x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
             <circle fill="none" stroke="#495057" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
@@ -15,6 +15,11 @@
         </svg>
     </div>
     <div *ngIf="timeSeriesData" class="col-12 card">
-        <p-chart [height]="height" [width]="width" type="line" [data]="timeSeriesData" [options]="timeSeriesOptions"></p-chart>
+        <div class="exports">
+            <button type="button" pButton pRipple icon="pi pi-image" (click)="exportCanvas(chart)" class="p-button-warning m-2"  pTooltip="PNG" tooltipPosition="bottom"></button>
+            <button type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="p-button-info m-2"  pTooltip="CSV" tooltipPosition="bottom"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success m-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+        </div>
+        <p-chart #chart [height]="height" [width]="width" type="line" [data]="timeSeriesData" [options]="timeSeriesOptions"></p-chart>
     </div>
 </div>

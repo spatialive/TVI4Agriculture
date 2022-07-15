@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
 })
 export class InspectionService {
 
-    private apiURL = '/api/inpection/';
+    private apiURL = '/api/inspection/';
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -34,11 +34,27 @@ export class InspectionService {
             .pipe(catchError(this.errorHandler),
             );
     }
+    getLastInspection(campaignid: number): Observable<any> {
+        return this.httpClient.get<Inspection>(this.apiURL + 'lastInspection/' + campaignid)
+            .pipe(map(response => response))
+            .pipe(catchError(this.errorHandler),
+            );
+    }
 
     create(inspection: Inspection): Observable<any> {
         return this.httpClient.post<Inspection>(
             this.apiURL + 'create',
             JSON.stringify(inspection),
+            this.httpOptions,
+        ).pipe(
+            catchError(this.errorHandler),
+        );
+    }
+
+    createMany(inspections: Inspection[]): Observable<any> {
+        return this.httpClient.post<Inspection[]>(
+            this.apiURL + 'createMany',
+            JSON.stringify({ list: inspections}),
             this.httpOptions,
         ).pipe(
             catchError(this.errorHandler),
@@ -55,6 +71,16 @@ export class InspectionService {
         );
     }
 
+    updateMay(inspections: Inspection[]): Observable<any> {
+        return this.httpClient.put<Inspection[]>(
+            this.apiURL + 'update',
+            JSON.stringify({ list: inspections}),
+            this.httpOptions,
+        ).pipe(
+            catchError(this.errorHandler),
+        );
+    }
+
     delete(id: number): Observable<any> {
         return this.httpClient.delete<number>(this.apiURL + 'delete/' + id)
             .pipe(map(response => response))
@@ -62,10 +88,10 @@ export class InspectionService {
             );
     }
 
-    deleteMany(inspection: Inspection[]): Observable<any> {
-        return this.httpClient.post<Inspection>(
+    deleteMany(inspections: Inspection[]): Observable<any> {
+        return this.httpClient.post<Inspection[]>(
             this.apiURL + 'deleteMany',
-            JSON.stringify({ list: inspection}),
+            JSON.stringify({ list: inspections}),
             this.httpOptions,
         ).pipe(
             catchError(this.errorHandler),

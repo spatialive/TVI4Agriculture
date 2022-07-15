@@ -9,6 +9,12 @@ const routes: RouteConfig = {
         preHandler: [ middleware.validateRequest ],
         handler: campaignController.all
     },
+    allByUserId: {
+        method: "GET",
+        url: routePrefix + "allByUser/:userId",
+        preHandler: [ middleware.validateRequest ],
+        handler: campaignController.all
+    },
     mosaics: {
         method: "GET",
         url: routePrefix + "mosaics",

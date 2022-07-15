@@ -1,7 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <p-toast></p-toast>
-
+        <p-toast [autoZIndex]="true"></p-toast>
         <div class="card">
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -86,7 +85,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-center justify-content-between">
-                        No total existem {{campaigns ? campaigns.length : 0 }} classes.
+                        No total existem {{campaigns ? campaigns.length : 0 }} campanhas.
                     </div>
                 </ng-template>
             </p-table>
@@ -187,40 +186,72 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="campaignInspectionDialog" [style]="{width: '98%', heigth: '98%'}" header="Inspeção da Campanha" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="campaignInspectionDialog" [style]="{width: '99%', heigth: '100%'}" header="Inspeção da Campanha" [modal]="true" styleClass="p-fluid">
+            <p-toast [key]="'inspection'"></p-toast>
             <ng-template pTemplate="content">
-                <div class="header-inspection">
+                <div *ngIf="carPointInfo.length > 0" class="header-inspection">
                     <button (click)="back()" pButton type="button" icon="pi pi-angle-left"
                             class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2 w-4rem h-4rem"></button>
-                    <div class="card pt-3">
+                    <div class="card pt-3 card-info">
                         <div class="campaign-title">
                             <h4>{{campaign.name}}</h4>
                         </div>
                         <div class="point-description">
-                            <p>Ponto: <b>{{campaign.points[currentPoint].id}}</b> {{campaign.points[currentPoint].lat}}, {{campaign.points[currentPoint].lon}}</p>
+                            <p>Ponto: <b>{{currentPoint + 1}} / {{campaign.points.length}}</b> {{campaign.points[currentPoint].lat}}, {{campaign.points[currentPoint].lon}}</p>
+                            <small *ngIf="campaign.points[currentPoint].description != ''">Descrição: <b>{{campaign.points[currentPoint].description}}</b></small>
                             <p-progressBar [hidden]="pointInfo" mode="indeterminate"></p-progressBar>
-                            <div class="point-info" *ngIf="pointInfo">
-                                <small *ngIf="campaign.points[currentPoint].description != ''">Descrição: <b>{{campaign.points[currentPoint].description}}</b></small>
-                                <small *ngIf="pointInfo.geocodigo != ''">Geocódigo: <b>{{pointInfo.geocodigo}}</b></small>
-                                <small *ngIf="pointInfo.municipio != ''">Município: <b>{{pointInfo.municipio}}</b></small>
-                                <small *ngIf="pointInfo.estado != ''">Estado: <b>{{pointInfo.estado}}</b></small>
-                                <small *ngIf="pointInfo.regiao != ''">Região: <b>{{pointInfo.regiao}}</b></small>
-                                <small *ngIf="pointInfo.bioma != ''">Bioma: <b>{{pointInfo.bioma}}</b></small>
+                            <div class="point-info grid" *ngIf="pointInfo">
+                                <small class="col" *ngIf="pointInfo.geocodigo != ''">Geocódigo<br> <b>{{pointInfo.geocodigo}}</b></small>
+                                <small class="col" *ngIf="pointInfo.municipio != ''">Município<br> <b>{{pointInfo.municipio}} - {{pointInfo.uf}}</b></small><br>
+                                <small class="col" *ngIf="pointInfo.bioma != ''">Bioma<br><b>{{pointInfo.bioma}}</b></small>
+                                <small class="col" *ngIf="carPointInfo.length > 0">
+                                    <p-inputSwitch pTooltip="Visualizar Informações do CAR para ponto corrente"  [(ngModel)]="showCarInfo"></p-inputSwitch>
+                                    <br>CAR
+                                </small>
+
                             </div>
                         </div>
+                    </div>
+                    <div *ngIf="showCarInfo" class="card pt-3 card-info">
+                        <p-table [value]="carPointInfo" responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Data de Referência</th>
+                                    <th>Tipo do Imóvel</th>
+                                    <th>Área em ha</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-car>
+                                <tr>
+                                    <td>{{car.cod_car}}</td>
+                                    <td>{{car.data_ref}}</td>
+                                    <td>{{car.tipo_imove}}</td>
+                                    <td>{{car.area_ha |  number:'1.2-2'}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                     </div>
                     <button (click)="next()" pButton type="button" icon="pi pi-angle-right" class="p-button-outlined p-button-rounded p-button-plain p-button-sm font-bold mr-2 p-2 w-4rem h-4rem">
                     </button>
                 </div>
                 <div class="grid">
-                    <div class="col-4">
+                    <div class="col-5">
                         <div class="grid">
-                            <div class="col-6">
+                            <div class="col-4">
+                                <h4>Safras</h4>
+                                <div class="field" *ngFor="let harvest of campaign.harvests">
+                                    <label for="safra{{harvest.id}}">{{harvest.name}}</label>
+                                    <p-dropdown [placeholder]="'Selecione a classe'" [(ngModel)]="harvest.selected" appendTo="body" id="safra{{harvest.id}}" inputId="safra{{harvest.id}}" [options]="campaign.classes"
+                                                (onChange)="setClass($event,harvest)"  optionLabel="name" optionValue="id"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-8">
                                 <h4>Mosaicos Planet</h4>
                                 <div class="field ">
                                     <p-dropdown [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [placeholder]="'Selecione o mosaico'" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
                                 </div>
-                                <div *ngIf="mosaicsLayers" style="height: 350px;"
+                                <div *ngIf="mosaicsLayers" style="height: 51.6vh;"
                                      id="pivot"
                                      leaflet
                                      [leafletLayersControl]="layersControl"
@@ -232,25 +263,17 @@
                                 >
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <h4>Safras</h4>
-                                <div class="field" *ngFor="let harvest of campaign.harvests">
-                                    <label for="safra{{harvest.id}}">{{harvest.name}}</label>
-                                    <p-dropdown appendTo="body" id="safra{{harvest.id}}" inputId="safra{{harvest.id}}" [options]="campaign.classes"
-                                                (onChange)="setClass($event,harvest)" optionLabel="name" optionValue="id"></p-dropdown>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-8 chart">
+                    <div class="col-7 chart">
+                        <h4>Time Series</h4>
                         <app-timeseries [tsData]="{lon: parse(campaign.points[currentPoint].lon), lat: parse(campaign.points[currentPoint].lat), startDate: startDate, endDate: endDate}"></app-timeseries>
                     </div>
                 </div>
-
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '98%', heigth: '98%'}" header="Serie Temporal Sentinel - EVI para o ponto [{{pointTimeSeries.lat}},  {{pointTimeSeries.lon}}]" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '60%', heigth: '100%'}" header="Serie Temporal Sentinel - EVI para o ponto [{{pointTimeSeries.lat}},  {{pointTimeSeries.lon}}]" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <p-progressBar [hidden]="pointInfoClicked" mode="indeterminate"></p-progressBar>
                 <div class="point-info-clicked card" *ngIf="pointInfoClicked">
@@ -263,7 +286,6 @@
                 <app-timeseries [tsData]="pointTimeSeries"></app-timeseries>
             </ng-template>
         </p-dialog>
-
         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
     </div>
 </div>

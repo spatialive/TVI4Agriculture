@@ -15,6 +15,8 @@ export class HarvestComponent implements OnInit {
     selectedHarvests: Harvest[];
     submitted: boolean;
     cols: any[];
+    minDateValue: Date;
+    maxDateValue: Date;
 
     constructor(
         private messageService: MessageService,
@@ -22,6 +24,10 @@ export class HarvestComponent implements OnInit {
         private harvestService: HarvestService,
     ) {
         this.harvest = this.clearHarvest();
+        const currentYear = new Date().getFullYear();
+        const previousYear =  currentYear - 1;
+        this.minDateValue = new Date('2019-01-01');
+        this.maxDateValue = new Date(previousYear + '-12-31');
     }
     ngOnInit() {
         this.getHarvests();

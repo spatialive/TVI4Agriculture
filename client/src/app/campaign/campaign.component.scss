@@ -24,6 +24,10 @@
     }
 }
 
+.card-info{
+    min-width: 40%;
+}
+
 .btn-table-actions {
     button{
         margin: 10px;
@@ -44,13 +48,18 @@
 }
 .chart{
     height: 10vh;
+    h4{
+        text-align: center;
+    }
 }
 .point-info{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    //display: flex;
+    //flex-wrap: wrap;
+    //justify-content: space-between;
+    margin-top: 10px;
     small{
         margin: 2px;
+        font-size: 14px !important;
     }
 }
 

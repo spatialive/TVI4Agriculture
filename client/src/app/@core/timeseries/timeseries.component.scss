@@ -1,8 +1,12 @@
 .container-timeseries{
-    height: 100%;
+    height: 52.6vh;
     min-height: 200px;
 }
 
 .loading{
    margin: auto;
+}
+.exports{
+    display: flex;
+    justify-content: flex-end;
 }

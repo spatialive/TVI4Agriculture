@@ -9,4 +9,5 @@ export interface Harvest {
     endWet?: Date;
     createdAt?: string;
     updatedAt?: string;
+    selected?: number;
 }

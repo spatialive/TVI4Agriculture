@@ -24,6 +24,34 @@ const all: RouteHandlerMethod = async (
     }
 }
 
+const allByUserId: RouteHandlerMethod = async (
+    req,
+    res
+) => {
+    try {
+        const { userId } = req.params as any
+        const campaigns = await req.server.prisma.campaign.findMany({
+            where: {
+                userId: parseInt(userId)
+            },
+            include: {
+                classes: true,
+                harvests: true,
+                points: {
+                    orderBy: {
+                        id: "asc"
+                    }
+                },
+                user: true
+            }
+        })
+        return res.send({ data: { campaigns } })
+    } catch (error) {
+        console.error("Campaigns - ALL: ", error)
+        res.status(500).send({ error: `Não é possível buscar as campanhas` })
+    }
+}
+
 const getPlanetBasemaps = async () => {
     let images = null
     const response = await axios.get(`https://api.planet.com/basemaps/v1/mosaics?api_key=e5ab79625244442295b4093991353285`)
@@ -225,4 +253,14 @@ const deleteMany: RouteHandlerMethod = async (
     }
 }
 
-export const campaignController = { all, mosaicsPlanet, timeseries, get, create, update, remove, deleteMany }
+export const campaignController = {
+    all,
+    allByUserId,
+    mosaicsPlanet,
+    timeseries,
+    get,
+    create,
+    update,
+    remove,
+    deleteMany
+}

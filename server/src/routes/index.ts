@@ -5,7 +5,7 @@ import { userRoutes } from "./user"
 import { harvestRoutes } from "./harvest"
 import { classRoutes } from "./class"
 import { campaignRoutes } from "./campaign"
-
+import { inspectionRoutes } from "./inspection"
 export const router: FastifyPluginCallback = (
     fastify: FastifyInstance,
     _opts,
@@ -17,7 +17,8 @@ export const router: FastifyPluginCallback = (
         ...userRoutes,
         ...harvestRoutes,
         ...classRoutes,
-        ...campaignRoutes
+        ...campaignRoutes,
+        ...inspectionRoutes
     ]
     fastify.addHook("onRequest", (_req, _res, next) => {
         _req.user = ""

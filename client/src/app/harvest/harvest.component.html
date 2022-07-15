@@ -99,12 +99,12 @@
                     <div class="formgrid grid">
                         <div class="field col-6">
                             <label for="start">Início</label>
-                            <p-calendar appendTo="body" id="start" inputId="start" [ngClass]="displayFieldCss('start')" [(ngModel)]="harvest.start" [showIcon]="true"></p-calendar>
+                            <p-calendar appendTo="body" id="start" [minDate]="minDateValue"  [maxDate]="maxDateValue" inputId="start" [ngClass]="displayFieldCss('start')" [(ngModel)]="harvest.start" [showIcon]="true"></p-calendar>
                             <small id="start-required" class="p-error"  *ngIf="submitted && harvest.start === ''">A data de início é obrigatória!</small>
                         </div>
                         <div class="field col-6">
                             <label for="end">Fim</label>
-                            <p-calendar appendTo="body" id="end" inputId="end" [ngClass]="displayFieldCss('end')"  [(ngModel)]="harvest.end" [showIcon]="true"></p-calendar>
+                            <p-calendar appendTo="body" id="end" inputId="end" [minDate]="minDateValue"  [maxDate]="maxDateValue" [ngClass]="displayFieldCss('end')"  [(ngModel)]="harvest.end" [showIcon]="true"></p-calendar>
                             <small id="end-required" class="p-error"  *ngIf="submitted && harvest.end === ''">A data de fim é obrigatória!</small>
                         </div>
 <!--                        <div class="field col-6">-->

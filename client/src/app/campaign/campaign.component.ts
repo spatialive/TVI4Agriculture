@@ -18,6 +18,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
 import {TimeSeries} from '../@core/interfaces/timeseries.interface';
 import {PointInfo} from '../@core/interfaces/point.info.interface';
+import {Mode} from '../@core/interfaces/mode.type';
+import {Car} from '../@core/interfaces/car.interface';
 
 @Component({
     templateUrl: './campaign.component.html',
@@ -25,6 +27,7 @@ import {PointInfo} from '../@core/interfaces/point.info.interface';
     providers: [MessageService, ConfirmationService]
 })
 export class CampaignComponent implements OnInit {
+    inepectionMode: Mode;
     campaign: Campaign;
     campaigns: Campaign[];
     campaignDialog: boolean;
@@ -45,15 +48,14 @@ export class CampaignComponent implements OnInit {
         {name: 'Áreas Irrigadas e Não Irrigadas', value: 'IRRIGATED_NON_IRRIGATED'}
     ];
     layersControl = {
-        baseLayers: {
-            'Google Maps': tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 19 }),
-        },
+        baseLayers: null,
         overlays: {
             'Google Maps': tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 19 }),
-            'Sentinel-2 cloudless 2018':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2018_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19 }),
-            'Sentinel-2 cloudless 2019':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2019_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19 }),
-            'Sentinel-2 cloudless 2020':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2020_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19 }),
-            'Sentinel-2 cloudless 2021':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2021_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19 }),
+            'Google Satellite': tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 19 }),
+            'Sentinel-2 cloudless 2018':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2018_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19, attribution: ' | <a href="https://s2maps.eu" target="_blank">Sentinel-2 cloudless</a> - by  <a href="https://eox.at/" target="_blank">EOX IT Services</a> GmbH'}),
+            'Sentinel-2 cloudless 2019':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2019_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19, attribution: ' | <a href="https://s2maps.eu" target="_blank">Sentinel-2 cloudless</a> - by  <a href="https://eox.at/" target="_blank">EOX IT Services</a> GmbH'}),
+            'Sentinel-2 cloudless 2020':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2020_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19, attribution: ' | <a href="https://s2maps.eu" target="_blank">Sentinel-2 cloudless</a> - by  <a href="https://eox.at/" target="_blank">EOX IT Services</a> GmbH'}),
+            'Sentinel-2 cloudless 2021':  tileLayer('https://s2maps-tiles.eu/wmts?layer=s2cloudless-2021_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}', { maxZoom: 19, attribution: ' | <a href="https://s2maps.eu" target="_blank">Sentinel-2 cloudless</a> - by  <a href="https://eox.at/" target="_blank">EOX IT Services</a> GmbH'})
         }
     };
     startDate: string;
@@ -78,6 +80,7 @@ export class CampaignComponent implements OnInit {
     loadingPoints: boolean;
     mapPoints: any[];
     timeSeriesOptions: any;
+
     timeSeriesData: any;
     markerPoint = '<svg width="60" height="60" viewBox="0 0 42 42" preserveAspectRatio="xMidYMid meet" fill="#66ff66"><path d="M19.8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5zM20 9c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-6 6.7c0 1 .4 1.4.8.8s1.1-1.3 1.6-1.8c.5-.4.2-.7-.7-.7-1 0-1.7.8-1.7 1.7zm11.6-1c.5.5 1.2 1.2 1.6 1.8s.8.2.8-.8c0-.9-.7-1.7-1.7-1.7-.9 0-1.2.3-.7.7zM.2 21c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zm41 0c0 1.4.2 1.9.5 1.2.2-.6.2-1.8 0-2.5-.3-.6-.5-.1-.5 1.3zM2 21c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm18 0a1.08 1.08 0 0 0 1 1c.6 0 1-.5 1-1a.94.94 0 0 0-1-1c-.5 0-1 .4-1 1zm6 0c0 .6 3 1 7 1s7-.4 7-1-3-1-7-1-7 .4-7 1zm-12 5.3c0 1 .8 1.7 1.8 1.7.9 0 1.3-.4.7-.8-.5-.4-1.3-1.1-1.7-1.6-.5-.5-.8-.2-.8.7zm12.2.2c-1.1 1.2-1 1.5.3 1.5a1.54 1.54 0 0 0 1.5-1.5c0-1.8-.2-1.8-1.8 0zM20 33c0 4 .4 7 1 7s1-3 1-7-.4-7-1-7-1 3-1 7zm-.2 8.7c.6.2 1.8.2 2.5 0 .6-.3.1-.5-1.3-.5s-1.9.2-1.2.5z"/></svg>';
     // tslint:disable-next-line:max-line-length
@@ -89,7 +92,8 @@ export class CampaignComponent implements OnInit {
     pointTimeSeries: TimeSeries;
     pointInfo: PointInfo;
     pointInfoClicked: PointInfo;
-    private safePipe: SafePipe = new SafePipe(this.domSanitizer);
+    carPointInfo: Car[];
+    showCarInfo: boolean;
 
     constructor(
         private messageService: MessageService,
@@ -99,12 +103,12 @@ export class CampaignComponent implements OnInit {
         private harvestService: HarvestService,
         private inpectionsService: InspectionService,
         private storage: LocalStorageService,
-        private domSanitizer: DomSanitizer
     ) {
         this.campaign = this.clearCampaign();
         this.loadingPoints = false;
         this.showTimeSeries = false;
         this.campaignInspectionDialog = false;
+        this.showCarInfo = false;
         this.mapPoints = [];
         this.mosaicsLayers = [];
         this.points = [];
@@ -114,12 +118,10 @@ export class CampaignComponent implements OnInit {
         this.endDate = null;
         this.pointInfo = null;
         this.pointInfoClicked = null;
+        this.carPointInfo = [];
     }
 
     ngOnInit() {
-        this.getClasses();
-        this.getHarversts();
-        this.getCampaigns();
         this.cols = [
             {field: 'name', header: 'Nome'},
             {field: 'description', header: 'Descrição'}
@@ -166,6 +168,9 @@ export class CampaignComponent implements OnInit {
             startDate: null,
             endDate: null
         };
+        this.getClasses();
+        this.getHarversts();
+        this.getCampaigns();
     }
 
     changeMosaic(evt) {
@@ -212,6 +217,20 @@ export class CampaignComponent implements OnInit {
                 this.pointInfo = pointInfo[0];
         });
     }
+
+    getCarInfo() {
+        this.campaignService.carInfo(
+            this.parse(this.campaign.points[this.currentPoint].lon),
+            this.parse(this.campaign.points[this.currentPoint].lat)).subscribe((result) => {
+            this.carPointInfo = result;
+            if (this.carPointInfo.length > 0) {
+                this.carPointInfo = this.carPointInfo.map(car => {
+                    car.data_ref = moment(car.data_ref).format('DD/MM/YYYY');
+                    return car;
+                });
+            }
+        });
+    }
     getPointInfoClicked(lon, lat) {
         this.pointInfoClicked = null;
         this.campaignService.pointInfo(lon, lat).subscribe((pointInfo: PointInfo) => {
@@ -245,7 +264,6 @@ export class CampaignComponent implements OnInit {
             this.messageService.add({severity: 'error', summary: 'Busca das Classes', detail: error, life: 3000});
         });
     }
-
     getHarversts() {
         this.harvestService.all().subscribe(result => {
             this.harvests = result.data.harvests;
@@ -253,9 +271,8 @@ export class CampaignComponent implements OnInit {
             this.messageService.add({severity: 'error', summary: 'Busca das Safras', detail: error, life: 3000});
         });
     }
-
     getCampaigns() {
-        this.campaignService.all().subscribe(result => {
+        this.campaignService.allByUser(this.user.id).subscribe(result => {
             this.campaigns = result.data.campaigns;
         }, error => {
             this.messageService.add({severity: 'error', summary: 'Busca das Campanhas', detail: error, life: 3000});
@@ -263,11 +280,18 @@ export class CampaignComponent implements OnInit {
     }
 
     setClass(evt, haverst) {
+        if (this.inspections.length > 0) {
+            const existOnInspections: Inspection = this.inspections.find(insp => insp.harvest.id === haverst.id);
+            if (existOnInspections){
+                this.inspections = this.inspections.filter(insp => insp.harvest.id !== haverst.id );
+            }
+        }
         this.inspections.push({
-            userId: this.user.id,
-            harvestId: haverst.id,
-            pointId: this.campaign.points[this.currentPoint].id,
-            classId: evt.value
+            user:  this.user,
+            harvest: haverst,
+            point: this.campaign.points[this.currentPoint],
+            class: { id: evt.value },
+            campaign: this.campaign
         });
     }
 
@@ -355,7 +379,6 @@ export class CampaignComponent implements OnInit {
             if (this.campaign.id) {
                 this.campaignService.update(this.campaign).subscribe(result => {
                     this.getCampaigns();
-                    console.log(result);
                     this.messageService.add(
                         {
                             severity: 'success',
@@ -407,14 +430,38 @@ export class CampaignComponent implements OnInit {
     }
 
     inspectCampaign(camp: Campaign) {
+        this.inepectionMode = 'edit';
+        this.currentPoint = 0;
         this.campaign = null;
         this.pointInfo = null;
         this.pointInfoClicked = null;
-        this.campaignInspectionDialog = true;
         this.campaign = {...camp};
-        this.loadPoint();
-        this.loadMosaics();
-        this.getPointInfo();
+        this.inpectionsService.getLastInspection(this.campaign.id).subscribe((result) => {
+            if (result.data){
+                const lastInspentectionPoint = this.campaign.points.findIndex(point => {
+                    return point.id === result.data.inspection.point.id;
+                });
+                this.currentPoint = lastInspentectionPoint + 1;
+                this.campaignInspectionDialog = true;
+            } else {
+                this.currentPoint = 0;
+            }
+            this.loadPoint();
+            this.loadMosaics();
+            this.getPointInfo();
+            this.getCarInfo();
+        }, error => {
+            this.messageService.add(
+                {
+                    key: 'inspection',
+                    severity: 'error',
+                    summary: 'Erro ao buscar o último ponto inspecionado',
+                    detail: error,
+                    life: 3000
+                }
+            );
+            this.campaignInspectionDialog = false;
+        });
     }
     loadMosaics(){
         const startDates = this.campaign.harvests.map((harvest) => harvest.start);
@@ -523,28 +570,68 @@ export class CampaignComponent implements OnInit {
     clearMap() {
         this.mapPoints = [];
     }
-
-    onSaveInpection() {
+    resetPoint(currentPoint){
+        this.campaign.harvests = this.campaign.harvests.map(harvest => {
+            harvest.selected = 0;
+            return harvest;
+        });
+        this.pointInfo = null;
+        this.showCarInfo = false;
+        this.currentPoint = currentPoint;
+        this.loadPoint();
+        this.getPointInfo();
+        this.changeMosaic({value: this.planetMosaics[0]._links.tiles});
+        this.inspections = [];
+        this.carPointInfo = [];
+        this.getCarInfo();
+    }
+    onSaveInpection(nextPoint) {
+        this.inpectionsService.createMany(this.inspections).subscribe(result => {
+            this.messageService.add(
+                {
+                    key: 'inspection',
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Classes inseridas com sucesso!',
+                    life: 3000
+                }
+            );
+            this.resetPoint(nextPoint);
+        }, error => {
+            this.messageService.add(
+                {
+                    key: 'inspection',
+                    severity: 'error',
+                    summary: 'Erro no cadastro classes',
+                    detail: error,
+                    life: 3000
+                }
+            );
+        });
     }
 
     back() {
         const prevPoint = this.currentPoint - 1;
         if (prevPoint >= 0) {
-            this.currentPoint = prevPoint;
-            this.pointInfo = null;
-            this.loadPoint(true);
-            this.getPointInfo();
-            this.changeMosaic({value: this.planetMosaics[0]._links.tiles});
+            this.resetPoint(prevPoint);
         }
     }
     next() {
         const nextPoint = this.currentPoint + 1;
         if (nextPoint <= this.campaign.points.length - 1) {
-            this.pointInfo = null;
-            this.currentPoint = nextPoint;
-            this.loadPoint();
-            this.getPointInfo();
-            this.changeMosaic({value: this.planetMosaics[0]._links.tiles});
+            if (this.inspections.length === this.campaign.harvests.length){
+                this.onSaveInpection(nextPoint);
+            } else {
+                this.messageService.add(
+                    {
+                        key: 'inspection',
+                        severity: 'warn',
+                        summary: 'Atenção',
+                        detail: 'Você precisa definir todas as classes.',
+                        life: 3000
+                    }
+                );
+            }
         }
     }
     onClick(evt){

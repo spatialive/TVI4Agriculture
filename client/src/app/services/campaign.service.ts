@@ -4,7 +4,9 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import {Campaign} from '../@core/interfaces/campaign.interface';
-import {PointInfo} from "../@core/interfaces/point.info.interface";
+import {PointInfo} from '../@core/interfaces/point.info.interface';
+import {Car} from "../@core/interfaces/car.interface";
+
 @Injectable({
     providedIn: 'root',
 })
@@ -22,6 +24,13 @@ export class CampaignService {
 
     all(): Observable<any> {
         return this.httpClient.get<any>(this.apiURL + 'all')
+            .pipe(map(response => response))
+            .pipe(catchError(this.errorHandler),
+            );
+    }
+
+    allByUser(userId: number): Observable<any> {
+        return this.httpClient.get<any>(this.apiURL + 'allByUser/' + userId)
             .pipe(map(response => response))
             .pipe(catchError(this.errorHandler),
             );
@@ -48,6 +57,13 @@ export class CampaignService {
             );
     }
 
+    carInfo(lon: number, lat: number): Observable<Car[]> {
+        return this.httpClient.get<any>(
+            '/api/car' + '?lon=' + lon + '&lat=' + lat)
+            .pipe(map(response => response))
+            .pipe(catchError(this.errorHandler),
+            );
+    }
 
     get(id: number): Observable<any> {
         return this.httpClient.get<number>(this.apiURL + id)

@@ -30,6 +30,7 @@
         "@ngx-translate/http-loader": "^7.0.0",
         "chart.js": "^3.3.2",
         "chartjs-plugin-zoom": "^1.2.1",
+        "file-saver": "^2.0.5",
         "jwt-decode": "^3.1.2",
         "leaflet": "^1.8.0",
         "moment": "^2.29.4",
@@ -42,6 +43,7 @@
         "rxjs": "~6.6.0",
         "tslib": "^2.0.0",
         "web-animations-js": "^2.3.2",
+        "xlsx": "^0.18.5",
         "zone.js": "~0.11.4"
     },
     "devDependencies": {
