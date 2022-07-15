@@ -1,0 +1,212 @@
+<div class="layout-dashboard">
+    <div class="grid">
+        <div class="campaign col-12 md:col-6 lg:col-3" (click)="goToCampaigns()">
+            <div class="card p-0 widget-overview-box widget-overview-box-1">
+                <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
+                    <i class="pi pi-map text-6xl"></i>
+                    <div class="pl-3 overflow-hidden">
+                        <span class="header block white-space-nowrap overflow-hidden">CAMPANHAS</span>
+                        <span class="block text-4xl font-bold" [style]="{'color': (app.colorScheme === 'light' ? '#035388' : '#1992D4')}">{{numberCampaigns}}</span>
+                    </div>
+                </div>
+                <img
+                    [src]="'assets/layout/images/dashboard/users' + (app.colorScheme === 'light' ? '' : '-dark') + '.svg'"
+                    class="w-full" alt="users">
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <div class="card p-0 widget-overview-box widget-overview-box-2">
+                <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
+                    <i class="pi pi-map-marker text-6xl"></i>
+                    <div class="pl-3 overflow-hidden">
+                        <span class="header block white-space-nowrap overflow-hidden">PONTOS INSPECIONADOS</span>
+                        <span class="block text-4xl font-bold" [style]="{'color': (app.colorScheme === 'light' ? '#CB6E17' : '#DE911D')}">{{numberPoints}}</span>
+                    </div>
+                </div>
+                <img
+                    [src]="'assets/layout/images/dashboard/locations' + (app.colorScheme === 'light' ? '' : '-dark') + '.svg'"
+                    class="w-full" alt="users">
+            </div>
+        </div>
+
+
+
+<!--        <div class="col-12 md:col-6 lg:col-4">-->
+<!--            <div class="card widget-ratings">-->
+<!--                <div class="card-header font-bold mb-4">Ratings</div>-->
+<!--                <p-tabView orientation="left">-->
+<!--                    <p-tabPanel header="Tab Title I">-->
+<!--                        <table class="w-full">-->
+<!--                            <tbody>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Icarus</td>-->
+<!--                                <td class="w-1"><span class="font-bold">3.9</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">0.2</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center low-tag p-1">-->
+<!--                                        <span class="font-bold">LOW PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Omega</td>-->
+<!--                                <td class="w-1"><span class="font-bold">2.8</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">0.9</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Woofer</td>-->
+<!--                                <td class="w-1"><span class="font-bold">4.6</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 success-badge">-->
+<!--                                        <i class="pi pi-arrow-up"></i>-->
+<!--                                        <span class="font-bold ml-1">1.7</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Alphine</td>-->
+<!--                                <td class="w-1"><span class="font-bold">9.0</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div class="flex align-items-center justify-content-between px-2 py-1 danger-badge">-->
+<!--                                        <i class="pi pi-arrow-down"></i>-->
+<!--                                        <span class="font-bold ml-1">4.5</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center low-tag p-1">-->
+<!--                                        <span class="font-bold">LOW PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Doctrine</td>-->
+<!--                                <td class="w-1"><span class="font-bold">6.1</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">7.0</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </p-tabPanel>-->
+<!--                    <p-tabPanel header="Tab Title II">-->
+<!--                        <table class="w-full">-->
+<!--                            <tbody>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Omega</td>-->
+<!--                                <td class="w-1"><span class="font-bold">2.8</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">0.9</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Alphine</td>-->
+<!--                                <td class="w-1"><span class="font-bold">9.0</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div class="flex align-items-center justify-content-between px-2 py-1 danger-badge">-->
+<!--                                        <i class="pi pi-arrow-down"></i>-->
+<!--                                        <span class="font-bold ml-1">4.5</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center low-tag p-1">-->
+<!--                                        <span class="font-bold">LOW PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Icarus</td>-->
+<!--                                <td class="w-1"><span class="font-bold">3.9</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">0.2</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center low-tag p-1">-->
+<!--                                        <span class="font-bold">LOW PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Woofer</td>-->
+<!--                                <td class="w-1"><span class="font-bold">4.6</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 success-badge">-->
+<!--                                        <i class="pi pi-arrow-up"></i>-->
+<!--                                        <span class="font-bold ml-1">1.7</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="w-4">Doctrine</td>-->
+<!--                                <td class="w-1"><span class="font-bold">6.1</span></td>-->
+<!--                                <td class="w-2">-->
+<!--                                    <div-->
+<!--                                        class="flex align-items-center justify-content-between px-2 py-1 warning-badge">-->
+<!--                                        <i class="pi pi-circle-off"></i>-->
+<!--                                        <span class="font-bold ml-1">7.0</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td class="w-4">-->
+<!--                                    <div class="flex align-items-center justify-content-center high-tag p-1">-->
+<!--                                        <span class="font-bold">HIGH PRIORITY</span>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </p-tabPanel>-->
+<!--                </p-tabView>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>

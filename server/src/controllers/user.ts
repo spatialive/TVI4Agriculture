@@ -6,7 +6,12 @@ const all: RouteHandlerMethod = async (
 ) => {
     try {
         const users = await _req.server.prisma.user.findMany({
-            select: { name: true, email: true }
+            select: {
+                name: true,
+                email: true,
+                campaigns: true,
+                inspections: true
+            }
         })
         return res.send({ data: { users } })
     } catch (error) {
@@ -14,4 +19,44 @@ const all: RouteHandlerMethod = async (
         res.status(500).send({ error: `Cannot fetch users` })
     }
 }
-export const userController = { all }
+const get: RouteHandlerMethod = async (
+    _req,
+    res
+) => {
+    try {
+        const { id } = _req.params as any
+        const user = await _req.server.prisma.user.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+            select: {
+                name: true,
+                email: true,
+                campaigns: true,
+                inspections: true
+            }
+        })
+        return res.send({ data: { user } })
+    } catch (error) {
+        res.status(500).send({ error: `Cannot fetch users` })
+    }
+}
+const getPointsInspected: RouteHandlerMethod = async (
+    _req,
+    res
+) => {
+    try {
+        const { id } = _req.params as any
+        const pointsInspected = await _req.server.prisma.inspection.findMany({
+            distinct: [ "pointId" ],
+            where: {
+                userId: parseInt(id)
+            }
+        })
+        return res.send({ data: { pointsInspected } })
+    } catch (error) {
+        res.status(500).send({ error: error })
+    }
+}
+
+export const userController = { all, get, getPointsInspected }

@@ -5,7 +5,7 @@ import {ClassService} from '../services/class.service';
 
 @Component({
     templateUrl: './class.component.html',
-    styleUrls: ['../demo/view/tabledemo.scss', 'class.component.scss'],
+    styleUrls: ['../pages/tabledemo.scss', 'class.component.scss'],
     providers: [MessageService, ConfirmationService]
 })
 export class ClassComponent implements OnInit {

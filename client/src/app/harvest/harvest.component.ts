@@ -5,7 +5,7 @@ import {HarvestService} from '../services/harvest.service';
 
 @Component({
     templateUrl: './harvest.component.html',
-    styleUrls: ['../demo/view/tabledemo.scss', 'harvest.component.scss'],
+    styleUrls: ['../pages/tabledemo.scss', 'harvest.component.scss'],
     providers: [MessageService, ConfirmationService]
 })
 export class HarvestComponent implements OnInit {

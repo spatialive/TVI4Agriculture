@@ -49,6 +49,8 @@
                         <th pSortableColumn="updatedAt">Atualizado em
                             <p-sortIcon field="updatedAt"></p-sortIcon>
                         </th>
+                        <th pSortableColumn="updatedAt">Ações
+                        </th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -69,7 +71,6 @@
                         <td><span class="p-column-title">Atualizado em </span>
                             {{campaign.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
                         </td>
-
                         <td class="btn-table-actions">
                             <button pButton pRipple pTooltip="Inspecionar" icon="pi pi-search"
                                     class="mt-5 p-button-rounded p-button-info"
@@ -80,6 +81,9 @@
                             <button pButton pRipple pTooltip="Remover" icon="pi pi-trash"
                                     class="p-button-rounded p-button-danger"
                                     (click)="deleteCampaign(campaign)"></button>
+                            <button *ngIf="campaign.inspections.length > 0" pButton pRipple pTooltip="Baixar SHP do Pontos Inpecionados" icon="pi pi-file"
+                                    class="p-button-rounded p-button-success"
+                                    (click)="exportSHP(campaign)"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -206,7 +210,7 @@
                                 <small class="col" *ngIf="pointInfo.bioma != ''">Bioma<br><b>{{pointInfo.bioma}}</b></small>
                                 <small class="col" *ngIf="carPointInfo.length > 0">
                                     <p-inputSwitch pTooltip="Visualizar Informações do CAR para ponto corrente"  [(ngModel)]="showCarInfo"></p-inputSwitch>
-                                    <br>CAR
+                                    <br>Informações do CAR
                                 </small>
 
                             </div>
@@ -219,7 +223,7 @@
                                     <th>Código</th>
                                     <th>Data de Referência</th>
                                     <th>Tipo do Imóvel</th>
-                                    <th>Área em ha</th>
+                                    <th>Área</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-car>
@@ -227,7 +231,7 @@
                                     <td>{{car.cod_car}}</td>
                                     <td>{{car.data_ref}}</td>
                                     <td>{{car.tipo_imove}}</td>
-                                    <td>{{car.area_ha |  number:'1.2-2'}}</td>
+                                    <td>{{car.area_ha |  number:'1.2-2'}} ha</td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -266,14 +270,13 @@
                         </div>
                     </div>
                     <div class="col-7 chart">
-                        <h4>Time Series</h4>
                         <app-timeseries [tsData]="{lon: parse(campaign.points[currentPoint].lon), lat: parse(campaign.points[currentPoint].lat), startDate: startDate, endDate: endDate}"></app-timeseries>
                     </div>
                 </div>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '60%', heigth: '100%'}" header="Serie Temporal Sentinel - EVI para o ponto [{{pointTimeSeries.lat}},  {{pointTimeSeries.lon}}]" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="showTimeSeries" [style]="{width: '60%', heigth: '100%'}" header="Serie Temporal" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <p-progressBar [hidden]="pointInfoClicked" mode="indeterminate"></p-progressBar>
                 <div class="point-info-clicked card" *ngIf="pointInfoClicked">

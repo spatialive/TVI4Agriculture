@@ -13,17 +13,16 @@ import jwtDecode from 'jwt-decode';
 import {Point} from '../@core/interfaces/point.interface';
 import {Inspection} from '../@core/interfaces/inspection.interface';
 import {InspectionService} from '../services/inspection.service';
-import {SafePipe} from '../pipes/safe';
-import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
 import {TimeSeries} from '../@core/interfaces/timeseries.interface';
 import {PointInfo} from '../@core/interfaces/point.info.interface';
 import {Mode} from '../@core/interfaces/mode.type';
 import {Car} from '../@core/interfaces/car.interface';
+import * as saveAs from 'file-saver';
 
 @Component({
     templateUrl: './campaign.component.html',
-    styleUrls: ['../demo/view/tabledemo.scss', 'campaign.component.scss'],
+    styleUrls: ['../pages/tabledemo.scss', 'campaign.component.scss'],
     providers: [MessageService, ConfirmationService]
 })
 export class CampaignComponent implements OnInit {
@@ -649,5 +648,21 @@ export class CampaignComponent implements OnInit {
     }
     parse(value: string): number {
         return parseFloat(value);
+    }
+    normalize(value): string {
+        return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(' ', '_');
+    }
+    exportSHP(camp: Campaign){
+        this.campaignService.downloadSHP(camp.id).toPromise()
+            .then(blob => {
+                saveAs(blob, this.normalize(camp.name) + '.zip');
+            }).catch(error => {
+            this.messageService.add({
+                life: 2000,
+                severity: 'error',
+                summary: 'Erro ao baixar o arquivo SHP dos pontos inspecionados.',
+                detail: error
+            });
+        });
     }
 }

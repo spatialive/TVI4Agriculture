@@ -124,7 +124,10 @@ export class TimeseriesComponent implements OnInit {
                             borderColor: '#0a5291',
                             backgroundColor: 'rgba(80,103,180)',
                             type: 'bar',
-                            fill: true
+                            borderRadius: 5,
+                            fill: true,
+                            borderSkipped: 'bottom',
+                            barPercentage: 0.7
                         }
                     ]
                 };

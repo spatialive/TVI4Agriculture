@@ -109,6 +109,18 @@ export class CampaignService {
         );
     }
 
+    downloadSHP(campaignId: number): Observable<Blob> {
+        return this.httpClient.get('/api/shp?campaignId=' + campaignId, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+            }),
+            responseType: 'blob'
+        } );
+    }
+
     errorHandler(error: HttpErrorResponse) {
         const errorMessage = `Código do erro: ${error.status} - Mensagem: ${error.error.error}`;
         return throwError(errorMessage);

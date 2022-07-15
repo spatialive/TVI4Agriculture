@@ -2,7 +2,7 @@ import { RouteHandlerMethod } from "fastify"
 import { Point } from "../models/point"
 import { Harvest } from "../models/harvest"
 import { Class } from "../models/class"
-import axios from "axios";
+import axios from "axios"
 
 const all: RouteHandlerMethod = async (
     req,
@@ -14,7 +14,7 @@ const all: RouteHandlerMethod = async (
                 classes: true,
                 harvests: true,
                 points: true,
-                user: true
+                inspections: true
             }
         })
         return res.send({ data: { campaigns } })
@@ -41,8 +41,7 @@ const allByUserId: RouteHandlerMethod = async (
                     orderBy: {
                         id: "asc"
                     }
-                },
-                user: true
+                }
             }
         })
         return res.send({ data: { campaigns } })

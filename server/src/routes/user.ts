@@ -8,6 +8,18 @@ const routes: RouteConfig = {
         url: routePrefix + "all",
         preHandler: [ middleware.validateRequest ],
         handler: userController.all
+    },
+    get: {
+        method: "GET",
+        url: routePrefix + ":id",
+        preHandler: [ middleware.validateRequest ],
+        handler: userController.get
+    },
+    getPointsInspected: {
+        method: "GET",
+        url: routePrefix + "getPointsInspected/:id",
+        preHandler: [ middleware.validateRequest ],
+        handler: userController.getPointsInspected
     }
 }
 
