@@ -36,7 +36,7 @@
                         sh "npm set progress=false"
                         sh "cd server && npm install" 
                         sh "cd client && npm install" 
-                        }
+                        
 
                         //VERIFY IF BUILD IS COMPLETE AND NOTIFY IN DISCORD ABOUT OF THE RESULT
                         sh "export NODE_OPTIONS=--max-old-space-size=8096"
