@@ -1,5 +1,5 @@
 <section id="public">
-    <h2 class="title-public">Serie Temporal Sentinel</h2>
+    <h2 class="title-public">Inspeção Pública de Ponto</h2>
     <p-toast [autoZIndex]="true"></p-toast>
     <div class="container grid card">
         <div class="col">
@@ -37,12 +37,31 @@
     </div>
     <p-dialog [(visible)]="showPointDialog" [style]="{width: '50%', heigth: '50%'}" header="Dados do ponto selecionado" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
-            <p-progressBar [hidden]="pointInfo" mode="indeterminate"></p-progressBar>
-            <div class="point-info-clicked grid" *ngIf="pointInfo">
+            <div class="point-info-clicked grid pt-3" *ngIf="pointInfo">
                 <small class="col card" *ngIf="pointInfo.geocodigo != ''">Geocódigo: <b>{{pointInfo.geocodigo}}</b></small>
-                <small class="col card" *ngIf="pointInfo.municipio != ''">Município: <b>{{pointInfo.municipio}}</b></small>
-                <small class="col card" *ngIf="pointInfo.estado != ''">Estado: <b>{{pointInfo.estado}}</b></small>
+                <small class="col card" *ngIf="pointInfo.municipio != ''">Município: <b>{{pointInfo.municipio}} - {{pointInfo.uf}}</b></small>
                 <small class="col card" *ngIf="pointInfo.bioma != ''">Bioma: <b>{{pointInfo.bioma}}</b></small>
+            </div>
+            <h5 class="mt-4 mb-2">Cadastro Ambiental Rural – CAR</h5>
+            <div *ngIf="carPointInfo.length > 0" class="card pt-3 card-info">
+                <p-table [value]="carPointInfo" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Código</th>
+                            <th>Data de Referência</th>
+                            <th>Tipo do Imóvel</th>
+                            <th>Área</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car>
+                        <tr>
+                            <td>{{car.cod_car}}</td>
+                            <td>{{car.data_ref}}</td>
+                            <td>{{car.tipo_imove}}</td>
+                            <td>{{car.area_ha |  number:'1.2-2'}} ha</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </ng-template>
     </p-dialog>

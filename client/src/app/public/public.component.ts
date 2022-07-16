@@ -5,8 +5,8 @@ import * as moment from 'moment';
 import {CampaignService} from '../services/campaign.service';
 import {Point} from '../@core/interfaces/point.interface';
 import {PointInfo} from '../@core/interfaces/point.info.interface';
-import {Harvest} from '../@core/interfaces/harvest.interface';
 import {TimeSeries} from '../@core/interfaces/timeseries.interface';
+import {Car} from '../@core/interfaces/car.interface';
 
 @Component({
     templateUrl: './public.component.html',
@@ -59,6 +59,8 @@ export class PublicComponent implements OnInit {
     submitted: boolean;
     selectedMosaic: any;
     pointTimeSeries: TimeSeries;
+    carPointInfo: Car[];
+    showCarInfo: boolean;
 
     constructor(
         private messageService: MessageService,
@@ -74,6 +76,8 @@ export class PublicComponent implements OnInit {
         this.startDate = null;
         this.endDate = null;
         this.selectedMosaic = null;
+        this.showCarInfo = false;
+        this.carPointInfo = [];
     }
 
     ngOnInit() {
@@ -106,19 +110,20 @@ export class PublicComponent implements OnInit {
         };
         this.getPlanetMosaics();
         const currentYear = new Date().getFullYear();
-        const previousYear =  currentYear - 1;
         this.minDateValue = new Date('2019-01-01');
-        this.maxDateValue = new Date(previousYear + '-12-31');
+        this.maxDateValue = new Date(currentYear + '-01-01');
     }
 
     changeMosaic(evt) {
         this.mosaicsLayers = [];
         if (this.point){
             const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
-            this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
+            // this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
             this.mosaicsLayers.push(pointLayer);
         }
-        this.mosaicsLayers.push(tileLayer(evt.value, {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+        this.mosaicsLayers.push(tileLayer(evt.value,
+            {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}
+        ));
     }
 
     getPlanetMosaics() {
@@ -134,7 +139,9 @@ export class PublicComponent implements OnInit {
                     this.planetMosaics.push(mos);
                 }
            });
-           this.mosaicsLayers.push(tileLayer(this.planetMosaics[30]._links.tiles, {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
+           this.mosaicsLayers.push(tileLayer(this.planetMosaics[30]._links.tiles,
+               {maxZoom: 18, attribution: 'NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}
+           ));
         });
     }
     buildMarker(lat, lon){
@@ -160,15 +167,16 @@ export class PublicComponent implements OnInit {
                 startDate: moment(this.startDate).format('YYYY-MM-DD'),
                 endDate: moment(this.endDate).format('YYYY-MM-DD')
             };
-            if (this.selectedMosaic){
-                this.mosaicsLayers = [];
-                const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
-                this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
-                this.mosaicsLayers.push(pointLayer);
-                this.mosaicsLayers.push(tileLayer(this.selectedMosaic, {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}));
-            }
+            this.mosaicsLayers = [];
+            const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
+            // this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
+            this.mosaicsLayers.push(pointLayer);
+            this.mosaicsLayers.push(tileLayer(this.selectedMosaic ? this.selectedMosaic : this.planetMosaics[30]._links.tiles,
+                {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}
+            ));
             this.showTimeSeries = true;
             this.getPointInfo();
+            this.getCarInfo();
         } else {
             this.messageService.add({
                 life: 2000,
@@ -181,6 +189,17 @@ export class PublicComponent implements OnInit {
     getPointInfo() {
         this.campaignService.pointInfo(this.parse(this.point.lon), this.parse(this.point.lat)).subscribe((pointInfo) => {
             this.pointInfo = pointInfo[0];
+        });
+    }
+    getCarInfo() {
+        this.campaignService.carInfo(this.parse(this.point.lon), this.parse(this.point.lat)).subscribe((result) => {
+            this.carPointInfo = result;
+            if (this.carPointInfo.length > 0) {
+                this.carPointInfo = this.carPointInfo.map(car => {
+                    car.data_ref = moment(car.data_ref).format('DD/MM/YYYY');
+                    return car;
+                });
+            }
         });
     }
     parse(value: string): number {

@@ -21,7 +21,6 @@ const routes: RouteConfig = {
     carInfo: {
         method: "GET",
         url: routePrefix + "car",
-        preHandler: [ middleware.validateRequest ],
         handler: async (_req, res) => {
             try {
                 const { lon, lat } = _req.query as any
