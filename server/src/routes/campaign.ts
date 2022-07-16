@@ -18,13 +18,11 @@ const routes: RouteConfig = {
     mosaics: {
         method: "GET",
         url: routePrefix + "mosaics",
-        preHandler: [ middleware.validateRequest ],
         handler: campaignController.mosaicsPlanet
     },
     timeseries: {
         method: "GET",
         url: routePrefix + "timeseries",
-        preHandler: [ middleware.validateRequest ],
         handler: campaignController.timeseries
     },
     get: {

@@ -5,11 +5,11 @@ export interface Point {
     id?: number;
     lat: string;
     lon: string;
-    description: string;
+    description?: string;
     createdAt?: string;
     updatedAt?: string;
-    campaignId: number;
+    campaignId?: number;
     inspections?: Inspection[];
-    campaign: Campaign;
+    campaign?: Campaign;
 }
 

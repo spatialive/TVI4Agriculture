@@ -104,6 +104,7 @@ import {HarvestComponent} from './harvest/harvest.component';
 import {ClassComponent} from './class/class.component';
 import {CampaignComponent} from './campaign/campaign.component';
 import {TimeseriesComponent} from './@core/timeseries/timeseries.component';
+import {PublicComponent} from './public/public.component';
 
 import {DashboardDemoComponent} from './main/dashboard/dashboarddemo.component';
 import {AppErrorComponent} from './pages/error/app.error.component';
@@ -257,6 +258,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         CampaignComponent,
         SafePipe,
         TimeseriesComponent,
+        PublicComponent,
         DashboardDemoComponent,
         AppErrorComponent,
         AppAccessdeniedComponent,

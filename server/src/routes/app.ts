@@ -1,5 +1,6 @@
 import { RouteConfig } from "../types"
-import ogr2ogr from 'ogr2ogr'
+import ogr2ogr from "ogr2ogr"
+import * as middleware from "../middleware"
 
 const routePrefix = "/api/"
 const routes: RouteConfig = {
@@ -20,6 +21,7 @@ const routes: RouteConfig = {
     carInfo: {
         method: "GET",
         url: routePrefix + "car",
+        preHandler: [ middleware.validateRequest ],
         handler: async (_req, res) => {
             try {
                 const { lon, lat } = _req.query as any
@@ -34,6 +36,7 @@ const routes: RouteConfig = {
     shp: {
         method: "GET",
         url: routePrefix + "shp",
+        preHandler: [ middleware.validateRequest ],
         handler: async (_req, res) => {
             try {
                 const { campaignId } = _req.query as any

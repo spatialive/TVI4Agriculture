@@ -112,7 +112,7 @@ export class CampaignComponent implements OnInit {
         this.mosaicsLayers = [];
         this.points = [];
         this.inspections = [];
-        this.currentPoint = 2;
+        this.currentPoint = 0;
         this.startDate = null;
         this.endDate = null;
         this.pointInfo = null;

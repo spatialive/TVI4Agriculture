@@ -1,0 +1,35 @@
+#public{
+    margin-top: 4rem;
+}
+
+.point-info{
+    margin-top: 10px;
+    small{
+        margin: 2px;
+        font-size: 14px !important;
+    }
+}
+.controls{
+    align-items: center;
+    justify-content: space-around;
+}
+
+.point-info-clicked{
+    display: flex;
+    justify-content: space-evenly;
+    small{
+        font-size: 14px;
+        margin: 2px;
+    }
+}
+
+.container{
+    height: 80vh;
+    max-width: 90%;
+    margin: auto;
+    align-items: center;
+}
+
+.title-public{
+    text-align: center;
+}
