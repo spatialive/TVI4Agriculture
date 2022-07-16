@@ -2,21 +2,23 @@
     <h2 class="title-public">Inspeção Pública de Ponto</h2>
     <p-toast [autoZIndex]="true"></p-toast>
     <div class="container grid card">
-        <div class="col">
-
+        <div class="col-6">
             <div class="grid controls">
-                <div class="field ml-4">
+                <div class="field col ml-4">
                     <p-dropdown  [style]="{width: '100%'}" [(ngModel)]="selectedMosaic"  [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [placeholder]="'Selecione o mosaico'" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
                 </div>
-                <div class="field ml-2 mr-2">
+                <div class="field col-3 ml-2 mr-2">
                     <p-calendar appendTo="body" id="start" [placeholder]="'Data início'" [minDate]="minDateValue"  [maxDate]="maxDateValue" inputId="start" [(ngModel)]="startDate" [showIcon]="true"></p-calendar>
                     <small id="start-required" class="p-error"  *ngIf="submitted && startDate === ''">A data de início é obrigatória!</small>
                 </div>
-                <div class="field">
+                <div class="field col-3">
                     <p-calendar [placeholder]="'Data fim'" appendTo="body" id="end" inputId="end" [minDate]="minDateValue" [maxDate]="maxDateValue" [(ngModel)]="endDate" [showIcon]="true"></p-calendar>
                     <small id="end-required" class="p-error"  *ngIf="submitted && endDate === ''">A data de fim é obrigatória!</small>
                 </div>
-                <div class="field">
+                <div class="field col">
+                    <button  pTooltip="Inserir ponto" pButton pRipple  icon="pi pi-map-marker" class="p-button-success" (click)="openFormPoint()"></button>
+                </div>
+                <div class="field col">
                     <p-inputSwitch *ngIf="pointInfo" pTooltip="Visualizar Informações do ponto"  [(ngModel)]="showPointDialog"></p-inputSwitch>
                 </div>
             </div>
@@ -28,11 +30,12 @@
                  [leafletLayers]="mosaicsLayers"
                  [leafletFitBounds]="pointBounds"
                  (leafletClick)="onClick($event)"
+                 (leafletMapReady)="mapReady($event)"
             >
             </div>
         </div>
-        <div *ngIf="pointTimeSeries" class="col chart">
-            <app-timeseries [tsData]="pointTimeSeries"></app-timeseries>
+        <div *ngIf="pointTimeSeries" class="chart col">
+            <app-timeseries *ngIf="pointTimeSeries" [tsData]="pointTimeSeries"></app-timeseries>
         </div>
     </div>
     <p-dialog [(visible)]="showPointDialog" [style]="{width: '50%', heigth: '50%'}" header="Dados do ponto selecionado" [modal]="true" styleClass="p-fluid">
@@ -42,7 +45,7 @@
                 <small class="col card" *ngIf="pointInfo.municipio != ''">Município: <b>{{pointInfo.municipio}} - {{pointInfo.uf}}</b></small>
                 <small class="col card" *ngIf="pointInfo.bioma != ''">Bioma: <b>{{pointInfo.bioma}}</b></small>
             </div>
-            <h5 class="mt-4 mb-2">Cadastro Ambiental Rural – CAR</h5>
+            <h5 *ngIf="carPointInfo.length > 0" class="mt-4 mb-2">Cadastro Ambiental Rural – CAR</h5>
             <div *ngIf="carPointInfo.length > 0" class="card pt-3 card-info">
                 <p-table [value]="carPointInfo" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
@@ -63,6 +66,23 @@
                     </ng-template>
                 </p-table>
             </div>
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="showFormPoint" [style]="{width: '30%'}" header="Inserir ponto para inspeção" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form class="form-signup" [formGroup]="formPoint" (ngSubmit)="searchPoint()">
+                <span class="p-input-icon-left mb-3" [ngClass]="displayContainerFieldCss('lon')">
+                    <i class="pi pi-map-marker"></i>
+                    <input type="number" pInputText placeholder="Longitude" [ngClass]="displayFieldCss('lon')" formControlName="lon" autocomplete="on" />
+                    <small id="email-invalid" class="p-error" *ngIf="isFieldValid('lon')">A Longitude é obrigatória!</small>
+                </span>
+                    <span class="p-input-icon-left mb-6" [ngClass]="displayContainerFieldCss('lat')">
+                    <i class="pi pi-map-marker"></i>
+                    <input type="number" pInputText  placeholder="Latitude" [ngClass]="displayFieldCss('lat')" formControlName="lat" autocomplete="on" />
+                    <small id="password-required" class="p-error" *ngIf="isFieldValid('lat')">A Latitude é obrigatória!</small>
+                </span>
+                <button [disabled]="!formPoint.valid" type="submit" pButton label="Inspecionar"></button>
+            </form>
         </ng-template>
     </p-dialog>
 </section>

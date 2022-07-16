@@ -7,6 +7,7 @@ import {Point} from '../@core/interfaces/point.interface';
 import {PointInfo} from '../@core/interfaces/point.info.interface';
 import {TimeSeries} from '../@core/interfaces/timeseries.interface';
 import {Car} from '../@core/interfaces/car.interface';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     templateUrl: './public.component.html',
@@ -61,6 +62,8 @@ export class PublicComponent implements OnInit {
     pointTimeSeries: TimeSeries;
     carPointInfo: Car[];
     showCarInfo: boolean;
+    showFormPoint: boolean;
+    formPoint: FormGroup;
 
     constructor(
         private messageService: MessageService,
@@ -71,6 +74,7 @@ export class PublicComponent implements OnInit {
         this.showTimeSeries = false;
         this.submitted = false;
         this.showPointDialog = false;
+        this.showFormPoint = false;
         this.mapPoints = [];
         this.mosaicsLayers = [];
         this.startDate = null;
@@ -78,6 +82,14 @@ export class PublicComponent implements OnInit {
         this.selectedMosaic = null;
         this.showCarInfo = false;
         this.carPointInfo = [];
+        this.formPoint = new FormGroup({
+            lon: new FormControl(null, [
+                Validators.required
+            ]),
+            lat: new FormControl(null, [
+                Validators.required
+            ])
+        });
     }
 
     ngOnInit() {
@@ -118,7 +130,7 @@ export class PublicComponent implements OnInit {
         this.mosaicsLayers = [];
         if (this.point){
             const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
-            // this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
+            this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
             this.mosaicsLayers.push(pointLayer);
         }
         this.mosaicsLayers.push(tileLayer(evt.value,
@@ -169,7 +181,7 @@ export class PublicComponent implements OnInit {
             };
             this.mosaicsLayers = [];
             const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
-            // this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
+            this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
             this.mosaicsLayers.push(pointLayer);
             this.mosaicsLayers.push(tileLayer(this.selectedMosaic ? this.selectedMosaic : this.planetMosaics[30]._links.tiles,
                 {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}
@@ -177,6 +189,45 @@ export class PublicComponent implements OnInit {
             this.showTimeSeries = true;
             this.getPointInfo();
             this.getCarInfo();
+            this.map.invalidateSize();
+        } else {
+            this.messageService.add({
+                life: 2000,
+                severity: 'warn',
+                summary: 'Atenção',
+                detail: 'O preenchimento do periodo de interesse é obrigatório'
+            });
+        }
+    }
+    searchPoint(){
+        const lon = this.formPoint.get('lon').value ;
+        const lat = this.formPoint.get('lat').value ;
+        if (this.startDate && this.endDate) {
+            this.submitted = true;
+            this.point = {
+                lon: String(lon),
+                lat: String(lat),
+            };
+            this.pointTimeSeries = {
+                lon,
+                lat,
+                startDate: moment(this.startDate).format('YYYY-MM-DD'),
+                endDate: moment(this.endDate).format('YYYY-MM-DD')
+            };
+            this.mosaicsLayers = [];
+            const pointLayer: Marker = this.buildMarker(this.point.lat, this.point.lon);
+            this.pointBounds = latLng(this.point.lat, this.point.lon).toBounds(1000);
+            this.mosaicsLayers.push(pointLayer);
+            this.mosaicsLayers.push(tileLayer(this.selectedMosaic ? this.selectedMosaic : this.planetMosaics[30]._links.tiles,
+                {maxZoom: 18, attribution: 'TVI4Agriculture | NICFI - Norway\'s International Climate and Forests Initiative Satellite Data Program'}
+            ));
+            this.showTimeSeries = true;
+            this.showFormPoint = false;
+            this.formPoint.get('lon').setValue(null);
+            this.formPoint.get('lat').setValue(null);
+            this.getPointInfo();
+            this.getCarInfo();
+            this.map.invalidateSize();
         } else {
             this.messageService.add({
                 life: 2000,
@@ -204,5 +255,36 @@ export class PublicComponent implements OnInit {
     }
     parse(value: string): number {
         return parseFloat(value);
+    }
+    mapReady(map: Map){
+        this.map = map;
+    }
+    openFormPoint(){
+        if (this.startDate && this.endDate) {
+            this.showFormPoint = !this.showFormPoint;
+        } else {
+            this.messageService.add({
+                life: 2000,
+                severity: 'warn',
+                summary: 'Atenção',
+                detail: 'O preenchimento do periodo de interesse é obrigatório'
+            });
+        }
+    }
+    isFieldValid(field: string) {
+        return !this.formPoint.get(field).valid && this.formPoint.get(field).touched;
+    }
+
+    displayFieldCss(field: string) {
+        return {
+            'ng-dirty': this.isFieldValid(field),
+            'ng-invalid': this.isFieldValid(field)
+        };
+    }
+
+    displayContainerFieldCss(field: string) {
+        return {
+            'has-error': this.isFieldValid(field),
+        };
     }
 }

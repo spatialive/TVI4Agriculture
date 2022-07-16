@@ -10,8 +10,8 @@
     }
 }
 .controls{
-    align-items: center;
-    justify-content: space-around;
+    //align-items: center;
+    //justify-content: space-around;
 }
 
 .point-info-clicked{
@@ -25,11 +25,19 @@
 
 .container{
     height: 80vh;
-    max-width: 90%;
+    //max-width: 98%;
     margin: auto;
     align-items: center;
+    justify-content: center;
 }
 
 .title-public{
     text-align: center;
 }
+
+.has-error{
+    i{
+        top: 35%;
+    }
+}
+

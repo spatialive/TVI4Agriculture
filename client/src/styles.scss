@@ -34,6 +34,7 @@ $gutter: 1rem; //for primeflex grid system
 }
 
 .leaflet-container {
+    height: 100%;
     margin: 5px;
     border-radius: 10px;
     box-shadow: 0 3px 6px 0 #ccc;
@@ -52,3 +53,16 @@ $gutter: 1rem; //for primeflex grid system
     cursor: pointer;
 }
 
+.map-container {
+    height: 100%;
+    /* Fallback for vmin */
+    padding: 0px 1rem 1rem 1rem;
+    padding: 0px 1vmin 1vmin 1vmin;
+}
+
+.map-frame {
+    height: 100%;
+    width: 100%;
+    /*   We use outline over border as has issues in some cases */
+    outline: 1px solid black;
+}
