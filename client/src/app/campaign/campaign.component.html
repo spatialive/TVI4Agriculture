@@ -57,7 +57,7 @@
                 <ng-template pTemplate="body" let-campaign>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="campaign"></p-tableCheckbox>
+                            <p-tableCheckbox [disabled]="campaign.inspections.length > 0" [value]="campaign"></p-tableCheckbox>
                         </td>
                         <td><span class="p-column-title">Nome</span>
                             {{campaign.name}}
@@ -71,19 +71,18 @@
                         <td><span class="p-column-title">Atualizado em </span>
                             {{campaign.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
                         </td>
-                        <td class="btn-table-actions">
+                        <td class="btn-table-actions ">
                             <button pButton pRipple pTooltip="Inspecionar" icon="pi pi-search"
-                                    class="mt-5 p-button-rounded p-button-info"
+                                    class=" p-button-rounded p-button-info"
                                     (click)="inspectCampaign(campaign)"></button>
-                            <button pButton pRipple pTooltip="Editar" icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-warning mr-2"
+                            <button [disabled]="campaign.inspections.length > 0" pButton pRipple pTooltip="Editar" icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-warning"
                                     (click)="editCampaign(campaign)"></button>
-                            <button pButton pRipple pTooltip="Remover" icon="pi pi-trash"
+                            <button [disabled]="campaign.inspections.length > 0" pButton pRipple pTooltip="Remover" icon="pi pi-trash"
                                     class="p-button-rounded p-button-danger"
                                     (click)="deleteCampaign(campaign)"></button>
-                            <button *ngIf="campaign.inspections.length > 0" pButton pRipple pTooltip="Baixar SHP dos pontos inpecionados" icon="pi pi-file"
-                                    class="p-button-rounded p-button-success"
-                                    (click)="exportSHP(campaign)"></button>
+                            <p-dropdown *ngIf="campaign.inspections.length > 0" pTooltip="Escolha a safra que deseja baixar o SHP dos pontos inpecionados" [placeholder]="'Baixar o SHP'" appendTo="body" [options]="campaign.harvests"
+                                        (onChange)="exportSHP($event,campaign)"  optionLabel="name" optionValue="id"></p-dropdown>
                         </td>
                     </tr>
                 </ng-template>

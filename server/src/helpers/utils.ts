@@ -35,3 +35,11 @@ export const verifyToken = (token: string | undefined, server: FastifyInstance) 
         res(server.jwt.verify(token))
     })
 }
+
+export const normalize = (value: string | null): string | null => {
+    if (typeof value === "string") {
+        return value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("^\\s+$", "_")
+    } else {
+        return value
+    }
+}

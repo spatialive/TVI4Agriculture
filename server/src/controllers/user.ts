@@ -58,5 +58,26 @@ const getPointsInspected: RouteHandlerMethod = async (
         res.status(500).send({ error: error })
     }
 }
+const countUsersCampaignInspections: RouteHandlerMethod = async (
+    _req,
+    res
+) => {
+    try {
+        const { id } = _req.params as any
+        let count = null
+        const campaigns = await _req.server.prisma.inspection.findMany({
+            distinct: [ "campaignId" ],
+            where: {
+                userId: parseInt(id)
+            }
+        })
+        if (Array.isArray(campaigns)) {
+            count = campaigns.length
+        }
+        return res.send({ data: { count } })
+    } catch (error) {
+        res.status(500).send({ error: error })
+    }
+}
 
-export const userController = { all, get, getPointsInspected }
+export const userController = { all, get, getPointsInspected, countUsersCampaignInspections }

@@ -109,8 +109,8 @@ export class CampaignService {
         );
     }
 
-    downloadSHP(campaignId: number): Observable<Blob> {
-        return this.httpClient.get('/api/shp?campaignId=' + campaignId, {
+    downloadSHP(campaignId: number, harvestId: number): Observable<Blob> {
+        return this.httpClient.get(`/api/shp?campaignId=${campaignId}&harvestId=${harvestId}`, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',

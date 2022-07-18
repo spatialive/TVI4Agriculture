@@ -1,25 +1,19 @@
 <section id="public">
     <h2 class="title-public">Inspeção Pública de Ponto</h2>
     <p-toast [autoZIndex]="true"></p-toast>
-    <div class="container grid card">
+    <div class="container grid">
         <div class="col-6">
             <div class="grid controls">
-                <div class="field col ml-4">
+                <div class="field col">
                     <p-dropdown  [style]="{width: '100%'}" [(ngModel)]="selectedMosaic"  [filter]="true" appendTo="body" id="basemaps" inputId="basemaps" [placeholder]="'Selecione o mosaico'" [options]="planetMosaics" (onChange)="changeMosaic($event)" optionLabel="name" optionValue="_links.tiles"></p-dropdown>
                 </div>
-                <div class="field col-3 ml-2 mr-2">
+                <div class="field col">
                     <p-calendar appendTo="body" id="start" [placeholder]="'Data início'" [minDate]="minDateValue"  [maxDate]="maxDateValue" inputId="start" [(ngModel)]="startDate" [showIcon]="true"></p-calendar>
                     <small id="start-required" class="p-error"  *ngIf="submitted && startDate === ''">A data de início é obrigatória!</small>
                 </div>
-                <div class="field col-3">
+                <div class="field col">
                     <p-calendar [placeholder]="'Data fim'" appendTo="body" id="end" inputId="end" [minDate]="minDateValue" [maxDate]="maxDateValue" [(ngModel)]="endDate" [showIcon]="true"></p-calendar>
                     <small id="end-required" class="p-error"  *ngIf="submitted && endDate === ''">A data de fim é obrigatória!</small>
-                </div>
-                <div class="field col">
-                    <button  pTooltip="Inserir ponto" pButton pRipple  icon="pi pi-map-marker" class="p-button-success" (click)="openFormPoint()"></button>
-                </div>
-                <div class="field col">
-                    <p-inputSwitch *ngIf="pointInfo" pTooltip="Visualizar Informações do ponto"  [(ngModel)]="showPointDialog"></p-inputSwitch>
                 </div>
             </div>
             <div *ngIf="mosaicsLayers" style="height: 60vh"
@@ -32,6 +26,11 @@
                  (leafletClick)="onClick($event)"
                  (leafletMapReady)="mapReady($event)"
             >
+                <div  class="info">
+                    <button  pTooltip="Inserir ponto" pButton pRipple  icon="pi pi-map-marker" class="p-button-success" (click)="openFormPoint($event)"></button>
+                    <button *ngIf="pointInfo"  pTooltip="Visualizar Informações do ponto" pButton pRipple  icon="pi pi-info-circle" class="p-button-info mt-2" (click)="onShowPointInfo($event)"></button>
+                </div>
+
             </div>
         </div>
         <div *ngIf="pointTimeSeries" class="chart col">

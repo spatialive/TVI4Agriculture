@@ -434,11 +434,16 @@ export class CampaignComponent implements OnInit {
         this.campaign = null;
         this.pointInfo = null;
         this.pointInfoClicked = null;
+        this.showCarInfo = false;
+        this.carPointInfo = [];
         this.campaign = {...camp};
-        this.inpectionsService.getLastInspection(this.campaign.id).subscribe((result) => {
-            if (result.data){
-                const lastInspentectionPoint = this.campaign.points.findIndex(point => {
-                    return point.id === result.data.inspection.point.id;
+        this.inpectionsService.getLastInspection(this.campaign.id, this.user.id).subscribe((result) => {
+            let lastInspentectionPoint = 0;
+            if (result.data.inspection){
+                this.campaign.points.forEach((point, i) => {
+                    if (point.id === result.data.inspection.point.id){
+                       lastInspentectionPoint = i;
+                    }
                 });
                 this.currentPoint = lastInspentectionPoint + 1;
                 this.campaignInspectionDialog = true;
@@ -534,8 +539,8 @@ export class CampaignComponent implements OnInit {
 
             for (const [index, point] of self.points.entries()) {
                 self.mapPoints.push(marker([
-                    parseFloat(this.campaign.points[this.currentPoint].lat),
-                    parseFloat(this.campaign.points[this.currentPoint].lon)], {
+                    parseFloat(point.lat),
+                    parseFloat(point.lon)], {
                     icon: divIcon(
                         {
                             html: this.markerPivot,
@@ -650,12 +655,13 @@ export class CampaignComponent implements OnInit {
         return parseFloat(value);
     }
     normalize(value): string {
-        return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(' ', '_');
+        return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace('^\\s+$', '_');
     }
-    exportSHP(camp: Campaign){
-        this.campaignService.downloadSHP(camp.id).toPromise()
+    exportSHP(evt, camp: Campaign){
+        const harvest = this.harvests.filter((har) => har.id == evt.value);
+        this.campaignService.downloadSHP(camp.id, evt.value).toPromise()
             .then(blob => {
-                saveAs(blob, this.normalize(camp.name) + '.zip');
+                saveAs(blob, this.normalize(camp.name + '_' + harvest[0].name) + '.zip');
             }).catch(error => {
             this.messageService.add({
                 life: 2000,

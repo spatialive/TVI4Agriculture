@@ -30,6 +30,12 @@ export class UserService {
             .pipe(catchError(this.errorHandler),
             );
     }
+    countUserCampaign(id: number): Observable<any> {
+        return this.httpClient.get<number>(this.apiURL + 'countUsersCampaignInspections/' + id, this.httpOptions)
+            .pipe(map(response => response))
+            .pipe(catchError(this.errorHandler),
+            );
+    }
     getPointsInspected(id: number): Observable<any> {
         return this.httpClient.get<number>(this.apiURL + 'getPointsInspected/' + id, this.httpOptions)
             .pipe(map(response => response))

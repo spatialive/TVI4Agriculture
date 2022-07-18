@@ -66,3 +66,7 @@ $gutter: 1rem; //for primeflex grid system
     /*   We use outline over border as has issues in some cases */
     outline: 1px solid black;
 }
+
+.p-inputswitch .p-inputswitch-slider {
+    background: #5a5c5e;
+}

@@ -20,6 +20,12 @@ const routes: RouteConfig = {
         url: routePrefix + "getPointsInspected/:id",
         preHandler: [ middleware.validateRequest ],
         handler: userController.getPointsInspected
+    },
+    countUsersCampaignInspections: {
+        method: "GET",
+        url: routePrefix + "countUsersCampaignInspections/:id",
+        preHandler: [ middleware.validateRequest ],
+        handler: userController.countUsersCampaignInspections
     }
 }
 

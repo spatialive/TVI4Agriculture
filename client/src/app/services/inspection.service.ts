@@ -34,8 +34,8 @@ export class InspectionService {
             .pipe(catchError(this.errorHandler),
             );
     }
-    getLastInspection(campaignid: number): Observable<any> {
-        return this.httpClient.get<Inspection>(this.apiURL + 'lastInspection/' + campaignid)
+    getLastInspection(campaignId: number, userId: number): Observable<any> {
+        return this.httpClient.get<Inspection>(this.apiURL + 'lastInspection/' + campaignId + '/' + userId)
             .pipe(map(response => response))
             .pipe(catchError(this.errorHandler),
             );

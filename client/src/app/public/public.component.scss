@@ -35,9 +35,17 @@
     text-align: center;
 }
 
-.has-error{
-    i{
+.has-error {
+    i {
         top: 35%;
     }
 }
-
+.info{
+    position: absolute;
+    z-index: 1000;
+    padding: 5px;
+    top: 58px;
+    right: 7px;
+    display: flex;
+    flex-direction: column;
+}

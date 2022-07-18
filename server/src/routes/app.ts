@@ -1,6 +1,7 @@
 import { RouteConfig } from "../types"
 import ogr2ogr from "ogr2ogr"
 import * as middleware from "../middleware"
+import { normalize } from "../helpers"
 
 const routePrefix = "/api/"
 const routes: RouteConfig = {
@@ -38,7 +39,7 @@ const routes: RouteConfig = {
         preHandler: [ middleware.validateRequest ],
         handler: async (_req, res) => {
             try {
-                const { campaignId } = _req.query as any
+                const { campaignId, harvestId } = _req.query as any
                 const geojson = {
                     "type": "FeatureCollection",
                     "features": []
@@ -51,7 +52,12 @@ const routes: RouteConfig = {
                         inspections: {
                             select: {
                                 harvest: true,
-                                class: true
+                                class: true,
+                                user: {
+                                    select: {
+                                        name: true
+                                    }
+                                }
                             }
                         }
                     }
@@ -70,9 +76,16 @@ const routes: RouteConfig = {
                                     ]
                                 }
                             }
-                            const properties = Object.fromEntries(
-                                point.inspections.map((inspection) => [ inspection.harvest.name, inspection.class.name ])
+                            const inspections = point.inspections.filter((insp) => insp.harvest.id === parseInt(harvestId))
+                            let properties: any = {}
+                            properties = Object.fromEntries(
+                                inspections.map((inspection) => {
+                                    // @ts-ignore
+                                    return [ normalize(inspection.user.name?.split(" ")[0]), inspection.class.name ]
+                                })
                             )
+                            properties["lat"] = parseFloat(point.lat)
+                            properties["lon"] = parseFloat(point.lon)
                             feature.properties = properties
                             feature.geometry.coordinates = [ parseFloat(point.lon), parseFloat(point.lat) ]
                             // @ts-ignore

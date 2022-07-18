@@ -37,16 +37,16 @@ const getLastInpection: RouteHandlerMethod = async (
     res
 ) => {
     try {
-        const { campaignId } = _req.params as any
+        const { campaignId, userId } = _req.params as any
         const inspections = await _req.server.prisma.inspection.findMany({
             where: {
-                campaignId: parseInt(campaignId)
+                campaignId: parseInt(campaignId),
+                userId: parseInt(userId)
             },
             include: {
                 harvest: true,
                 class: true,
-                point: true,
-                user: true
+                point: true
             },
             orderBy: {
                 createdAt: "desc"

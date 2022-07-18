@@ -167,6 +167,7 @@ export class PublicComponent implements OnInit {
         });
     }
     onClick(evt){
+        this.pointInfo = null;
         if (this.startDate && this.endDate) {
             this.submitted = true;
             this.point = {
@@ -259,7 +260,9 @@ export class PublicComponent implements OnInit {
     mapReady(map: Map){
         this.map = map;
     }
-    openFormPoint(){
+    openFormPoint(evt){
+        evt.stopPropagation();
+        evt.preventDefault();
         if (this.startDate && this.endDate) {
             this.showFormPoint = !this.showFormPoint;
         } else {
@@ -286,5 +289,11 @@ export class PublicComponent implements OnInit {
         return {
             'has-error': this.isFieldValid(field),
         };
+    }
+
+    onShowPointInfo(event){
+        this.showPointDialog = !this.showPointDialog
+        event.stopPropagation();
+        event.preventDefault();
     }
 }

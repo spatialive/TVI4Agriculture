@@ -17,7 +17,7 @@ const routes: RouteConfig = {
     },
     getLastInspection: {
         method: "GET",
-        url: routePrefix + "lastInspection/:campaignId",
+        url: routePrefix + "lastInspection/:campaignId/:userId",
         preHandler: [ middleware.validateRequest ],
         handler: inspectionController.getLastInpection
     },

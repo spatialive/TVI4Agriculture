@@ -45,9 +45,10 @@ export class DashboardDemoComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userService.get(this.userId).subscribe(result => {
-            this.user = result.data.user;
-            this.numberCampaigns = this.user.campaigns.length;
+        this.userService.countUserCampaign(this.userId).subscribe(result => {
+            if (result.data.count){
+                this.numberCampaigns = result.data.count;
+            }
         });
         this.userService.getPointsInspected(this.userId).subscribe(result => {
             if (Array.isArray(result.data.pointsInspected)){
