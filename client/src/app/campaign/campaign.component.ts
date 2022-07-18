@@ -449,6 +449,7 @@ export class CampaignComponent implements OnInit {
                 this.campaignInspectionDialog = true;
             } else {
                 this.currentPoint = 0;
+                this.campaignInspectionDialog = true;
             }
             this.loadPoint();
             this.loadMosaics();
